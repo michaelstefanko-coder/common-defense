@@ -37,9 +37,10 @@ export default function StatsBar() {
   return (
     <div
       ref={ref}
-      className="bg-dark border-t border-b border-border grid grid-cols-4 max-md:grid-cols-2"
+      className="bg-black grid grid-cols-4 max-md:grid-cols-2"
+      style={{ borderTop: "1px solid #1a1a1a", borderBottom: "1px solid #1a1a1a" }}
     >
-      <div className="text-center py-8 px-5 border-r border-border">
+      <div className="text-center py-8 px-5" style={{ borderRight: "1px solid #1a1a1a" }}>
         <div className="font-heading text-[36px] font-black text-white">
           {pledges.toLocaleString()}
         </div>
@@ -47,7 +48,7 @@ export default function StatsBar() {
           Pledges Signed
         </div>
       </div>
-      <div className="text-center py-8 px-5 border-r border-border max-md:border-r-0">
+      <div className="text-center py-8 px-5 max-md:!border-r-0" style={{ borderRight: "1px solid #1a1a1a" }}>
         <div className="font-heading text-[36px] font-black text-white">
           {chapters.toLocaleString()}
         </div>
@@ -55,8 +56,8 @@ export default function StatsBar() {
           Local Chapters
         </div>
       </div>
-      <div className="text-center py-8 px-5 border-r border-border">
-        <div className="font-heading text-[36px] font-black text-white">
+      <div className="text-center py-8 px-5" style={{ borderRight: "1px solid #1a1a1a" }}>
+        <div className="font-heading text-[36px] font-black text-red">
           ${fund.toLocaleString()}
         </div>
         <div className="font-heading text-[11px] tracking-[2px] uppercase text-muted mt-1">

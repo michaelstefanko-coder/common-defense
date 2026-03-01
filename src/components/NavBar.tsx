@@ -34,14 +34,14 @@ export default function NavBar() {
   return (
     <>
       <nav
-        className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-10 max-md:px-5 h-[60px] transition-[border-color] duration-300"
+        className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-10 max-md:px-5 h-[60px]"
         style={{
-          background: "rgba(10,10,10,0.92)",
+          background: "rgba(0,0,0,0.95)",
           backdropFilter: "blur(12px)",
-          borderBottom: `1px solid ${scrolled ? "#c53030" : "#2a2a2a"}`,
+          borderBottom: `1px solid ${scrolled ? "#cc0000" : "#1a1a1a"}`,
         }}
       >
-        <Link href="/" className="font-heading font-black text-[16px] tracking-[3px] text-white uppercase no-underline hover:no-underline">
+        <Link href="/" className="font-heading font-black text-[16px] tracking-[3px] text-white uppercase no-underline hover:no-underline glitch-text">
           Common Defense
         </Link>
 
@@ -50,8 +50,8 @@ export default function NavBar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`font-heading text-[12px] tracking-[2px] uppercase no-underline hover:text-white hover:no-underline transition-colors ${
-                link.highlight ? "text-red-light font-bold" : "text-light"
+              className={`nav-link-dystopian font-heading text-[12px] tracking-[2px] uppercase no-underline hover:no-underline ${
+                link.highlight ? "text-red font-bold hover:!text-red-light" : "text-muted hover:!text-white"
               }`}
             >
               {link.label}
@@ -62,7 +62,8 @@ export default function NavBar() {
         <div className="flex items-center gap-3">
           <button
             onClick={goToPledge}
-            className="font-heading text-[12px] tracking-[2px] uppercase bg-red text-white px-6 py-2.5 border-none cursor-pointer font-bold hover:bg-red-dim transition-colors max-md:hidden"
+            className="btn-dystopian font-heading text-[12px] tracking-[2px] uppercase bg-red text-white px-6 py-2.5 border-none cursor-pointer font-bold max-md:hidden"
+            style={{ borderRadius: 0 }}
           >
             Sign the Pledge
           </button>
@@ -82,7 +83,7 @@ export default function NavBar() {
 
       {mobileOpen && (
         <div
-          className="fixed inset-0 z-[99] bg-black/95 pt-[60px] flex flex-col md:hidden"
+          className="fixed inset-0 z-[99] bg-black pt-[60px] flex flex-col md:hidden"
           onClick={(e) => { if (e.target === e.currentTarget) setMobileOpen(false); }}
         >
           <div className="flex flex-col gap-1 p-6">
@@ -91,8 +92,8 @@ export default function NavBar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className={`font-heading text-[16px] tracking-[3px] uppercase no-underline hover:no-underline py-4 border-b border-border transition-colors ${
-                  link.highlight ? "text-red-light font-bold" : "text-light hover:text-white"
+                className={`nav-link-dystopian font-heading text-[16px] tracking-[3px] uppercase no-underline hover:no-underline py-4 border-b border-border ${
+                  link.highlight ? "text-red font-bold" : "text-muted"
                 }`}
               >
                 {link.label}
@@ -102,7 +103,8 @@ export default function NavBar() {
           <div className="p-6 mt-auto">
             <button
               onClick={goToPledge}
-              className="font-heading text-[13px] tracking-[2px] uppercase bg-red text-white px-10 py-4 border-none cursor-pointer font-bold hover:bg-red-light transition-all w-full"
+              className="btn-dystopian font-heading text-[13px] tracking-[2px] uppercase bg-red text-white px-10 py-4 border-none cursor-pointer font-bold w-full"
+              style={{ borderRadius: 0 }}
             >
               Sign the Pledge
             </button>

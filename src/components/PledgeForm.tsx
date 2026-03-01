@@ -28,7 +28,7 @@ export default function PledgeForm() {
   };
 
   return (
-    <div className="bg-dark border-t border-b border-border py-[100px] px-10" id="pledge">
+    <div className="bg-black py-[100px] px-10" id="pledge" style={{ borderTop: "1px solid #1a1a1a", borderBottom: "1px solid #1a1a1a" }}>
       <div className="max-w-[800px] mx-auto text-center">
         <div className="font-heading text-[11px] tracking-[3px] uppercase text-red mb-3">
           Pillar III
@@ -39,7 +39,7 @@ export default function PledgeForm() {
 
         <div
           className="text-[22px] max-md:text-[18px] italic text-text leading-[1.7] border-l-[3px] border-red py-6 px-8 text-left my-10"
-          style={{ background: "rgba(197,48,48,0.15)" }}
+          style={{ background: "rgba(204,0,0,0.08)" }}
         >
           I will only vote for a presidential candidate who commits to treating Citizens United v. FEC as illegitimate and actively pursues its legislative or constitutional reversal. Lincoln did not ask the Court&apos;s permission to overturn Dred Scott. Neither do I.
         </div>
@@ -64,7 +64,8 @@ export default function PledgeForm() {
           <button
             onClick={signPledge}
             disabled={signed}
-            className="font-heading text-[13px] tracking-[2px] uppercase bg-red text-white px-10 py-4 border-none cursor-pointer font-bold hover:bg-red-light transition-all whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+            className="btn-dystopian font-heading text-[13px] tracking-[2px] uppercase bg-red text-white px-10 py-4 border-none cursor-pointer font-bold whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{ borderRadius: 0 }}
           >
             Sign the Pledge
           </button>

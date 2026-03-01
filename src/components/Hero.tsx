@@ -9,7 +9,7 @@ export default function Hero() {
   };
 
   return (
-    <div className="relative pt-[60px] min-h-[90vh] max-md:min-h-0 flex items-center overflow-hidden bg-dark">
+    <div className="relative pt-[60px] min-h-[90vh] max-md:min-h-0 flex items-center overflow-hidden bg-black">
       {/* Map — right side, absolutely positioned on desktop */}
       <div className="absolute top-0 right-0 w-[55%] h-full max-md:hidden pointer-events-none">
         <iframe
@@ -23,14 +23,14 @@ export default function Hero() {
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: "linear-gradient(to right, #0a0a0a 0%, rgba(10,10,10,0.7) 15%, rgba(10,10,10,0) 40%)",
+            background: "linear-gradient(to right, #000000 0%, rgba(0,0,0,0.7) 15%, rgba(0,0,0,0) 40%)",
           }}
         />
         {/* Bottom fade */}
         <div
           className="absolute bottom-0 left-0 right-0 h-[120px] pointer-events-none"
           style={{
-            background: "linear-gradient(to top, #0a0a0a 0%, transparent 100%)",
+            background: "linear-gradient(to top, #000000 0%, transparent 100%)",
           }}
         />
       </div>
@@ -47,7 +47,7 @@ export default function Hero() {
         <div
           className="absolute inset-0"
           style={{
-            background: "rgba(10,10,10,0.75)",
+            background: "rgba(0,0,0,0.8)",
           }}
         />
       </div>
@@ -67,19 +67,24 @@ export default function Hero() {
           <div className="flex gap-4 flex-wrap">
             <button
               onClick={() => scrollTo("pledge")}
-              className="font-heading text-[13px] tracking-[2px] uppercase bg-red text-white px-10 py-4 border-none cursor-pointer font-bold hover:bg-red-light hover:translate-y-[-1px] transition-all"
+              className="btn-dystopian font-heading text-[13px] tracking-[2px] uppercase bg-red text-white px-10 py-4 border-none cursor-pointer font-bold"
+              style={{ borderRadius: 0 }}
             >
               Sign the Pledge
             </button>
             <Link
               href="/map"
-              className="font-heading text-[13px] tracking-[2px] uppercase bg-transparent text-white px-10 py-4 border border-white font-bold hover:bg-white/[0.08] transition-all no-underline hover:no-underline inline-flex items-center"
+              className="btn-ghost font-heading text-[13px] tracking-[2px] uppercase bg-transparent text-white px-10 py-4 border border-white font-bold no-underline hover:no-underline inline-flex items-center"
+              style={{ borderRadius: 0 }}
             >
               Explore the Map
             </Link>
           </div>
         </div>
       </div>
+
+      {/* Hard bottom border */}
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-border" />
     </div>
   );
 }
