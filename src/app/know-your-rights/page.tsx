@@ -1,5 +1,6 @@
 import Link from "next/link";
 import PrintButton from "@/components/PrintButton";
+import VideoEmbed from "@/components/VideoEmbed";
 
 export const metadata = {
   title: "Know Your Rights — Common Defense",
@@ -162,6 +163,72 @@ export default function KnowYourRightsPage() {
               <div className="font-heading text-[18px] text-red mt-2">{item.number}</div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ACLU KNOW YOUR RIGHTS VIDEOS */}
+      <section className="py-[60px] px-10 max-w-[1000px] mx-auto border-t border-border print:hidden">
+        <div className="font-heading text-[11px] tracking-[3px] uppercase text-red mb-3">
+          Watch
+        </div>
+        <h2 className="font-heading text-[36px] max-md:text-[24px] font-black text-white leading-[1.15] mb-4">
+          ACLU &ldquo;We Have Rights&rdquo; Videos
+        </h2>
+        <p className="text-[16px] text-light max-w-[700px] leading-[1.7] mb-8">
+          Created by the ACLU and Brooklyn Defender Services. Based on true stories. Narrated by Diane Guerrero, Kumail Nanjiani, Linda Sarsour, and others. Available in 7 languages.
+        </p>
+
+        <div className="grid grid-cols-2 max-md:grid-cols-1 gap-6">
+          <div>
+            <div className="font-heading text-[13px] font-bold text-white mb-3">
+              When ICE Is at Your Door
+            </div>
+            <VideoEmbed
+              src="https://www.youtube.com/embed/5ExgUmgEYf8"
+              title="ACLU: When ICE Is at Your Door (Spanish)"
+            />
+            <p className="text-[12px] text-muted mt-2">Spanish — Narrated by Diane Guerrero</p>
+          </div>
+          <div>
+            <div className="font-heading text-[13px] font-bold text-white mb-3">
+              When ICE Is Inside Your Home
+            </div>
+            <VideoEmbed
+              src="https://www.youtube.com/embed/qZhKv93wOfs"
+              title="ACLU: When ICE Is Inside Your Home (Spanish)"
+            />
+            <p className="text-[12px] text-muted mt-2">Spanish — Rights during search &amp; seizure</p>
+          </div>
+          <div>
+            <div className="font-heading text-[13px] font-bold text-white mb-3">
+              When ICE Stops You in the Community
+            </div>
+            <VideoEmbed
+              src="https://www.youtube.com/embed/jNBBJs0ZLs0"
+              title="ACLU: ICE in Our Communities (Spanish)"
+            />
+            <p className="text-[12px] text-muted mt-2">Spanish — In the street, at work, in court</p>
+          </div>
+          <div>
+            <div className="font-heading text-[13px] font-bold text-white mb-3">
+              If ICE Arrests You
+            </div>
+            <VideoEmbed
+              src="https://www.youtube.com/embed/tmgHjwZyX5A"
+              title="ACLU: If ICE Arrests Us (Spanish)"
+            />
+            <p className="text-[12px] text-muted mt-2">Spanish — What to do if arrested by ICE</p>
+          </div>
+        </div>
+
+        <div className="mt-8 bg-card border border-border p-6">
+          <div className="font-heading text-[12px] text-muted tracking-[1px] mb-2">
+            AVAILABLE IN 7 LANGUAGES
+          </div>
+          <p className="text-[14px] text-light leading-[1.7]">
+            All videos are available in English, Spanish, French, Urdu, Arabic, Haitian Creole, Russian, and Mandarin.
+            Visit <a href="https://www.aclu.org/we-have-rights" target="_blank" rel="noopener noreferrer" className="text-red hover:underline">aclu.org/we-have-rights</a> for the full series.
+          </p>
         </div>
       </section>
 

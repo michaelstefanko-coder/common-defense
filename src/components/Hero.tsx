@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 export default function Hero() {
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
@@ -31,12 +33,12 @@ export default function Hero() {
           >
             Sign the Pledge
           </button>
-          <button
-            onClick={() => scrollTo("about")}
-            className="font-heading text-[13px] tracking-[2px] uppercase bg-transparent text-white px-10 py-4 border border-white cursor-pointer font-bold hover:bg-white/[0.08] transition-all"
+          <Link
+            href="/"
+            className="font-heading text-[13px] tracking-[2px] uppercase bg-transparent text-white px-10 py-4 border border-white font-bold hover:bg-white/[0.08] transition-all no-underline hover:no-underline inline-flex items-center"
           >
-            Read the Mission
-          </button>
+            View the Map
+          </Link>
         </div>
       </div>
     </div>

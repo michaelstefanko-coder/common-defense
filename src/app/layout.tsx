@@ -5,11 +5,11 @@ import Footer from "@/components/Footer";
 import ClientProviders from "@/components/ClientProviders";
 
 export const metadata: Metadata = {
-  title: "Common Defense",
-  description: "A platform for organized, nonviolent resistance to the capture of American democracy.",
+  title: "Common Defense — Strategic Infrastructure & Economic Leverage",
+  description: "Provide for the common defence. Strategic infrastructure mapping, organized resistance, and civic defense of American democracy.",
   openGraph: {
     title: "Common Defense",
-    description: "Provide for the common defence. A platform for organized, nonviolent resistance.",
+    description: "Provide for the common defence. Strategic infrastructure mapping and organized civic resistance.",
     type: "website",
   },
 };

@@ -5,12 +5,13 @@ import Link from "next/link";
 import { useScrollBorder } from "@/hooks/useScrollBorder";
 
 const navLinks = [
-  { href: "/#about", label: "The Situation" },
+  { href: "/", label: "The Map", highlight: true },
+  { href: "/mission", label: "The Mission" },
+  { href: "/news", label: "News" },
+  { href: "/ice-operations", label: "ICE Exposé" },
   { href: "/citizens-united", label: "Citizens United" },
-  { href: "/map", label: "The Map", highlight: true },
-  { href: "/#strike", label: "Organize" },
   { href: "/resist", label: "Resist" },
-  { href: "/#aid", label: "Mutual Aid" },
+  { href: "/know-your-rights", label: "Know Your Rights" },
 ];
 
 export default function NavBar() {
@@ -26,10 +27,9 @@ export default function NavBar() {
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
-  const scrollToPledge = () => {
+  const goToPledge = () => {
     setMobileOpen(false);
-    const el = document.getElementById("pledge");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    window.location.href = "/mission#pledge";
   };
 
   return (
@@ -62,7 +62,7 @@ export default function NavBar() {
 
         <div className="flex items-center gap-3">
           <button
-            onClick={scrollToPledge}
+            onClick={goToPledge}
             className="font-heading text-[12px] tracking-[2px] uppercase bg-red text-white px-6 py-2.5 border-none cursor-pointer font-bold hover:bg-red-dim transition-colors max-md:hidden"
           >
             Sign the Pledge
@@ -102,7 +102,7 @@ export default function NavBar() {
           </div>
           <div className="p-6 mt-auto">
             <button
-              onClick={scrollToPledge}
+              onClick={goToPledge}
               className="font-heading text-[13px] tracking-[2px] uppercase bg-red text-white px-10 py-4 border-none cursor-pointer font-bold hover:bg-red-light transition-all w-full"
             >
               Sign the Pledge

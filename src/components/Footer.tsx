@@ -11,31 +11,37 @@ export default function Footer() {
       </div>
 
       <div className="mt-6 flex justify-center gap-6 flex-wrap">
-        <Link href="/#pledge" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
-          Pledge
+        <Link href="/" className="font-heading text-[11px] tracking-[2px] uppercase text-red-light no-underline hover:text-white hover:no-underline font-bold">
+          The Map
         </Link>
-        <Link href="/#aid" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
-          Mutual Aid
+        <Link href="/mission" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
+          Mission
         </Link>
-        <Link href="/#vote" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
-          Organizers
+        <Link href="/news" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
+          News
         </Link>
-        <Link href="/resist" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
-          Resistance
+        <Link href="/ice-operations" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
+          ICE Exposé
         </Link>
         <Link href="/citizens-united" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
           Citizens United
         </Link>
-        <Link href="/ice-operations" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
-          ICE Operations
+        <Link href="/resist" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
+          Resistance
         </Link>
         <Link href="/know-your-rights" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
           Know Your Rights
         </Link>
-        <Link href="/#foia" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
+        <Link href="/mission#pledge" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
+          Pledge
+        </Link>
+        <Link href="/mission#aid" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
+          Mutual Aid
+        </Link>
+        <Link href="/mission#foia" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
           FOIA Tool
         </Link>
-        <Link href="/#optout" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
+        <Link href="/mission#optout" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
           Data Opt-Out
         </Link>
       </div>

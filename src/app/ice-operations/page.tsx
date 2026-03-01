@@ -44,10 +44,10 @@ export default function IceOperationsPage() {
           ICE Operations Exposé
         </h1>
         <p className="text-[20px] text-light max-w-[700px] leading-[1.7]">
-          The warehouse detention machine. White supremacist policy. And three deaths in Minneapolis.
+          The warehouse detention machine. White supremacist signaling from federal agencies. Two civilians shot dead by federal agents in American streets. A five-year-old seized on a suburban driveway. This is the evidence.
         </p>
         <p className="text-[13px] text-muted mt-4 font-heading tracking-[1px]">
-          Updated January 28, 2026 &nbsp;|&nbsp; 12 sources &nbsp;|&nbsp; 4 embedded videos
+          Updated March 2026 &nbsp;|&nbsp; 25+ sources &nbsp;|&nbsp; Video evidence from 6 outlets
         </p>
       </section>
 
@@ -373,7 +373,7 @@ export default function IceOperationsPage() {
       <div className="bg-dark border-t border-b border-border py-20 px-10 text-center">
         <div className="flex gap-4 justify-center flex-wrap">
           <Link
-            href="/#pledge"
+            href="/mission#pledge"
             className="font-heading text-[13px] tracking-[2px] uppercase bg-red text-white px-10 py-4 border-none font-bold hover:bg-red-light transition-all no-underline hover:no-underline inline-block"
           >
             Sign the Resistance Pledge

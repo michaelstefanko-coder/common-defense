@@ -434,7 +434,7 @@ export default function ResistPage() {
             <div className="font-heading text-[14px] font-bold text-white mb-2">I want to lead</div>
             <p className="text-[13px] text-muted mb-4">Coordinator application, leadership training, launch team in your region.</p>
             <Link
-              href="/#pledge"
+              href="/mission#pledge"
               className="font-heading text-[11px] tracking-[1px] uppercase py-2.5 px-5 bg-transparent border border-border text-light cursor-pointer hover:border-red hover:text-white transition-all w-full block no-underline hover:no-underline text-center"
             >
               Apply
