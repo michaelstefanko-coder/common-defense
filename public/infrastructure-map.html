@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COMMON DEFENSE — Strategic Infrastructure Map</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=JetBrains+Mono:wght@400;500;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#050709;--panel:rgba(6,8,12,0.96);--glass:rgba(12,15,22,0.88);
+--border:rgba(255,255,255,0.04);--border2:rgba(255,255,255,0.08);
+--air:#5b8def;--sea:#e8803a;--rail:#2dd4a0;--oil:#f0c040;--space:#a78bfa;
+--border-c:#fb7185;--choke:#ffffff;
+--red:#ef4444;--green:#2dd4a0;--text:#bfc5d2;--mute:#4e5666;--dim:#2c313c;
+--font:'DM Sans',system-ui,-apple-system,sans-serif;
+--mono:'JetBrains Mono','SF Mono',monospace;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hidden}
+#map{width:100%;height:100vh;background:#050709}
+
+.hdr{position:fixed;top:0;left:0;right:0;z-index:1002;background:var(--panel);border-bottom:1px solid var(--border);padding:0 24px;height:44px;display:flex;align-items:center;gap:16px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark svg{width:28px;height:28px}
+.logo-text{font-size:13px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:#fff}
+.logo-sub{font-size:10px;font-weight:400;color:var(--mute);letter-spacing:0.3px;margin-left:4px}
+.hdr-r{margin-left:auto;display:flex;align-items:center;gap:12px}
+.hdr-stat{font-family:var(--mono);font-size:10px;color:var(--mute)}
+.hdr-link{font-size:9px;color:var(--dim);text-decoration:none;border:1px solid var(--border);padding:3px 8px;border-radius:3px}
+.hdr-link:hover{color:var(--text);border-color:var(--border2)}
+
+.tb{position:fixed;top:44px;left:0;right:0;z-index:1001;background:var(--glass);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:6px 20px;display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.tb-lbl{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-right:2px;font-weight:600}
+.tb-sep{width:1px;height:20px;background:var(--border);margin:0 6px}
+.btn{background:transparent;border:1px solid var(--border);color:var(--mute);padding:4px 10px;border-radius:4px;cursor:pointer;font-size:10px;font-family:var(--font);font-weight:500;transition:all .15s;white-space:nowrap}
+.btn:hover{background:rgba(255,255,255,0.03);color:var(--text);border-color:var(--border2)}
+.btn.on{color:#fff;border-color:rgba(255,255,255,0.12)}
+.btn.on.t-air{background:rgba(91,141,239,.08);border-color:rgba(91,141,239,.25)}
+.btn.on.t-sea{background:rgba(232,128,58,.08);border-color:rgba(232,128,58,.25)}
+.btn.on.t-rail{background:rgba(45,212,160,.08);border-color:rgba(45,212,160,.25)}
+.btn.on.t-oil{background:rgba(240,192,64,.08);border-color:rgba(240,192,64,.25)}
+.btn.on.t-space{background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.25)}
+.btn.on.t-bdr{background:rgba(251,113,133,.06);border-color:rgba(251,113,133,.2)}
+.btn.on.t-chk{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.12)}
+.btn.on.t-union{background:rgba(236,72,153,.06);border-color:rgba(236,72,153,.2);color:#ec4899}
+.btn.on.t-filt{background:rgba(240,192,64,.06);border-color:rgba(240,192,64,.2);color:#f0c040}
+.btn-plan{background:rgba(239,68,68,.06)!important;border:1.5px solid rgba(239,68,68,.2)!important;color:#ef4444!important;font-weight:700;letter-spacing:0.5px;padding:4px 14px}
+.btn-plan.on{background:rgba(239,68,68,.15)!important;border-color:rgba(239,68,68,.5)!important;box-shadow:0 0 24px rgba(239,68,68,.12)}
+
+.pnl{position:fixed;z-index:999;background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+.pnl h4{font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-bottom:10px;font-weight:700}
+
+.leg{bottom:16px;left:14px;width:175px}
+.leg-row{display:flex;align-items:center;gap:7px;margin-bottom:4px}
+.leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.leg-txt{font-size:10px;color:var(--mute)}
+.leg-n{margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--dim)}
+
+.rpnl{bottom:16px;right:14px;width:305px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.04) transparent}
+.rpnl::-webkit-scrollbar{width:3px}
+.rpnl::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.06);border-radius:2px}
+
+.divider{margin:10px 0;border-top:1px solid var(--border)}
+
+.ticker{border-radius:6px;padding:12px 14px;margin-bottom:8px}
+.ticker-lbl{font-size:7.5px;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;margin-bottom:6px}
+.ticker-num{font-family:var(--mono);font-size:28px;font-weight:700;line-height:1;letter-spacing:-1px}
+.ticker-sub{font-size:9px;color:var(--mute);margin-top:4px;line-height:1.4}
+.ticker-rate{font-family:var(--mono);font-size:8px;color:var(--dim);margin-top:2px}
+.tick-red{background:linear-gradient(135deg,rgba(239,68,68,0.05),rgba(239,68,68,0.01));border:1px solid rgba(239,68,68,0.08)}
+.tick-red .ticker-lbl{color:var(--red)}.tick-red .ticker-num{color:var(--red)}
+.tick-green{background:linear-gradient(135deg,rgba(45,212,160,0.05),rgba(45,212,160,0.01));border:1px solid rgba(45,212,160,0.08)}
+.tick-green .ticker-lbl{color:var(--green)}.tick-green .ticker-num{color:var(--green)}
+
+.imp-row{display:flex;justify-content:space-between;align-items:center;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.02)}
+.imp-evt{font-size:10px;color:var(--text)}
+.imp-cost{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--red)}
+.imp-link{font-size:8px;color:var(--dim);text-decoration:none;margin-left:4px}.imp-link:hover{color:var(--mute)}
+
+.tl-row{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.02)}
+.tl-day{font-family:var(--mono);font-size:9px;color:var(--mute);width:42px;flex-shrink:0;font-weight:600}
+.tl-bar{flex:1;height:14px;background:rgba(255,255,255,0.02);border-radius:3px;overflow:hidden}
+.tl-fill{height:100%;border-radius:3px;display:flex;align-items:center;padding-left:6px;font-family:var(--mono);font-size:8px;font-weight:700;color:#fff}
+.tl-note{font-size:8px;color:var(--mute);padding:1px 0 4px 50px;border-bottom:1px solid rgba(255,255,255,0.02)}
+
+.cmp-lbl{font-size:9px;color:var(--mute);margin-bottom:2px}
+.cmp-bar{height:14px;background:rgba(255,255,255,0.015);border-radius:3px;overflow:hidden;margin-bottom:6px}
+.cmp-fill{height:100%;border-radius:3px;display:flex;align-items:center;padding-left:6px;font-family:var(--mono);font-size:8px;font-weight:600;color:#fff}
+
+.callout{background:linear-gradient(135deg,rgba(239,68,68,0.06),rgba(239,68,68,0.02));border:1px solid rgba(239,68,68,0.1);border-radius:6px;padding:10px 12px;font-size:10px;color:var(--text);line-height:1.6}
+.callout strong{color:#fff}
+
+/* Plan bar */
+.plan-bar{position:fixed;bottom:0;left:0;right:0;z-index:1002;background:rgba(6,8,12,0.97);backdrop-filter:blur(24px);border-top:1px solid rgba(239,68,68,0.15);padding:10px 24px;display:none;align-items:center;gap:16px}
+.plan-bar.show{display:flex}
+.pb-title{font-size:11px;font-weight:700;color:var(--red);letter-spacing:1px;text-transform:uppercase;white-space:nowrap}
+.pb-sep{width:1px;height:32px;background:rgba(255,255,255,0.06)}
+.pb-group{display:flex;flex-direction:column;gap:1px}
+.pb-label{font-size:8px;color:var(--mute);letter-spacing:1px;text-transform:uppercase}
+.pb-stat{font-family:var(--mono);font-size:16px;font-weight:700;color:#fff;white-space:nowrap}
+.pb-ticker{font-family:var(--mono);font-size:20px;font-weight:700;color:var(--red)}
+
+/* Pulsing plan rings — FIXED centering */
+@keyframes pulse-ring{0%{opacity:.5;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(2.5)}}
+.sr-wrap{position:relative;width:36px;height:36px}
+.sr-dot{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 10px rgba(239,68,68,.6);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2}
+.sr-ring{width:28px;height:28px;border-radius:50%;border:2px solid var(--red);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0;animation:pulse-ring 2s ease-out infinite}
+.sr-ring2{animation-delay:1s}
+
+/* Popups & tooltips */
+.leaflet-popup-content-wrapper{background:var(--panel)!important;color:var(--text)!important;border:1px solid var(--border2)!important;border-radius:8px!important;box-shadow:0 20px 60px rgba(0,0,0,0.8)!important}
+.leaflet-popup-tip{background:var(--panel)!important}
+.leaflet-popup-content{margin:10px 14px!important;font-family:var(--font)!important;line-height:1.4!important}
+.leaflet-tooltip{background:rgba(6,8,12,0.95)!important;color:#fff!important;border:1px solid rgba(239,68,68,0.2)!important;border-radius:4px!important;padding:4px 8px!important;font-family:var(--font)!important;font-size:10px!important;font-weight:600!important;box-shadow:0 8px 24px rgba(0,0,0,0.6)!important}
+.leaflet-tooltip-top:before{border-top-color:rgba(6,8,12,0.95)!important}
+.pn{font-size:12px;font-weight:700;color:#fff;margin-bottom:2px}
+.pl{font-size:9px;color:var(--dim);margin-bottom:5px}
+.ps{font-size:10px;color:var(--mute);margin-bottom:2px}
+.ps b{color:#fff;font-family:var(--mono)}
+.pp{font-family:var(--mono);font-size:16px;font-weight:700;margin-top:4px}
+.pu{margin-top:4px;padding-top:4px;border-top:1px solid var(--border)}
+.pu-tag{display:inline-block;font-size:8px;font-weight:600;padding:2px 6px;border-radius:3px;margin:1px 2px 1px 0}
+.pk{margin-top:3px;font-size:9px;color:var(--red);font-weight:500}
+
+.leaflet-control-zoom{border:1px solid var(--border)!important}
+.leaflet-control-zoom a{background:var(--panel)!important;color:var(--mute)!important;border-color:var(--border)!important}
+.leaflet-control-zoom a:hover{background:rgba(20,24,32,0.95)!important;color:#fff!important}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 28 28" fill="none"><path d="M14 2L4 8v12l10 6 10-6V8L14 2z" stroke="#ef4444" stroke-width="1.5" fill="rgba(239,68,68,0.06)"/><path d="M14 6l-6 3.5v7L14 20l6-3.5v-7L14 6z" stroke="#ef4444" stroke-width="1" fill="rgba(239,68,68,0.03)"/><circle cx="14" cy="13" r="2" fill="#ef4444"/></svg></div>
+    <span class="logo-text">Common Defense</span>
+  </div>
+  <span class="logo-sub">Strategic Infrastructure &amp; Economic Leverage</span>
+  <div class="hdr-r">
+    <span class="hdr-stat"><span id="ttl">0</span> nodes mapped</span>
+    <a class="hdr-link" href="/methodology.html" target="_blank">Methodology &amp; Sources</a>
+  </div>
+</div>
+
+<div class="tb" id="toolbar">
+  <span class="tb-lbl">Layers</span>
+  <button class="btn on t-air" onclick="tgl('air')" id="b-air">Airports</button>
+  <button class="btn on t-sea" onclick="tgl('sea')" id="b-sea">Seaports</button>
+  <button class="btn on t-rail" onclick="tgl('rail')" id="b-rail">Rail</button>
+  <button class="btn on t-oil" onclick="tgl('oil')" id="b-oil">Oil &amp; Gas</button>
+  <button class="btn on t-space" onclick="tgl('space')" id="b-space">Space</button>
+  <button class="btn on t-bdr" onclick="tgl('border')" id="b-border">Borders</button>
+  <button class="btn on t-chk" onclick="tgl('choke')" id="b-choke">Chokepoints</button>
+  <span class="tb-sep"></span>
+  <span class="tb-lbl">View</span>
+  <button class="btn t-filt" onclick="filt80()" id="b-80">Top 80%</button>
+  <button class="btn on" onclick="filtAll()" id="b-all">All</button>
+  <button class="btn t-union" onclick="tglUnion()" id="b-union">Unions</button>
+  <span class="tb-sep"></span>
+  <button class="btn btn-plan" onclick="tglPlan()" id="b-plan">&#9670; OUR PLAN</button>
+</div>
+
+<div id="map"></div>
+
+<!-- LEGEND -->
+<div class="pnl leg" id="legend-panel">
+  <h4>Infrastructure</h4>
+  <div class="leg-row"><div class="leg-dot" style="background:var(--air)"></div><span class="leg-txt">Cargo Airports</span><span class="leg-n" id="n-air">0</span></div>
+  <div class="leg-row"><div class="leg-dot" style="background:var(--sea)"></div><span class="leg-txt">Seaports</span><span class="leg-n" id="n-sea">0</span></div>
+  <div class="leg-row"><div class="leg-dot" style="background:var(--rail)"></div><span class="leg-txt">Rail Hubs</span><span class="leg-n" id="n-rail">0</span></div>
+  <div class="leg-row"><div class="leg-dot" style="background:var(--oil)"></div><span class="leg-txt">Oil &amp; Gas</span><span class="leg-n" id="n-oil">0</span></div>
+  <div class="leg-row"><div class="leg-dot" style="background:var(--space)"></div><span class="leg-txt">Spaceports</span><span class="leg-n" id="n-space">0</span></div>
+  <div class="leg-row"><div class="leg-dot" style="background:var(--border-c)"></div><span class="leg-txt">Border Crossings</span><span class="leg-n" id="n-bdr">0</span></div>
+  <div class="leg-row"><div class="leg-dot" style="background:#fff"></div><span class="leg-txt">Chokepoints</span><span class="leg-n" id="n-chk">4</span></div>
+  <div style="margin-top:6px;font-size:8px;color:var(--dim);line-height:1.4">
+    <span style="color:var(--mute)">US + Canada + Mexico</span><br>Circle = relative volume
+  </div>
+</div>
+
+<!-- PLAN BAR -->
+<div class="plan-bar" id="plan-bar">
+  <div class="pb-title">&#9670; Strike Active</div>
+  <div class="pb-sep"></div>
+  <div class="pb-group"><div class="pb-label">Targets</div><div class="pb-stat">38 facilities &middot; 5 unions &middot; 3 nations</div></div>
+  <div class="pb-sep"></div>
+  <div class="pb-group"><div class="pb-label">Commerce Halted</div><div class="pb-ticker" id="strike-tick">$0</div></div>
+  <div class="pb-sep"></div>
+  <div class="pb-group"><div class="pb-label">Billionaires Gained</div><div style="font-family:var(--mono);font-size:14px;font-weight:700;color:var(--mute)" id="wealth-tick-plan">$0</div></div>
+  <div class="pb-sep"></div>
+  <div class="pb-group"><div class="pb-label">Musk Post-Crash</div><div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--green)">$726B &rarr; $363&ndash;472B</div></div>
+</div>
+
+<!-- RIGHT PANEL — redesigned for mission -->
+<div class="pnl rpnl" id="rpanel">
+  <!-- Dual tickers up top — the hook -->
+  <div class="ticker tick-green">
+    <div class="ticker-lbl">Commerce We Halt Per Second <a href="methodology.html#daily-trade" target="_blank" class="imp-link">&#8599;</a></div>
+    <div class="ticker-num" id="strike-rate">$170,139</div>
+    <div class="ticker-rate">$170,139/sec &middot; $14.7B/day &middot; $5.4T/year</div>
+  </div>
+  <div class="ticker tick-red">
+    <div class="ticker-lbl">Billionaire Wealth Gained <a href="methodology.html#billionaire-wealth" target="_blank" class="imp-link">&#8599;</a></div>
+    <div class="ticker-num" id="tick">$0</div>
+    <div class="ticker-sub">gained since you opened this page</div>
+    <div class="ticker-rate">$79,282/sec &middot; $6.85B/day &middot; 935 people</div>
+  </div>
+
+  <div class="divider"></div>
+  <h4>What 30 Days Looks Like <a href="methodology.html#multiplier" target="_blank" class="imp-link">methodology &#8599;</a></h4>
+  <div class="tl-row"><span class="tl-day">Day 1</span><div class="tl-bar"><div class="tl-fill" style="width:3%;background:linear-gradient(90deg,var(--red),#f87171)">$14.7B</div></div></div>
+  <div class="tl-note">All ports, rail, refineries halt. Ships anchor offshore.</div>
+  <div class="tl-row"><span class="tl-day">Day 7</span><div class="tl-bar"><div class="tl-fill" style="width:14%;background:linear-gradient(90deg,var(--red),#f87171)">$200B+</div></div></div>
+  <div class="tl-note">Fuel rationing. Grocery shelves thin. Markets -5 to -15%.</div>
+  <div class="tl-row"><span class="tl-day">Day 14</span><div class="tl-bar"><div class="tl-fill" style="width:33%;background:linear-gradient(90deg,var(--red),#f87171)">$500B+</div></div></div>
+  <div class="tl-note">Manufacturing halts nationwide. Markets -15 to -30%.</div>
+  <div class="tl-row"><span class="tl-day">Day 30</span><div class="tl-bar"><div class="tl-fill" style="width:100%;background:linear-gradient(90deg,var(--red),#f87171)">$1.5&ndash;3T</div></div></div>
+  <div class="tl-note">COVID-scale crisis. Government must negotiate.</div>
+
+  <div class="divider"></div>
+  <h4>Daily Disruption <a href="methodology.html#port-impact" target="_blank" class="imp-link">sources &#8599;</a></h4>
+  <div class="imp-row"><span class="imp-evt">Ports <a href="methodology.html#port-impact" target="_blank" class="imp-link">&#8599;</a></span><span class="imp-cost">$7.5B</span></div>
+  <div class="imp-row"><span class="imp-evt">Refineries <a href="methodology.html#refinery-impact" target="_blank" class="imp-link">&#8599;</a></span><span class="imp-cost">$2.3B</span></div>
+  <div class="imp-row"><span class="imp-evt">Freight Rail <a href="methodology.html#rail-impact" target="_blank" class="imp-link">&#8599;</a></span><span class="imp-cost">$2.0B</span></div>
+  <div class="imp-row"><span class="imp-evt">Border Crossings <a href="methodology.html#border-impact" target="_blank" class="imp-link">&#8599;</a></span><span class="imp-cost">$1.4B</span></div>
+  <div class="imp-row"><span class="imp-evt">Air Cargo</span><span class="imp-cost">$0.5B</span></div>
+  <div class="imp-row" style="border:none;padding-top:6px"><span class="imp-evt" style="color:#fff;font-weight:700">Direct Daily Total</span><span class="imp-cost" style="font-size:13px">$13.7B</span></div>
+
+  <div class="divider"></div>
+  <h4>Post-Strike Crash <a href="methodology.html#post-strike-crash" target="_blank" class="imp-link">methodology &#8599;</a></h4>
+  <div style="font-size:9.5px;color:var(--mute);line-height:1.5;margin-bottom:6px">~80% of billionaire wealth is equities. A 30-day shutdown triggers a <strong style="color:#fff">COVID-scale crash</strong>:</div>
+  <div class="cmp-lbl">Total billionaire wealth today</div>
+  <div class="cmp-bar"><div class="cmp-fill" style="width:100%;background:linear-gradient(90deg,#f59e0b55,#fbbf2455)">$8.2T</div></div>
+  <div class="cmp-lbl">After 35% crash</div>
+  <div class="cmp-bar"><div class="cmp-fill" style="width:65%;background:linear-gradient(90deg,#2dd4a055,#2dd4a033)">$5.3T (&minus;$2.9T)</div></div>
+  <div class="cmp-lbl">After 50% crash</div>
+  <div class="cmp-bar"><div class="cmp-fill" style="width:48%;background:linear-gradient(90deg,#2dd4a088,#2dd4a055)">$3.9T (&minus;$4.3T)</div></div>
+  <div style="margin-top:6px;font-size:9.5px;color:var(--mute);line-height:1.5">
+    <strong style="color:#fff">Musk ($726B)</strong> &rarr; <span style="color:var(--green);font-family:var(--mono);font-weight:700">$363&ndash;472B</span><br>
+    <strong style="color:#fff">Top 10 ($3.3T)</strong> &rarr; <span style="color:var(--green);font-family:var(--mono);font-weight:700">$1.6&ndash;2.1T</span>
+  </div>
+
+  <div class="divider"></div>
+  <div class="callout">
+    The economy doesn't run on their wealth. <strong>It runs on our labor.</strong><br><br>
+    Every union named here has struck or threatened to strike within the last 3 years. The infrastructure is already organized. The leverage already exists.<br><br>
+    <strong>We don't need their permission. We need each other.</strong>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+var D={};
+
+// ===== AIRPORTS (US + CA) =====
+D.air=[
+{n:"Memphis Intl",c:"MEM",co:"US",la:35.04,lo:-89.98,p:15.3,u:["ALPA","Teamsters"],k:"FedEx hub",mt:4.8},
+{n:"Anchorage Intl",c:"ANC",co:"US",la:61.17,lo:-150.0,p:15.1,u:["IAM","Teamsters"],k:"Great circle refuel",mt:4.7},
+{n:"Louisville Intl",c:"SDF",co:"US",la:38.17,lo:-85.74,p:12.9,u:["Teamsters L89"],k:"UPS Worldport",mt:4.0},
+{n:"Miami Intl",c:"MIA",co:"US",la:25.80,lo:-80.28,p:12.4,u:["IAM","Teamsters"],k:"",mt:3.9},
+{n:"Los Angeles Intl",c:"LAX",co:"US",la:33.94,lo:-118.41,p:9.8,u:["IAM","Teamsters"],k:"",mt:3.1},
+{n:"Chicago O'Hare",c:"ORD",co:"US",la:41.98,lo:-87.91,p:8.5,u:["IAM","Teamsters"],k:"",mt:2.7},
+{n:"JFK Intl",c:"JFK",co:"US",la:40.64,lo:-73.78,p:6.4,u:["IAM","Teamsters"],k:"",mt:2.0},
+{n:"CVG Intl",c:"CVG",co:"US",la:39.05,lo:-84.66,p:6.5,u:["Teamsters"],k:"Amazon Air hub",mt:2.0},
+{n:"Indianapolis Intl",c:"IND",co:"US",la:39.72,lo:-86.29,p:5.3,u:["Teamsters"],k:"FedEx Ground",mt:1.7},
+{n:"Toronto Pearson",c:"YYZ",co:"CA",la:43.68,lo:-79.63,p:0,u:[],k:"441K tonnes — Canada #1",mt:0.44},
+{n:"Ontario Intl",c:"ONT",co:"US",la:34.06,lo:-117.60,p:3.0,u:[],k:"",mt:0.9},
+{n:"DFW Intl",c:"DFW",co:"US",la:32.90,lo:-97.04,p:3.3,u:[],k:"",mt:1.0},
+{n:"Newark Liberty",c:"EWR",co:"US",la:40.69,lo:-74.17,p:2.5,u:[],k:"",mt:0.8},
+{n:"SFO Intl",c:"SFO",co:"US",la:37.62,lo:-122.38,p:2.3,u:[],k:"",mt:0.7},
+{n:"Houston IAH",c:"IAH",co:"US",la:29.98,lo:-95.34,p:2.3,u:[],k:"",mt:0.7},
+{n:"Atlanta Intl",c:"ATL",co:"US",la:33.64,lo:-84.43,p:2.2,u:[],k:"",mt:0.7},
+{n:"Vancouver YVR",c:"YVR",co:"CA",la:49.19,lo:-123.18,p:0,u:[],k:"339K tonnes — record 2024",mt:0.34},
+{n:"SeaTac Intl",c:"SEA",co:"US",la:47.45,lo:-122.31,p:1.7,u:[],k:"",mt:0.5},
+{n:"Denver Intl",c:"DEN",co:"US",la:39.86,lo:-104.67,p:1.4,u:[],k:"",mt:0.4},
+{n:"Phoenix",c:"PHX",co:"US",la:33.44,lo:-112.01,p:1.4,u:[],k:"",mt:0.4},
+{n:"Rockford Intl",c:"RFD",co:"US",la:42.20,lo:-89.10,p:1.3,u:[],k:"",mt:0.4},
+{n:"Montreal YUL",c:"YUL",co:"CA",la:45.47,lo:-73.75,p:0,u:[],k:"158K tonnes — 20% growth 2024",mt:0.16},
+{n:"Philadelphia",c:"PHL",co:"US",la:39.87,lo:-75.24,p:1.1,u:[],k:"",mt:0.3},
+{n:"Oakland",c:"OAK",co:"US",la:37.72,lo:-122.22,p:1.1,u:[],k:"",mt:0.3},
+{n:"Portland",c:"PDX",co:"US",la:45.59,lo:-122.60,p:.8,u:[],k:"",mt:0.2},
+{n:"Honolulu",c:"HNL",co:"US",la:21.32,lo:-157.93,p:1.0,u:[],k:"",mt:0.3},
+{n:"Dulles",c:"IAD",co:"US",la:38.94,lo:-77.46,p:.9,u:[],k:"",mt:0.3},
+{n:"MSP",c:"MSP",co:"US",la:44.88,lo:-93.22,p:.8,u:[],k:"",mt:0.2},
+{n:"Alliance",c:"AFW",co:"US",la:32.99,lo:-97.32,p:.8,u:[],k:"",mt:0.2},
+{n:"Wilmington",c:"ILN",co:"US",la:39.43,lo:-83.79,p:.7,u:[],k:"",mt:0.2},
+{n:"San Juan",c:"SJU",co:"US",la:18.44,lo:-66.00,p:.7,u:[],k:"",mt:0.2},
+{n:"Boston Logan",c:"BOS",co:"US",la:42.37,lo:-71.01,p:.6,u:[],k:"",mt:0.2},
+{n:"Detroit Metro",c:"DTW",co:"US",la:42.21,lo:-83.35,p:.6,u:[],k:"",mt:0.2},
+{n:"Salt Lake City",c:"SLC",co:"US",la:40.79,lo:-111.98,p:.6,u:[],k:"",mt:0.2},
+{n:"San Diego",c:"SAN",co:"US",la:32.73,lo:-117.19,p:.5,u:[],k:"",mt:0.2},
+{n:"Charlotte",c:"CLT",co:"US",la:35.21,lo:-80.95,p:.5,u:[],k:"",mt:0.2},
+{n:"Orlando",c:"MCO",co:"US",la:28.43,lo:-81.31,p:.5,u:[],k:"",mt:0.2},
+{n:"Kansas City",c:"MCI",co:"US",la:39.30,lo:-94.71,p:.4,u:[],k:"",mt:0.1},
+{n:"Tampa",c:"TPA",co:"US",la:27.98,lo:-82.53,p:.4,u:[],k:"",mt:0.1},
+{n:"Nashville",c:"BNA",co:"US",la:36.13,lo:-86.68,p:.4,u:[],k:"",mt:0.1},
+{n:"St. Louis",c:"STL",co:"US",la:38.75,lo:-90.36,p:.4,u:[],k:"",mt:0.1},
+{n:"Pittsburgh",c:"PIT",co:"US",la:40.49,lo:-80.23,p:.4,u:[],k:"",mt:0.1},
+{n:"Rickenbacker",c:"LCK",co:"US",la:39.81,lo:-82.93,p:.3,u:[],k:"",mt:0.1},
+{n:"El Paso",c:"ELP",co:"US",la:31.81,lo:-106.38,p:.3,u:[],k:"",mt:0.1},
+{n:"BWI",c:"BWI",co:"US",la:39.18,lo:-76.67,p:.3,u:[],k:"",mt:0.1},
+{n:"Laredo Air",c:"LRD",co:"US",la:27.54,lo:-99.46,p:.3,u:[],k:"",mt:0.1},
+{n:"New Orleans",c:"MSY",co:"US",la:29.99,lo:-90.26,p:.3,u:[],k:"",mt:0.1}
+];
+
+// ===== SEAPORTS (US + CA + MX) =====
+D.sea=[
+{n:"Port of Houston",co:"US",la:29.61,lo:-95.02,mt:275,un:"ILA",w:5000,k:"ILA strike Oct 2024"},
+{n:"Port of South Louisiana",co:"US",la:30.19,lo:-90.62,mt:224,un:"ILA",w:3200,k:""},
+{n:"Port of Corpus Christi",co:"US",la:27.80,lo:-97.40,mt:183,un:"ILA",w:1800,k:""},
+{n:"Port of Vancouver",co:"CA",la:49.28,lo:-123.12,mt:158,un:"ILWU Canada",w:7400,k:"3.47M TEU; ILWU struck 13 days Jul 2023"},
+{n:"Port of Beaumont",co:"US",la:30.08,lo:-94.12,mt:139,un:"ILA",w:1200,k:""},
+{n:"Port of NY/NJ",co:"US",la:40.68,lo:-74.15,mt:133,un:"ILA",w:12000,k:"ILA strike Oct 2024"},
+{n:"Port of Long Beach",co:"US",la:33.74,lo:-118.19,mt:129,un:"ILWU",w:7500,k:"ILWU slowdowns Jun 2023"},
+{n:"Port of Los Angeles",co:"US",la:33.74,lo:-118.27,mt:127,un:"ILWU",w:8000,k:"ILWU slowdowns Jun 2023"},
+{n:"Port of Baton Rouge",co:"US",la:30.45,lo:-91.19,mt:119,un:"ILA",w:800,k:""},
+{n:"Port of Huntington",co:"US",la:38.43,lo:-82.44,mt:97,un:"—",w:0,k:"Inland"},
+{n:"Port of Lake Charles",co:"US",la:30.21,lo:-93.22,mt:85,un:"ILA",w:600,k:""},
+{n:"Port of Mobile",co:"US",la:30.71,lo:-88.04,mt:65,un:"ILA",w:900,k:""},
+{n:"Port of Baltimore",co:"US",la:39.28,lo:-76.59,mt:46,un:"ILA",w:2300,k:"Key Bridge collapse Mar 2024"},
+{n:"Port of Tampa Bay",co:"US",la:27.95,lo:-82.45,mt:42,un:"ILA",w:700,k:""},
+{n:"Port of Montreal",co:"CA",la:45.42,lo:-73.54,mt:35.3,un:"ILA Canada",w:2000,k:"1.46M TEU"},
+{n:"Port of Manzanillo",co:"MX",la:19.04,lo:-104.32,mt:33.6,un:"—",w:0,k:"Mexico #1 — 3.92M TEU; 66% of MX imports"},
+{n:"Port of Savannah",co:"US",la:32.09,lo:-81.10,mt:36,un:"ILA",w:3000,k:"ILA strike Oct 2024"},
+{n:"Port of Philadelphia",co:"US",la:39.94,lo:-75.14,mt:34,un:"ILA",w:1500,k:""},
+{n:"Port of Norfolk",co:"US",la:36.90,lo:-76.35,mt:32,un:"ILA",w:2000,k:""},
+{n:"Port of Saint John",co:"CA",la:45.28,lo:-66.09,mt:28,un:"ILA Canada",w:500,k:"Year-round ice-free"},
+{n:"Port of Prince Rupert",co:"CA",la:54.32,lo:-130.32,mt:23.1,un:"ILWU Canada",w:1200,k:"886K TEU; deep water"},
+{n:"Port of Lázaro Cárdenas",co:"MX",la:17.96,lo:-102.20,mt:21,un:"—",w:0,k:"1.76M TEU; CPKC rail; 8-day delays"},
+{n:"Port of Altamira",co:"MX",la:22.44,lo:-97.71,mt:20.4,un:"—",w:0,k:"20.4M tonnes; 2nd fastest growing MX"},
+{n:"Port of Seattle/Tacoma",co:"US",la:47.56,lo:-122.30,mt:20,un:"ILWU",w:4500,k:""},
+{n:"Port of Charleston",co:"US",la:32.79,lo:-79.93,mt:20,un:"ILA",w:1800,k:""},
+{n:"Port of New Orleans",co:"US",la:29.95,lo:-90.06,mt:18,un:"ILA",w:1100,k:""},
+{n:"Port of Veracruz",co:"MX",la:19.19,lo:-96.13,mt:15,un:"—",w:0,k:"1.14M TEU; $5B expansion"},
+{n:"Port of Portland",co:"US",la:45.57,lo:-122.70,mt:14,un:"ILWU",w:800,k:""},
+{n:"Port of Duluth",co:"US",la:46.78,lo:-92.08,mt:12,un:"ILWU",w:200,k:""},
+{n:"Port of Halifax",co:"CA",la:44.64,lo:-63.22,mt:9.6,un:"ILA Canada",w:600,k:"509K TEU"},
+{n:"Port of Tampico",co:"MX",la:22.22,lo:-97.86,mt:8.8,un:"—",w:0,k:"Petrochem hub"},
+{n:"Port of Oakland",co:"US",la:37.80,lo:-122.28,mt:6,un:"ILWU",w:2000,k:""},
+{n:"Port of Ensenada",co:"MX",la:31.86,lo:-116.62,mt:5,un:"—",w:0,k:"462K TEU; 22-day delays"},
+{n:"Port of Nanaimo",co:"CA",la:49.16,lo:-123.96,mt:3.9,un:"ILWU Canada",w:200,k:""},
+{n:"Port of Jacksonville",co:"US",la:30.38,lo:-81.56,mt:10,un:"ILA",w:800,k:""},
+{n:"Port of Boston",co:"US",la:42.36,lo:-71.06,mt:10,un:"ILA",w:500,k:""},
+{n:"Port of Honolulu",co:"US",la:21.31,lo:-157.87,mt:4,un:"ILWU",w:600,k:""},
+{n:"Port of Anchorage",co:"US",la:61.24,lo:-149.89,mt:6,un:"ILWU",w:150,k:""},
+{n:"Port of San Juan",co:"US",la:18.46,lo:-66.11,mt:6,un:"ILA",w:400,k:""}
+];
+
+// ===== RAIL (US + CA + MX) =====
+D.rail=[
+{n:"Chicago Metro",co:"US",la:41.88,lo:-87.74,mt:500,op:"All Class I",t:"Hub",u:["BLET","SMART-TD","Teamsters"],k:"25% of all US freight; 50% intermodal",chi:1},
+{n:"BNSF Hobart/Commerce",co:"US",la:34.01,lo:-118.19,mt:164,op:"BNSF",t:"Intermodal",u:["SMART-TD","BLET"],k:"Largest western intermodal"},
+{n:"NS Atlanta Austell",co:"US",la:33.78,lo:-84.60,mt:152,op:"Norfolk Southern",t:"Intermodal",u:["SMART-TD","BLET"],k:""},
+{n:"CN Vancouver Yard",co:"CA",la:49.25,lo:-123.07,mt:120,op:"CN",t:"Hub",u:["Teamsters Canada"],k:"CN: 235B RTM, $17B rev"},
+{n:"BNSF Alliance",co:"US",la:32.85,lo:-97.25,mt:110,op:"BNSF",t:"Intermodal",u:["SMART-TD","BLET"],k:"1M+ lifts/year"},
+{n:"Mason Mega Rail",co:"US",la:32.08,lo:-81.09,mt:110,op:"CSX/NS",t:"Intermodal",u:["SMART-TD","BLET"],k:"Largest on-terminal"},
+{n:"Bailey Yard",co:"US",la:41.15,lo:-100.83,mt:80,op:"Union Pacific",t:"Classification",u:["SMART-TD","BLET","BMWE"],k:"World's largest — 2,850 acres"},
+{n:"CPKC Toronto Agincourt",co:"CA",la:43.83,lo:-79.02,mt:80,op:"CPKC",t:"Hub",u:["Teamsters Canada"],k:"19,200-mi network, $12.5B rev"},
+{n:"CN Montreal Yard",co:"CA",la:45.50,lo:-73.57,mt:70,op:"CN",t:"Hub",u:["Teamsters Canada"],k:"Eastern operations"},
+{n:"BNSF Memphis",co:"US",la:35.14,lo:-90.02,mt:90,op:"BNSF",t:"Intermodal",u:["SMART-TD","BLET"],k:""},
+{n:"Ferromex Monterrey",co:"MX",la:25.69,lo:-100.32,mt:61.4,op:"Ferromex",t:"Hub",u:[],k:"47% MX share — 61.4M tonnes"},
+{n:"CPKC Winnipeg Symington",co:"CA",la:49.87,lo:-97.15,mt:60,op:"CPKC",t:"Hub",u:["Teamsters Canada"],k:"Central hub"},
+{n:"BNSF Corwith",co:"US",la:41.82,lo:-87.72,mt:66,op:"BNSF",t:"Intermodal",u:["SMART-TD","BLET"],k:""},
+{n:"BNSF Argentine",co:"US",la:39.10,lo:-94.68,mt:54,op:"BNSF",t:"Classification",u:["SMART-TD","BLET"],k:""},
+{n:"KCSM Salinas Victoria",co:"MX",la:25.84,lo:-100.21,mt:47.6,op:"CPKC",t:"Hub",u:[],k:"38% MX share — 47.6M tonnes"},
+{n:"Ferrovalle Mexico City",co:"MX",la:19.43,lo:-99.13,mt:40,op:"Multiple",t:"Hub",u:[],k:"ALL MX rail interchanges here"},
+{n:"UP East LA",co:"US",la:34.03,lo:-118.21,mt:50,op:"UP",t:"Intermodal",u:["SMART-TD","BLET"],k:""},
+{n:"UP Dallas",co:"US",la:32.65,lo:-96.80,mt:38,op:"UP",t:"Intermodal",u:["SMART-TD","BLET"],k:""},
+{n:"UP Joliet",co:"US",la:41.53,lo:-88.18,mt:38,op:"UP",t:"Intermodal",u:["SMART-TD","BLET"],k:""},
+{n:"CSX Fairburn",co:"US",la:33.85,lo:-84.47,mt:30,op:"CSX",t:"Intermodal",u:["SMART-TD","BLET"],k:""},
+{n:"NS Linden",co:"US",la:40.62,lo:-74.24,mt:28,op:"NS",t:"Intermodal",u:["SMART-TD","BLET"],k:""},
+{n:"UP Santa Teresa",co:"US",la:32.13,lo:-106.65,mt:22,op:"UP",t:"Intermodal",u:["SMART-TD","BLET"],k:"Mexico gateway"},
+{n:"KCSM Lázaro Cárdenas",co:"MX",la:17.96,lo:-102.20,mt:20,op:"CPKC",t:"Intermodal",u:[],k:"Trans-border rail-port link"}
+];
+
+// ===== OIL & GAS =====
+D.oil=[
+{n:"Motiva Port Arthur",la:29.86,lo:-93.97,cap:640500,p:3.5,op:"Saudi Aramco",t:"Refinery",un:"USW",k:"Largest US refinery",mt:32},
+{n:"ExxonMobil Beaumont",la:30.07,lo:-94.07,cap:609024,p:3.3,op:"ExxonMobil",t:"Refinery",un:"USW",k:"",mt:30},
+{n:"Marathon Garyville",la:30.06,lo:-90.60,cap:597000,p:3.2,op:"Marathon",t:"Refinery",un:"USW",k:"",mt:30},
+{n:"Marathon Galveston Bay",la:29.40,lo:-94.93,cap:593000,p:3.2,op:"Marathon",t:"Refinery",un:"USW",k:"2015 USW strike",mt:30},
+{n:"ExxonMobil Baytown",la:29.74,lo:-95.01,cap:588000,p:3.2,op:"ExxonMobil",t:"Refinery",un:"USW",k:"",mt:29},
+{n:"ExxonMobil Baton Rouge",la:30.27,lo:-91.17,cap:522500,p:2.8,op:"ExxonMobil",t:"Refinery",un:"USW",k:"",mt:26},
+{n:"CITGO Lake Charles",la:30.25,lo:-93.28,cap:455000,p:2.5,op:"CITGO",t:"Refinery",un:"USW",k:"",mt:23},
+{n:"BP Whiting",la:41.66,lo:-87.48,cap:435000,p:2.4,op:"BP",t:"Refinery",un:"USW",k:"Largest Midwest",mt:22},
+{n:"Marathon Los Angeles",la:33.84,lo:-118.27,cap:365000,p:2.0,op:"Marathon",t:"Refinery",un:"USW",k:"",mt:18},
+{n:"Valero Port Arthur",la:29.96,lo:-93.89,cap:360000,p:2.0,op:"Valero",t:"Refinery",un:"USW",k:"",mt:18},
+{n:"Sabine Pass LNG",la:29.74,lo:-93.88,cap:0,p:0,op:"Cheniere",t:"LNG Export",un:"—",k:"World's largest LNG export",mt:29},
+{n:"Nederland Terminal",la:29.98,lo:-93.99,cap:0,p:0,op:"Energy Transfer",t:"Crude Export",un:"—",k:"Largest crude terminal — 2M bpd",mt:100},
+{n:"Cushing Oil Hub",la:35.98,lo:-96.01,cap:0,p:0,op:"Multiple",t:"Pipeline Hub",un:"—",k:"WTI pricing, 90M bbl storage",mt:90},
+{n:"Henry Hub",la:29.89,lo:-92.07,cap:0,p:0,op:"EnLink",t:"NG Pricing Hub",un:"—",k:"NYMEX NG pricing point",mt:50},
+{n:"Freeport LNG",la:28.93,lo:-95.32,cap:0,p:0,op:"Freeport LNG",t:"LNG Export",un:"—",k:"16.3 MTPA",mt:16},
+{n:"Calcasieu Pass LNG",la:29.77,lo:-93.33,cap:0,p:0,op:"Venture Global",t:"LNG Export",un:"—",k:"15 MTPA",mt:15},
+{n:"Ingleside Export",la:27.83,lo:-97.20,cap:0,p:0,op:"Enbridge",t:"Crude Export",un:"—",k:"25% of Gulf crude exports",mt:25},
+{n:"Bryan Mound SPR",la:28.92,lo:-95.37,cap:0,p:0,op:"DOE",t:"Strategic Reserve",un:"—",k:"247M bbl",mt:12},
+{n:"Big Hill SPR",la:29.57,lo:-94.20,cap:0,p:0,op:"DOE",t:"Strategic Reserve",un:"—",k:"170M bbl",mt:8},
+{n:"West Hackberry SPR",la:30.00,lo:-93.41,cap:0,p:0,op:"DOE",t:"Strategic Reserve",un:"—",k:"222M bbl",mt:11},
+{n:"Bayou Choctaw SPR",la:30.32,lo:-91.31,cap:0,p:0,op:"DOE",t:"Strategic Reserve",un:"—",k:"76M bbl",mt:4},
+{n:"Phillips 66 Wood River",la:38.85,lo:-90.08,cap:314000,p:1.7,op:"Phillips 66",t:"Refinery",un:"USW",k:"",mt:16},
+{n:"Chevron El Segundo",la:33.91,lo:-118.42,cap:290000,p:1.6,op:"Chevron",t:"Refinery",un:"USW",k:"",mt:15},
+{n:"Flint Hills Pine Bend",la:44.73,lo:-93.08,cap:339000,p:1.8,op:"Koch",t:"Refinery",un:"—",k:"Koch, non-union",mt:17},
+{n:"Marathon Robinson",la:39.00,lo:-87.75,cap:245000,p:1.3,op:"Marathon",t:"Refinery",un:"USW",k:"",mt:12},
+{n:"PBF Delaware City",la:39.58,lo:-75.51,cap:190000,p:1.0,op:"PBF",t:"Refinery",un:"USW",k:"",mt:10}
+];
+
+D.space=[
+{n:"Vandenberg SFB",la:34.75,lo:-120.57,p:34.5,l:51},{n:"Cape Canaveral",la:28.46,lo:-80.53,p:18.9,l:28},
+{n:"Kennedy Space Center",la:28.59,lo:-80.68,p:10.1,l:15},{n:"Space Florida",la:28.51,lo:-80.79,p:6.8,l:10},
+{n:"Blue Origin",la:31.45,lo:-104.76,p:3.4,l:5},{n:"SpaceX Starbase",la:26.00,lo:-97.16,p:2.7,l:4},
+{n:"Wallops",la:37.85,lo:-75.47,p:.7,l:1},{n:"Cecil",la:30.22,lo:-81.88,p:0,l:0},
+{n:"Mojave",la:35.06,lo:-118.15,p:0,l:0},{n:"Spaceport America",la:32.99,lo:-106.97,p:0,l:0},
+{n:"Kodiak",la:57.43,lo:-152.37,p:0,l:0},{n:"Camden",la:30.90,lo:-81.62,p:0,l:0}
+];
+
+// ===== BORDER CROSSINGS =====
+D.border=[
+{n:"Laredo/Nuevo Laredo",la:27.53,lo:-99.51,tv:339,k:"#1 US crossing — $339B/yr; 6.4% of ALL US trade"},
+{n:"El Paso/Ciudad Juárez",la:31.76,lo:-106.49,tv:70.4,k:"#2 crossing — $70B+; auto corridor"},
+{n:"Otay Mesa/Tijuana",la:32.51,lo:-116.97,tv:82,k:"CA-Baja — $82B regional; 1.4M+ trucks/yr"},
+{n:"Nogales/Nogales",la:31.34,lo:-110.99,tv:28,k:"$28B; fresh produce + auto parts"}
+];
+
+D.choke=[
+{n:"Panama Canal",la:9.08,lo:-79.68,k:"76% US-related; $270B/yr; drought cut 37→18 transits/day"},
+{n:"Strait of Juan de Fuca",la:48.31,lo:-124.04,k:"Gateway to Vancouver + Puget Sound; ILWU both sides"},
+{n:"St. Lawrence Seaway",la:45.43,lo:-73.54,k:"Only ocean access to Great Lakes"},
+{n:"Strait of Florida",la:24.5,lo:-81.8,k:"All East-Gulf shipping; 32% of US trade value"}
+];
+
+// PLAN TARGETS
+var PLAN_TARGETS=[
+"Port of Houston","Port of South Louisiana","Port of Corpus Christi","Port of NY/NJ",
+"Port of Long Beach","Port of Los Angeles","Port of Beaumont","Port of Baton Rouge",
+"Port of Savannah","Port of Baltimore","Port of Norfolk","Port of Charleston",
+"Port of Seattle/Tacoma","Port of Oakland","Port of Vancouver","Port of Prince Rupert",
+"Port of Montreal","Port of Manzanillo",
+"Chicago Metro","BNSF Hobart/Commerce","NS Atlanta Austell","BNSF Alliance","Bailey Yard",
+"CN Vancouver Yard","CPKC Toronto Agincourt","Ferromex Monterrey","Ferrovalle Mexico City",
+"Motiva Port Arthur","ExxonMobil Beaumont","Marathon Garyville","Marathon Galveston Bay",
+"ExxonMobil Baytown","Sabine Pass LNG","Nederland Terminal",
+"Laredo/Nuevo Laredo","El Paso/Ciudad Juárez","Otay Mesa/Tijuana","Nogales/Nogales",
+"Panama Canal","Strait of Juan de Fuca"
+];
+
+// MAP
+var map=L.map('map',{center:[30,-88],zoom:4,zoomControl:true,attributionControl:false,minZoom:3,maxZoom:14});
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',{maxZoom:19}).addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png',{maxZoom:19,opacity:0.4}).addTo(map);
+
+var LG={air:L.layerGroup().addTo(map),sea:L.layerGroup().addTo(map),rail:L.layerGroup().addTo(map),oil:L.layerGroup().addTo(map),space:L.layerGroup().addTo(map),border:L.layerGroup().addTo(map),choke:L.layerGroup().addTo(map)};
+var vis={air:1,sea:1,rail:1,oil:1,space:1,border:1,choke:1};
+var fm='all',planVis=false,preplanVis=null;
+var unionLG=L.layerGroup();
+var planLG=L.layerGroup();
+
+function fmt(n){return n>=1e9?(n/1e9).toFixed(1)+'B':n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(0)+'K':n.toString()}
+
+var UC={ILWU:'#ec4899',ILA:'#e8803a',BLET:'#2dd4a0','SMART-TD':'#34d399',Teamsters:'#5b8def','Teamsters L89':'#5b8def',IAM:'#7ba4f0',BMWE:'#6ee7b7',ALPA:'#93c5fd',USW:'#f0c040','ILWU Canada':'#ec4899','ILA Canada':'#e8803a','Teamsters Canada':'#5b8def'};
+function utags(arr){if(!arr||!arr.length)return '';return '<div class="pu">'+arr.filter(function(u){return u&&u!=='—'}).map(function(u){return '<span class="pu-tag" style="background:'+(UC[u]||'#555')+'22;color:'+(UC[u]||'#888')+';border:1px solid '+(UC[u]||'#555')+'44">'+u+'</span>'}).join('')+'</div>';}
+
+function ic(sz,col,bdr,op){return L.divIcon({className:'',iconSize:[sz,sz],iconAnchor:[sz/2,sz/2],html:'<div style="width:'+sz+'px;height:'+sz+'px;border-radius:50%;background:'+col+';border:1.5px solid '+bdr+';opacity:'+op+';box-shadow:0 0 '+(sz*.4)+'px '+col+'44"></div>'});}
+
+// Unified 80% filter
+function getAll80(){
+  var all=[];
+  D.sea.forEach(function(s){all.push({n:s.n,mt:s.mt})});
+  D.border.forEach(function(b){all.push({n:b.n,mt:b.tv})});
+  all.sort(function(a,b){return b.mt-a.mt});
+  var total=0;all.forEach(function(a){total+=a.mt});
+  var cum=0,cn={};
+  for(var i=0;i<all.length;i++){cum+=all[i].mt;cn[all[i].n]=true;if(cum/total>=0.8)break;}
+  // Air by mt
+  var airS=D.air.slice().sort(function(a,b){return b.mt-a.mt});
+  var at=0;airS.forEach(function(a){at+=a.mt});
+  var ac=0;for(var j=0;j<airS.length;j++){ac+=airS[j].mt;cn[airS[j].n]=true;if(ac/at>=0.8)break;}
+  // Rail by mt
+  var railS=D.rail.slice().sort(function(a,b){return b.mt-a.mt});
+  var rt=0;railS.forEach(function(r){rt+=r.mt});
+  var rc=0;for(var k=0;k<railS.length;k++){rc+=railS[k].mt;cn[railS[k].n]=true;if(rc/rt>=0.8)break;}
+  // Oil: top refineries + all terminals
+  D.oil.forEach(function(o){if(o.cap>=300000||o.t!=='Refinery')cn[o.n]=true});
+  return cn;
+}
+var top80=getAll80();
+
+function build(){
+  Object.values(LG).forEach(function(g){g.clearLayers()});
+  var ct={air:0,sea:0,rail:0,oil:0,space:0,bdr:0};
+
+  D.air.forEach(function(a){if(fm==='80'&&!top80[a.n])return;ct.air++;
+    var sz=Math.max(3,Math.sqrt(a.mt)*5);
+    var m=L.marker([a.la,a.lo],{icon:ic(sz,'rgba(91,141,239,.4)','#3b6fd9',.85)});
+    var h='<div class="pn">'+a.n+' ('+a.c+')</div><div class="pl">'+(a.co==='CA'?'Canada':a.co)+' &middot; '+a.mt+'M tonnes</div>';
+    if(a.p)h+='<div class="pp" style="color:var(--air)">'+a.p+'%</div>';
+    if(a.u&&a.u.length)h+=utags(a.u);if(a.k)h+='<div class="pk">'+a.k+'</div>';
+    m.bindPopup(h);LG.air.addLayer(m);});
+
+  D.sea.forEach(function(s){if(fm==='80'&&!top80[s.n])return;ct.sea++;
+    var sz=Math.max(3,Math.sqrt(s.mt/10)*5);
+    var col=s.co==='CA'?'rgba(34,211,238,.4)':s.co==='MX'?'rgba(251,113,133,.35)':'rgba(232,128,58,.4)';
+    var bdr=s.co==='CA'?'#0891b2':s.co==='MX'?'#e11d48':'#c05a1e';
+    var m=L.marker([s.la,s.lo],{icon:ic(sz,col,bdr,.85)});
+    var co=s.co==='CA'?'Canada':s.co==='MX'?'Mexico':'US';
+    var h='<div class="pn">'+s.n+'</div><div class="pl">'+co+' &middot; '+s.mt+'M tonnes</div>';
+    if(s.un&&s.un!=='—')h+=utags([s.un]);
+    if(s.w)h+='<div class="ps">Workers: <b>~'+fmt(s.w)+'</b></div>';
+    if(s.k)h+='<div class="pk">'+s.k+'</div>';
+    m.bindPopup(h);LG.sea.addLayer(m);});
+
+  D.rail.forEach(function(r){if(fm==='80'&&!top80[r.n])return;ct.rail++;
+    var sz=r.chi?13:Math.max(3,Math.sqrt(r.mt/10)*4);
+    var col=r.co==='CA'?'rgba(34,211,238,.4)':r.co==='MX'?'rgba(251,113,133,.35)':'rgba(45,212,160,.4)';
+    var bdr=r.co==='CA'?'#0891b2':r.co==='MX'?'#e11d48':'#059669';
+    var m=L.marker([r.la,r.lo],{icon:ic(sz,col,bdr,r.chi?1:.8)});
+    var co=r.co==='CA'?'Canada':r.co==='MX'?'Mexico':'US';
+    var h='<div class="pn">'+r.n+'</div><div class="pl">'+co+' &middot; '+r.op+' — '+r.t+'</div>';
+    if(r.mt)h+='<div class="ps">Volume: <b>'+r.mt+'M equiv.</b></div>';
+    h+=utags(r.u);if(r.k)h+='<div class="pk">'+r.k+'</div>';
+    m.bindPopup(h);LG.rail.addLayer(m);});
+
+  D.oil.forEach(function(o){if(fm==='80'&&!top80[o.n])return;ct.oil++;
+    var isR=o.t==='Refinery',sz=isR?Math.max(3,Math.sqrt(o.p||1)*5):(o.t==='Strategic Reserve'?4:Math.max(3,Math.sqrt(o.mt/10)*3));
+    var col=o.t==='Strategic Reserve'?'rgba(220,38,38,.4)':'rgba(240,192,64,.4)';
+    var bdr=o.t==='Strategic Reserve'?'#dc2626':'#b8960a';
+    var m=L.marker([o.la,o.lo],{icon:ic(sz,col,bdr,.8)});
+    var h='<div class="pn">'+o.n+'</div><div class="pl">'+o.op+' — '+o.t+'</div>';
+    if(isR)h+='<div class="ps">Capacity: <b>'+fmt(o.cap)+' bpd</b></div>';
+    if(o.un&&o.un!=='—')h+=utags([o.un]);if(o.k)h+='<div class="pk">'+o.k+'</div>';
+    m.bindPopup(h);LG.oil.addLayer(m);});
+
+  D.space.forEach(function(s){ct.space++;
+    var sz=s.l>0?Math.max(3,Math.sqrt(s.p)*5):3;
+    var m=L.marker([s.la,s.lo],{icon:ic(sz,'rgba(167,139,250,.4)','#7c3aed',s.l>0?.75:.2)});
+    m.bindPopup('<div class="pn">'+s.n+'</div><div class="ps">Launches 2024: <b>'+s.l+'</b></div>');
+    LG.space.addLayer(m);});
+
+  D.border.forEach(function(b){ct.bdr++;
+    var sz=Math.max(5,Math.sqrt(b.tv/10)*3);
+    var m=L.marker([b.la,b.lo],{icon:ic(sz,'rgba(251,113,133,.5)','#e11d48',.9)});
+    m.bindPopup('<div class="pn">'+b.n+'</div><div class="pl">Border Crossing</div><div class="ps">Trade: <b>$'+b.tv+'B/yr</b></div><div class="pk">'+b.k+'</div>');
+    LG.border.addLayer(m);});
+
+  D.choke.forEach(function(c){
+    var m=L.marker([c.la,c.lo],{icon:L.divIcon({className:'',iconSize:[14,14],iconAnchor:[7,7],html:'<div style="width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.5);box-shadow:0 0 16px rgba(255,255,255,.15)"></div>'})});
+    m.bindPopup('<div class="pn">'+c.n+'</div><div class="pl">Strategic Chokepoint</div><div class="pk">'+c.k+'</div>');
+    LG.choke.addLayer(m);});
+
+  document.getElementById('n-air').textContent=ct.air;
+  document.getElementById('n-sea').textContent=ct.sea;
+  document.getElementById('n-rail').textContent=ct.rail;
+  document.getElementById('n-oil').textContent=ct.oil;
+  document.getElementById('n-space').textContent=ct.space;
+  document.getElementById('n-bdr').textContent=ct.bdr;
+  document.getElementById('ttl').textContent=ct.air+ct.sea+ct.rail+ct.oil+ct.space+ct.bdr+4;
+  Object.keys(vis).forEach(function(k){if(!vis[k])map.removeLayer(LG[k]);});
+}
+build();
+
+// PLAN OVERLAY with properly centered rings + tooltips
+function buildPlanOverlay(){
+  planLG.clearLayers();
+  var all=[];
+  D.sea.forEach(function(s){all.push({n:s.n,la:s.la,lo:s.lo,info:s.mt+'M tonnes'})});
+  D.rail.forEach(function(r){all.push({n:r.n,la:r.la,lo:r.lo,info:r.op})});
+  D.oil.forEach(function(o){all.push({n:o.n,la:o.la,lo:o.lo,info:o.op+' — '+o.t})});
+  D.border.forEach(function(b){all.push({n:b.n,la:b.la,lo:b.lo,info:'$'+b.tv+'B/yr'})});
+  D.choke.forEach(function(c){all.push({n:c.n,la:c.la,lo:c.lo,info:'Chokepoint'})});
+
+  all.forEach(function(f){
+    if(PLAN_TARGETS.indexOf(f.n)===-1)return;
+    var m=L.marker([f.la,f.lo],{icon:L.divIcon({
+      className:'',iconSize:[36,36],iconAnchor:[18,18],
+      html:'<div class="sr-wrap"><div class="sr-dot"></div><div class="sr-ring"></div><div class="sr-ring sr-ring2"></div></div>'
+    })});
+    m.bindTooltip('<strong>'+f.n+'</strong><br><span style="color:#ef4444">'+f.info+'</span>',{direction:'top',offset:[0,-20]});
+    planLG.addLayer(m);
+  });
+
+  // Zone connection lines
+  var zones=[
+    [[29.61,-95.02],[30.08,-94.12],[29.86,-93.97],[30.07,-94.07],[29.74,-95.01]],
+    [[33.74,-118.19],[33.74,-118.27],[34.01,-118.19]],
+    [[40.68,-74.15],[39.28,-76.59],[36.90,-76.35],[32.09,-81.10]],
+    [[49.28,-123.12],[54.32,-130.32]],
+    [[27.53,-99.51],[31.76,-106.49],[32.51,-116.97],[31.34,-110.99]]
+  ];
+  zones.forEach(function(z){
+    L.polyline(z,{color:'#ef4444',weight:1.5,opacity:0.2,dashArray:'8,6'}).addTo(planLG);
+  });
+}
+buildPlanOverlay();
+
+// UNION ZONES
+var ilwu=[[48.5,-124.8],[48.5,-122],[47,-122.5],[45.5,-124],[42,-124.5],[38,-123.5],[35,-121],[33.5,-118.5],[32.5,-117],[33,-117.5],[37,-122.8],[42.5,-124.8],[48.5,-124.8]];
+var ilwuCA=[[48.5,-124.8],[48.5,-123],[49.5,-123.5],[54.5,-131],[54.5,-133],[49,-127],[48.5,-124.8]];
+var ila=[[42.5,-71],[40.7,-74.2],[39.3,-76.6],[36.9,-76.3],[32.8,-79.9],[30.4,-81.6],[25.8,-80.2],[25,-82.5],[27.9,-82.5],[30,-88],[29.5,-95],[27.8,-97.4],[25.5,-98],[28,-97.5],[29.6,-95.1],[30.2,-93.2],[30.7,-88.1],[30,-85.5],[26,-80],[30.4,-81],[34.2,-77.9],[39.3,-76],[40.7,-74],[42.5,-71]];
+L.polygon(ilwu,{color:'#ec4899',weight:1.5,fillColor:'#ec4899',fillOpacity:.03,dashArray:'6,4'}).bindPopup('<div class="pn">ILWU — US West Coast</div><div class="ps"><b>22,000</b> dockworkers</div>').addTo(unionLG);
+L.polygon(ilwuCA,{color:'#ec4899',weight:1.5,fillColor:'#ec4899',fillOpacity:.03,dashArray:'6,4'}).bindPopup('<div class="pn">ILWU Canada</div><div class="ps"><b>7,400</b> workers</div><div class="pk">13-day strike Jul 2023</div>').addTo(unionLG);
+L.polygon(ila,{color:'#e8803a',weight:1.5,fillColor:'#e8803a',fillOpacity:.03,dashArray:'6,4'}).bindPopup('<div class="pn">ILA — East/Gulf Coast</div><div class="ps"><b>85,000</b> members</div><div class="pk">Oct 2024: 3-day strike, $4.5B/day</div>').addTo(unionLG);
+
+// CONTROLS
+function tgl(k){vis[k]=vis[k]?0:1;var b=document.getElementById('b-'+k);vis[k]?LG[k].addTo(map):map.removeLayer(LG[k]);b.classList.toggle('on');}
+function filt80(){if(fm==='80'){filtAll();return}fm='80';document.getElementById('b-80').classList.add('on');document.getElementById('b-all').classList.remove('on');build();}
+function filtAll(){fm='all';document.getElementById('b-80').classList.remove('on');document.getElementById('b-all').classList.add('on');build();}
+function tglUnion(){var b=document.getElementById('b-union');if(map.hasLayer(unionLG)){map.removeLayer(unionLG);b.classList.remove('on')}else{unionLG.addTo(map);b.classList.add('on')}}
+
+function tglPlan(){
+  planVis=!planVis;
+  var b=document.getElementById('b-plan');
+  var bar=document.getElementById('plan-bar');
+  var leg=document.getElementById('legend-panel');
+  var rp=document.getElementById('rpanel');
+  var tb=document.getElementById('toolbar');
+  b.classList.toggle('on');
+  if(planVis){
+    // Save state and hide all layers
+    preplanVis={};
+    Object.keys(vis).forEach(function(k){preplanVis[k]=vis[k];if(vis[k]){map.removeLayer(LG[k])}});
+    if(map.hasLayer(unionLG))map.removeLayer(unionLG);
+    planLG.addTo(map);
+    bar.classList.add('show');
+    leg.style.display='none';
+    rp.style.display='none';
+    // Dim toolbar buttons
+    tb.querySelectorAll('.btn:not(.btn-plan)').forEach(function(b){b.style.opacity='0.25';b.style.pointerEvents='none'});
+  }else{
+    map.removeLayer(planLG);
+    // Restore layers
+    if(preplanVis){Object.keys(preplanVis).forEach(function(k){if(preplanVis[k])LG[k].addTo(map)});}
+    bar.classList.remove('show');
+    leg.style.display='';
+    rp.style.display='';
+    tb.querySelectorAll('.btn:not(.btn-plan)').forEach(function(b){b.style.opacity='';b.style.pointerEvents=''});
+  }
+}
+
+// TICKERS
+var t0=Date.now();
+function runTickers(){
+  var s=(Date.now()-t0)/1e3;
+  var w=Math.floor(s*79282);
+  var h=Math.floor(s*170139);
+  var el=document.getElementById('tick');
+  var sel=document.getElementById('strike-tick');
+  var wel=document.getElementById('wealth-tick-plan');
+  function f(v){return v<1e6?'$'+v.toLocaleString():v<1e9?'$'+(v/1e6).toFixed(2)+'M':'$'+(v/1e9).toFixed(3)+'B'}
+  el.textContent=f(w);sel.textContent=f(h);if(wel)wel.textContent=f(w);
+  requestAnimationFrame(runTickers);
+}
+runTickers();
+</script>
+</body>
+</html>

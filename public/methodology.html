@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Methodology & Sources - Common Defense Infrastructure Map</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Color Variables */
+        :root {
+            --bg-dark: #050709;
+            --bg-card: #0a0e11;
+            --bg-hover: #12161b;
+            --text-primary: #e8eaed;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #8b5cf6;
+            --accent-warning: #f59e0b;
+            --accent-danger: #ef4444;
+            --accent-success: #10b981;
+            --border-color: #1f2937;
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+        }
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background-color: rgba(10, 14, 17, 0.95);
+        }
+
+        .header-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: var(--spacing-lg) var(--spacing-md);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: gap 0.2s;
+        }
+
+        .back-link:hover {
+            gap: calc(var(--spacing-sm) + 2px);
+        }
+
+        .back-link::before {
+            content: "←";
+        }
+
+        .header-title {
+            flex: 1;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .header-spacer {
+            width: 100px;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl) var(--spacing-md);
+        }
+
+        /* Intro Section */
+        .intro-section {
+            margin-bottom: var(--spacing-2xl);
+            padding: var(--spacing-lg);
+            background-color: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .intro-section h1 {
+            font-size: 28px;
+            margin-bottom: var(--spacing-md);
+            letter-spacing: -1px;
+        }
+
+        .intro-section p {
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .intro-section p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Navigation Menu */
+        .toc {
+            background-color: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .toc h2 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+            letter-spacing: -0.5px;
+        }
+
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+        }
+
+        .toc-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .toc-link {
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .toc-link:hover {
+            color: var(--accent-secondary);
+        }
+
+        .toc-link::before {
+            content: "▸";
+            font-size: 12px;
+        }
+
+        /* Section Styles */
+        section {
+            margin-bottom: var(--spacing-2xl);
+            scroll-margin-top: 80px;
+        }
+
+        section h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .section-anchor {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 24px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+            cursor: pointer;
+        }
+
+        section:hover .section-anchor {
+            opacity: 1;
+        }
+
+        .section-anchor::before {
+            content: "#";
+        }
+
+        /* Data Cards */
+        .data-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .data-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--accent-primary);
+            margin-bottom: var(--spacing-md);
+            letter-spacing: -0.3px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: var(--spacing-md) 0;
+            border-bottom: 1px solid var(--border-color);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .stat-value {
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        /* Calculations */
+        .calculation {
+            background-color: var(--bg-hover);
+            border-left: 3px solid var(--accent-secondary);
+            padding: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+            border-radius: var(--radius-md);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--text-secondary);
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        /* Source Attribution */
+        .sources {
+            background-color: var(--bg-hover);
+            border-left: 3px solid var(--accent-success);
+            padding: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+            border-radius: var(--radius-md);
+        }
+
+        .sources h4 {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent-success);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .source-list {
+            list-style: none;
+        }
+
+        .source-list li {
+            font-size: 13px;
+            margin-bottom: var(--spacing-xs);
+            color: var(--text-secondary);
+        }
+
+        .source-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        .source-link {
+            color: var(--accent-primary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .source-link:hover {
+            color: var(--accent-secondary);
+            text-decoration: underline;
+        }
+
+        /* Impact Comparison */
+        .impact-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--spacing-md);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .impact-item {
+            background-color: var(--bg-hover);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .impact-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: var(--spacing-sm);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .impact-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Risk Scenario */
+        .risk-scenario {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .risk-scenario h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent-danger);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .scenario-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md) 0;
+            border-bottom: 1px solid rgba(239, 68, 68, 0.1);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+        }
+
+        .scenario-row:last-child {
+            border-bottom: none;
+        }
+
+        .scenario-label {
+            color: var(--text-secondary);
+        }
+
+        .scenario-value {
+            color: var(--accent-danger);
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            max-width: 900px;
+            margin: var(--spacing-2xl) auto 0;
+            padding: var(--spacing-2xl) var(--spacing-md);
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .header-content {
+                flex-direction: column;
+                gap: var(--spacing-md);
+            }
+
+            .header-title {
+                order: -1;
+            }
+
+            .header-spacer {
+                display: none;
+            }
+
+            section h2 {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .toc-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .impact-comparison {
+                grid-template-columns: 1fr;
+            }
+
+            main {
+                padding: var(--spacing-lg) var(--spacing-md);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="back-link">Back to Map</a>
+            <h1 class="header-title">Methodology & Sources</h1>
+            <div class="header-spacer"></div>
+        </div>
+    </header>
+
+    <main>
+        <div class="intro-section">
+            <h1>Common Defense Infrastructure Map</h1>
+            <p>This page documents the methodology, data sources, and calculations underlying the Common Defense infrastructure impact analysis. All figures are based on official government statistics, industry reports, and peer-reviewed research.</p>
+            <p>The map illustrates potential economic impacts of disruptions across critical U.S. and North American infrastructure systems, with calculations derived from real-world strike events and supply chain analysis.</p>
+        </div>
+
+        <div class="toc">
+            <h2>Contents</h2>
+            <div class="toc-grid">
+                <div class="toc-item"><a href="#daily-trade" class="toc-link">US Daily Trade</a></div>
+                <div class="toc-item"><a href="#port-impact" class="toc-link">Port Strike Impact</a></div>
+                <div class="toc-item"><a href="#rail-impact" class="toc-link">Rail Shutdown</a></div>
+                <div class="toc-item"><a href="#refinery-impact" class="toc-link">Refinery Slowdown</a></div>
+                <div class="toc-item"><a href="#border-impact" class="toc-link">Border Crossings</a></div>
+                <div class="toc-item"><a href="#multiplier" class="toc-link">Cascading Multiplier</a></div>
+                <div class="toc-item"><a href="#billionaire-wealth" class="toc-link">Billionaire Wealth</a></div>
+                <div class="toc-item"><a href="#post-strike-crash" class="toc-link">Market Crash Projection</a></div>
+                <div class="toc-item"><a href="#canada-ports" class="toc-link">Canadian Infrastructure</a></div>
+                <div class="toc-item"><a href="#mexico-data" class="toc-link">Mexican Infrastructure</a></div>
+                <div class="toc-item"><a href="#panama" class="toc-link">Panama Canal</a></div>
+            </div>
+        </div>
+
+        <!-- US Daily Goods Trade Section -->
+        <section id="daily-trade">
+            <h2>
+                <span class="section-anchor"></span>
+                US Daily Goods Trade: $14.7B/day
+            </h2>
+
+            <div class="data-card">
+                <h3>2024 Annual Trade Volume</h3>
+                <div class="stat-row">
+                    <span class="stat-label">Total US Goods Trade</span>
+                    <span class="stat-value">$5,379.4B</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Exports</span>
+                    <span class="stat-value">$2,083.8B</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Imports</span>
+                    <span class="stat-value">$3,295.6B</span>
+                </div>
+            </div>
+
+            <div class="calculation">
+$5,379.4B ÷ 365 days = $14.74B/day
+            </div>
+
+            <p>This represents the daily value of all U.S. merchandise trade (goods only, excludes services). This figure anchors the baseline for understanding how much economic activity depends on daily continuity of trade flows.</p>
+
+            <div class="sources">
+                <h4>Source</h4>
+                <ul class="source-list">
+                    <li>U.S. Bureau of Economic Analysis (BEA) - 2024 Trade Data</li>
+                    <li><a href="https://www.bea.gov/" class="source-link">Visit BEA</a></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Port Strike Impact Section -->
+        <section id="port-impact">
+            <h2>
+                <span class="section-anchor"></span>
+                Port Strike Impact: $7.5B/day
+            </h2>
+
+            <div class="data-card">
+                <h3>ILA 2024 Port Strike (October)</h3>
+                <div class="stat-row">
+                    <span class="stat-label">East Coast/Gulf Estimate</span>
+                    <span class="stat-value">$4.5B/day</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">ILWU West Coast (estimated)</span>
+                    <span class="stat-value">~$2.5B/day</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Combined Impact</span>
+                    <span class="stat-value">$7.0B-$7.5B/day</span>
+                </div>
+            </div>
+
+            <p>The October 2024 ILA strike on East Coast and Gulf ports halted operations at major terminals. West Coast container ports (ILWU jurisdiction) handle approximately 35% of U.S. container traffic, adding substantial exposure to the system.</p>
+
+            <div class="data-card">
+                <h3>Historical Context: ILWU Canada Strike 2023</h3>
+                <div class="stat-row">
+                    <span class="stat-label">Total Impact</span>
+                    <span class="stat-value">$10B</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Duration</span>
+                    <span class="stat-value">13 days</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Daily Impact</span>
+                    <span class="stat-value">~$769M/day</span>
+                </div>
+            </div>
+
+            <div class="sources">
+                <h4>Sources</h4>
+                <ul class="source-list">
+                    <li>JPMorgan estimate - ILA October 2024 strike</li>
+                    <li><a href="https://www.cnbc.com/" class="source-link">CNBC</a> - Port strike coverage</li>
+                    <li><a href="https://www.reuters.com/" class="source-link">Reuters</a> - Industry analysis</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Rail Shutdown Section -->
+        <section id="rail-impact">
+            <h2>
+                <span class="section-anchor"></span>
+                Rail Shutdown: $2B/day
+            </h2>
+
+            <div class="data-card">
+                <h3>2022 Threatened Rail Strike</h3>
+                <div class="stat-row">
+                    <span class="stat-label">Estimated Daily Impact</span>
+                    <span class="stat-value">$2B/day</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Rail Freight Value</span>
+                    <span class="stat-value">~$730B/year</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Share of Total Freight</span>
+                    <span class="stat-value">~40%</span>
+                </div>
+            </div>
+
+            <p>In September 2022, President Biden intervened to prevent a rail workers' strike by directing Congress to impose a contract. The Association of American Railroads estimated daily losses would exceed $2 billion, disrupting goods movement across the entire country.</p>
+
+            <div class="data-card">
+                <h3>Chicago Rail Hub</h3>
+                <div class="stat-row">
+                    <span class="stat-label">Share of US Freight</span>
+                    <span class="stat-value">~25%</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Status</span>
+                    <span class="stat-value">Critical chokepoint</span>
+                </div>
+            </div>
+
+            <div class="sources">
+                <h4>Source</h4>
+                <ul class="source-list">
+                    <li>Association of American Railroads (AAR) - 2022 Strike Analysis</li>
+                    <li><a href="https://www.aar.org/" class="source-link">Visit AAR</a></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Refinery Impact Section -->
+        <section id="refinery-impact">
+            <h2>
+                <span class="section-anchor"></span>
+                Refinery Slowdown: $2.3B/day
+            </h2>
+
+            <div class="data-card">
+                <h3>U.S. Refinery Capacity (2024)</h3>
+                <div class="stat-row">
+                    <span class="stat-label">Daily Output</span>
+                    <span class="stat-value">18.4M barrels/day</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Utilization Rate</span>
+                    <span class="stat-value">90.6%</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Estimated Daily Value</span>
+                    <span class="stat-value">~$2.3B/day</span>
+                </div>
+            </div>
+
+            <div class="calculation">
+18.4M bbl/day × ~$125/bbl (product mix avg) ≈ $2.3B/day
+(Based on gasoline, diesel, and petroleum product mix)
+            </div>
+
+            <div class="data-card">
+                <h3>Gulf Coast Concentration</h3>
+                <div class="stat-row">
+                    <span class="stat-label">Gulf Coast Capacity</span>
+                    <span class="stat-value">~55% of US total</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Daily Value (Gulf)</span>
+                    <span class="stat-value">~$1.27B/day</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Vulnerability</span>
+                    <span class="stat-value">Geographic concentration</span>
+                </div>
+            </div>
+
+            <div class="data-card">
+                <h3>2015 USW Strike Historical Reference</h3>
+                <div class="stat-row">
+                    <span class="stat-label">Facilities Affected</span>
+                    <span class="stat-value">12 refineries</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Union</span>
+                    <span class="stat-value">United Steelworkers</span>
+                </div>
+            </div>
+
+            <div class="sources">
+                <h4>Sources</h4>
+                <ul class="source-list">
+                    <li>U.S. Energy Information Administration (EIA) - Refinery Data</li>
+                    <li><a href="https://www.eia.gov/" class="source-link">Visit EIA</a></li>
+                    <li>United Steelworkers (USW) - Strike History</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Border Crossings Section -->
+        <section id="border-impact">
+            <h2>
+                <span class="stat-label"></span>
+                Border Crossings: $1.4B/day
+            </h2>
+
+            <div class="data-card">
+                <h3>Major U.S.-Mexico Border Crossings (Annual Value)</h3>
+                <div class="stat-row">
+                    <span class="stat-label">Laredo, TX</span>
+                    <span class="stat-value">$339B/yr ($929M/day)</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">El Paso, TX</span>
+                    <span class="stat-value">$70B/yr ($192M/day)</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Otay Mesa, CA</span>
+                    <span class="stat-value">$82B/yr ($225M/day)</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Nogales, AZ</span>
+                    <span class="stat-value">$28B/yr ($77M/day)</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Combined (4 major)</span>
+                    <span class="stat-value">$519B/yr ($1.42B/day)</span>
+                </div>
+            </div>
+
+            <p>These four border crossings represent critical nodes for U.S.-Mexico trade. Laredo alone handles nearly 40% of all U.S.-Mexico cargo, making it the largest land port in the Western Hemisphere.</p>
+
+            <div class="impact-comparison">
+                <div class="impact-item">
+                    <div class="impact-value">$339B</div>
+                    <div class="impact-label">Laredo annual</div>
+                </div>
+                <div class="impact-item">
+                    <div class="impact-value">82B</div>
+                    <div class="impact-label">Otay Mesa annual</div>
+                </div>
+                <div class="impact-item">
+                    <div class="impact-value">70B</div>
+                    <div class="impact-label">El Paso annual</div>
+                </div>
+                <div class="impact-item">
+                    <div class="impact-value">28B</div>
+                    <div class="impact-label">Nogales annual</div>
+                </div>
+            </div>
+
+            <div class="sources">
+                <h4>Sources</h4>
+                <ul class="source-list">
+                    <li>Texas Comptroller of Public Accounts - Trade Data</li>
+                    <li>U.S. Census Bureau - Trade Statistics</li>
+                    <li><a href="https://www.census.gov/foreign-trade/" class="source-link">Census Bureau Trade Data</a></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Cascading Multiplier Section -->
+        <section id="multiplier">
+            <h2>
+                <span class="section-anchor"></span>
+                Cascading Multiplier: 3-5x
+            </h2>
+
+            <p>Supply chain disruptions create cascading effects throughout the economy. A one-week infrastructure disruption typically requires 4-6 weeks for full recovery. The multiplier effect means direct impacts are amplified through dependent industries and services.</p>
+
+            <div class="data-card">
+                <h3>Supply Chain Multiplier Effect</h3>
+                <div class="stat-row">
+                    <span class="stat-label">Typical Range</span>
+                    <span class="stat-value">3x to 5x</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Direct → Indirect Impact</span>
+                    <span class="stat-value">$1 → $3-5</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Recovery Timeline</span>
+                    <span class="stat-value">4-6 weeks per week of disruption</span>
+                </div>
+            </div>
+
+            <div class="data-card">
+                <h3>COVID-19 Supply Chain Precedent</h3>
+                <div class="stat-row">
+                    <span class="stat-label">Peak Trade Decline</span>
+                    <span class="stat-value">-20% to -30%</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">GDP Impact</span>
+                    <span class="stat-value">-30% (April 2020)</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Recovery Duration</span>
+                    <span class="stat-value">8+ months to previous levels</span>
+                </div>
+            </div>
+
+            <div class="calculation">
+COVID Example:
+Trade decline 20-30% → GDP decline ~30%
+Implies multiplier of 1.0-1.5x for 2-3 month disruption
+
+Supply chain literature: 3-5x for targeted infrastructure
+(Studies: Journal of Supply Chain Management, PMC databases)
+            </div>
+
+            <div class="sources">
+                <h4>Sources</h4>
+                <ul class="source-list">
+                    <li>PMC Supply Chain Studies & Literature</li>
+                    <li>Federal Reserve Economic Data (FRED) - COVID Impact</li>
+                    <li>Journal of Supply Chain Management - Multiplier Research</li>
+                    <li><a href="https://fred.stlouisfed.org/" class="source-link">Visit FRED Database</a></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Billionaire Wealth Section -->
+        <section id="billionaire-wealth">
+            <h2>
+                <span class="section-anchor"></span>
+                Billionaire Wealth Data
+            </h2>
+
+            <div class="data-card">
+                <h3>Total Billionaire Wealth (2025-2026)</h3>
+                <div class="stat-row">
+                    <span class="stat-label">Total Net Worth</span>
+                    <span class="stat-value">$8.2 trillion</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">2025 Growth</span>
+                    <span class="stat-value">+$2.5 trillion</span>
+                </div>
+            </div>
+
+            <div class="calculation">
+Daily accumulation (2025):
+$2.5T ÷ 365 days = $6.85B/day
+$6.85B ÷ 86,400 seconds = $79,282/second
+            </div>
+
+            <div class="data-card">
+                <h3>Top Billionaires</h3>
+                <div class="stat-row">
+                    <span class="stat-label">Elon Musk (Feb 2026)</span>
+                    <span class="stat-value">$726B</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Share of Total</span>
+                    <span class="stat-value">~8.8%</span>
+                </div>
+            </div>
+
+            <p>Billionaire wealth has grown dramatically, with concentration increasingly in technology and finance sectors. Most billionaire wealth is held in equity positions, making it sensitive to market valuations.</p>
+
+            <div class="sources">
+                <h4>Sources</h4>
+                <ul class="source-list">
+                    <li>Americans for Tax Fairness - Billionaire Wealth Database</li>
+                    <li>Forbes Billionaires List (2025-2026)</li>
+                    <li><a href="https://www.americansfortaxfairness.org/" class="source-link">Americans for Tax Fairness</a></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Post-Strike Market Crash Section -->
+        <section id="post-strike-crash">
+            <h2>
+                <span class="section-anchor"></span>
+                Post-Strike Market Crash Projection
+            </h2>
+
+            <p>Infrastructure disruptions can trigger equity market declines. Historical precedent exists from the COVID-19 pandemic, when markets fell 30% in March 2020 amid supply chain breakdown and economic uncertainty.</p>
+
+            <div class="data-card">
+                <h3>COVID-19 Market Precedent (March 2020)</h3>
+                <div class="stat-row">
+                    <span class="stat-label">Peak Decline</span>
+                    <span class="stat-value">-30%</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Duration to Low</span>
+                    <span class="stat-value">~33 days</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Recovery to High</span>
+                    <span class="stat-value">~5 months</span>
+                </div>
+            </div>
+
+            <div class="data-card">
+                <h3>Billionaire Wealth Composition</h3>
+                <div class="stat-row">
+                    <span class="stat-label">Held in Equities</span>
+                    <span class="stat-value">~80%</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Real Estate/Other</span>
+                    <span class="stat-value">~20%</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Equity Sensitivity</span>
+                    <span class="stat-value">High volatility</span>
+                </div>
+            </div>
+
+            <div class="risk-scenario">
+                <h4>Scenario Analysis: Market Correction Impacts</h4>
+
+                <div class="scenario-row">
+                    <span class="scenario-label">Current Billionaire Wealth</span>
+                    <span class="scenario-value">$8.2T</span>
+                </div>
+
+                <div class="scenario-row">
+                    <span class="scenario-label">35% Market Decline Scenario</span>
+                    <span class="scenario-value">$8.2T → $5.3T (-$2.9T)</span>
+                </div>
+
+                <div class="scenario-row">
+                    <span class="scenario-label">50% Market Decline Scenario</span>
+                    <span class="scenario-value">$8.2T → $3.9T (-$4.3T)</span>
+                </div>
+
+                <div style="margin-top: var(--spacing-lg); padding-top: var(--spacing-lg); border-top: 1px solid rgba(239, 68, 68, 0.2);">
+                    <h4 style="font-size: 13px; margin-bottom: var(--spacing-md); color: var(--accent-warning);">Impact on Elon Musk (35% decline):</h4>
+                    <div class="scenario-row">
+                        <span class="scenario-label">Current</span>
+                        <span class="scenario-value">$726B</span>
+                    </div>
+                    <div class="scenario-row">
+                        <span class="scenario-label">Post-35% Decline</span>
+                        <span class="scenario-value">$472B (-$254B)</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: var(--spacing-lg); padding-top: var(--spacing-lg); border-top: 1px solid rgba(239, 68, 68, 0.2);">
+                    <h4 style="font-size: 13px; margin-bottom: var(--spacing-md); color: var(--accent-warning);">Impact on Elon Musk (50% decline):</h4>
+                    <div class="scenario-row">
+                        <span class="scenario-label">Current</span>
+                        <span class="scenario-value">$726B</span>
+                    </div>
+                    <div class="scenario-row">
+                        <span class="scenario-label">Post-50% Decline</span>
+                        <span class="scenario-value">$363B (-$363B)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sources">
+                <h4>Sources</h4>
+                <ul class="source-list">
+                    <li>Federal Reserve Economic Data (FRED)</li>
+                    <li>Historical Market Data - COVID-19 Response Period</li>
+                    <li>Financial market analysis - Equity composition studies</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Canadian Infrastructure Section -->
+        <section id="canada-ports">
+            <h2>
+                <span class="section-anchor"></span>
+                Canadian Infrastructure Data
+            </h2>
+
+            <div class="data-card">
+                <h3>Port of Vancouver (2024)</h3>
+                <div class="stat-row">
+                    <span class="stat-label">Container Volume (TEU)</span>
+                    <span class="stat-value">3.47M TEU</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Total Cargo</span>
+                    <span class="stat-value">158M tonnes</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Status</span>
+                    <span class="stat-value">Canada's largest port</span>
+                </div>
+            </div>
+
+            <div class="data-card">
+                <h3>Port of Prince Rupert (2024)</h3>
+                <div class="stat-row">
+                    <span class="stat-label">Container Volume (TEU)</span>
+                    <span class="stat-value">886K TEU</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Total Cargo</span>
+                    <span class="stat-value">23.1M tonnes</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Growth Trajectory</span>
+                    <span class="stat-value">Fastest-growing</span>
+                </div>
+            </div>
+
+            <div class="data-card">
+                <h3>Port of Montreal (2024)</h3>
+                <div class="stat-row">
+                    <span class="stat-label">Container Volume (TEU)</span>
+                    <span class="stat-value">1.46M TEU</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Total Cargo</span>
+                    <span class="stat-value">35.3M tonnes</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Role</span>
+                    <span class="stat-value">Atlantic gateway</span>
+                </div>
+            </div>
+
+            <div class="data-card">
+                <h3>Canadian Rail Network</h3>
+                <div class="stat-row">
+                    <span class="stat-label">CN Rail: Revenue Tonne-Miles</span>
+                    <span class="stat-value">235B RTM</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">CN Rail: Annual Revenue</span>
+                    <span class="stat-value">$17B</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">CPKC: Network Size</span>
+                    <span class="stat-value">19,200 miles</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">CPKC: Annual Revenue</span>
+                    <span class="stat-value">$12.5B</span>
+                </div>
+            </div>
+
+            <div class="impact-comparison">
+                <div class="impact-item">
+                    <div class="impact-value">3.47M</div>
+                    <div class="impact-label">Vancouver TEU</div>
+                </div>
+                <div class="impact-item">
+                    <div class="impact-value">886K</div>
+                    <div class="impact-label">Prince Rupert TEU</div>
+                </div>
+                <div class="impact-item">
+                    <div class="impact-value">1.46M</div>
+                    <div class="impact-label">Montreal TEU</div>
+                </div>
+                <div class="impact-item">
+                    <div class="impact-value">235B</div>
+                    <div class="impact-label">CN RTM</div>
+                </div>
+            </div>
+
+            <div class="sources">
+                <h4>Sources</h4>
+                <ul class="source-list">
+                    <li>Port of Vancouver Authority - Annual Reports</li>
+                    <li>Port of Prince Rupert Authority - Annual Reports</li>
+                    <li>Port of Montreal - Operating Statistics</li>
+                    <li>Canadian National Railway (CN) - Annual Reports</li>
+                    <li>Canadian Pacific Kansas City Railway (CPKC) - Annual Reports</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Mexican Infrastructure Section -->
+        <section id="mexico-data">
+            <h2>
+                <span class="section-anchor"></span>
+                Mexican Infrastructure Data
+            </h2>
+
+            <div class="data-card">
+                <h3>Port of Manzanillo</h3>
+                <div class="stat-row">
+                    <span class="stat-label">Container Volume (TEU)</span>
+                    <span class="stat-value">3.92M TEU</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Total Cargo</span>
+                    <span class="stat-value">33.6M tonnes</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Status</span>
+                    <span class="stat-value">Largest Mexican port by volume</span>
+                </div>
+            </div>
+
+            <div class="data-card">
+                <h3>Port of Lázaro Cárdenas</h3>
+                <div class="stat-row">
+                    <span class="stat-label">Container Volume (9-month 2024)</span>
+                    <span class="stat-value">1.76M TEU</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Annualized Estimate</span>
+                    <span class="stat-value">~2.35M TEU</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Region</span>
+                    <span class="stat-value">Pacific gateway</span>
+                </div>
+            </div>
+
+            <div class="data-card">
+                <h3>U.S.-Mexico Trade</h3>
+                <div class="stat-row">
+                    <span class="stat-label">Mexico's Rank</span>
+                    <span class="stat-value">#1 US Trading Partner</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">2024 Total Trade Value</span>
+                    <span class="stat-value">$935B</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Daily Trade Volume</span>
+                    <span class="stat-value">~$2.56B/day</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Share of US Trade</span>
+                    <span class="stat-value">~17% of total</span>
+                </div>
+            </div>
+
+            <div class="calculation">
+US-Mexico 2024 Trade: $935B annual
+Daily: $935B ÷ 365 = $2.56B/day
+This represents the largest bilateral trade for the US
+            </div>
+
+            <div class="impact-comparison">
+                <div class="impact-item">
+                    <div class="impact-value">3.92M</div>
+                    <div class="impact-label">Manzanillo TEU</div>
+                </div>
+                <div class="impact-item">
+                    <div class="impact-value">2.35M</div>
+                    <div class="impact-label">L. Cárdenas TEU</div>
+                </div>
+                <div class="impact-item">
+                    <div class="impact-value">$935B</div>
+                    <div class="impact-label">Annual US trade</div>
+                </div>
+            </div>
+
+            <div class="sources">
+                <h4>Sources</h4>
+                <ul class="source-list">
+                    <li>Mexican Port Authorities (APM, API)</li>
+                    <li>U.S. Census Bureau - U.S.-Mexico Trade Data</li>
+                    <li>Office of the U.S. Trade Representative (USTR) - Trade Agreements</li>
+                    <li><a href="https://www.census.gov/foreign-trade/" class="source-link">Census Bureau Trade Statistics</a></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Panama Canal Section -->
+        <section id="panama">
+            <h2>
+                <span class="section-anchor"></span>
+                Panama Canal
+            </h2>
+
+            <div class="data-card">
+                <h3>Panama Canal Traffic Distribution</h3>
+                <div class="stat-row">
+                    <span class="stat-label">US-Related Traffic</span>
+                    <span class="stat-value">~76%</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">US Container Traffic</span>
+                    <span class="stat-value">~40%</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Estimated US Value</span>
+                    <span class="stat-value">~$270B/year</span>
+                </div>
+            </div>
+
+            <div class="data-card">
+                <h3>Drought Impact (2023-2024)</h3>
+                <div class="stat-row">
+                    <span class="stat-label">Pre-Drought Daily Transits</span>
+                    <span class="stat-value">~37 vessels/day</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Drought-Reduced Transits</span>
+                    <span class="stat-value">~18 vessels/day</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Reduction</span>
+                    <span class="stat-value">-51% capacity</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Duration</span>
+                    <span class="stat-value">Extended 2023-2024</span>
+                </div>
+            </div>
+
+            <div class="calculation">
+Panama Canal Constraint Impact:
+Daily Transits: 37 → 18 (-51%)
+If $270B annual passes through ÷ 365 = $739M/day
+51% reduction = ~$377M/day disrupted
+(This forces rerouting via South Africa, adding 2+ weeks)
+            </div>
+
+            <p>The Panama Canal is critical infrastructure for global trade. The 2023-2024 drought demonstrated how climate and water constraints can severely restrict capacity, forcing expensive reroutings and delays. Approximately 76% of Panama Canal traffic is US-related, making it vital to American supply chains.</p>
+
+            <div class="sources">
+                <h4>Sources</h4>
+                <ul class="source-list">
+                    <li>Panama Canal Authority (ACP) - Official Data</li>
+                    <li>Bureau of Transportation Statistics (BTS) - Traffic Analysis</li>
+                    <li><a href="https://www.pancanal.com/" class="source-link">Panama Canal Authority</a></li>
+                    <li><a href="https://www.bts.dot.gov/" class="source-link">Bureau of Transportation Statistics</a></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Methodology Summary -->
+        <section id="methodology-summary" style="margin-top: var(--spacing-2xl);">
+            <h2>
+                <span class="section-anchor"></span>
+                Methodology Summary
+            </h2>
+
+            <div class="data-card">
+                <h3>Data Integration Approach</h3>
+                <p style="color: var(--text-secondary); margin-bottom: var(--spacing-md);">All figures are derived from official government databases, regulatory filings, and peer-reviewed research. Where precise data is unavailable, conservative estimates use:</p>
+                <ul style="color: var(--text-secondary); margin-left: var(--spacing-lg); margin-bottom: var(--spacing-md);">
+                    <li>Historical precedent from similar disruptions</li>
+                    <li>Industry-provided estimates (JPMorgan, AAR)</li>
+                    <li>Supply chain multiplier literature (3-5x range)</li>
+                    <li>Equity market composition (80% equities)</li>
+                </ul>
+            </div>
+
+            <div class="data-card">
+                <h3>Key Assumptions</h3>
+                <ul style="color: var(--text-secondary); margin-left: var(--spacing-lg); margin-bottom: var(--spacing-md);">
+                    <li><strong>Trade value:</strong> 365-day average of 2024 actual trade flows</li>
+                    <li><strong>Port impacts:</strong> Based on historical strike data and terminal throughput</li>
+                    <li><strong>Rail impacts:</strong> 2022 AAR estimates for nationwide disruption</li>
+                    <li><strong>Refinery impacts:</strong> Daily output × product mix pricing</li>
+                    <li><strong>Border impacts:</strong> Annual crossing data ÷ 365</li>
+                    <li><strong>Multiplier:</strong> 3-5x based on supply chain literature</li>
+                    <li><strong>Market impacts:</strong> COVID-19 precedent (30% decline)</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Common Defense Infrastructure Analysis | Data last updated: March 2026</p>
+        <p>All figures represent estimates based on publicly available data and historical precedent. This analysis is for informational purposes only.</p>
+    </footer>
+</body>
+</html>

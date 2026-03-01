@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Common Defense</title>
+<style>
+  :root {
+    --black: #0a0a0a;
+    --dark: #141414;
+    --card: #1a1a1a;
+    --border: #2a2a2a;
+    --muted: #666;
+    --light: #999;
+    --text: #e0e0e0;
+    --white: #f5f5f5;
+    --red: #c53030;
+    --red-dim: #9b2c2c;
+    --red-glow: rgba(197,48,48,0.15);
+    --green: #38a169;
+    --blue: #3182ce;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: Georgia, 'Times New Roman', serif; background: var(--black); color: var(--text); line-height: 1.7; }
+  a { color: var(--red); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,10,10,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; height: 60px;
+  }
+  .nav-logo { font-family: Arial, sans-serif; font-weight: 900; font-size: 16px; letter-spacing: 3px; color: var(--white); text-transform: uppercase; }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a { font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--light); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta { font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; background: var(--red); color: white; padding: 10px 24px; border: none; cursor: pointer; font-weight: 700; transition: background 0.2s; }
+  .nav-cta:hover { background: var(--red-dim); }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative; min-height: 100vh; display: flex; align-items: flex-end;
+    /* REPLACE THIS URL WITH YOUR MINNEAPOLIS PHOTO */
+    background: linear-gradient(to bottom, rgba(10,10,10,0) 0%, rgba(10,10,10,0.4) 40%, rgba(10,10,10,0.85) 75%, rgba(10,10,10,1) 100%),
+                url('https://images.unsplash.com/photo-1591848516844-ae4b2e25b0c0?w=1920&q=80') center center / cover no-repeat;
+    padding: 0 40px 80px;
+  }
+  .hero-content { max-width: 800px; }
+  .hero-dateline { font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--red); margin-bottom: 16px; }
+  .hero h1 { font-family: Arial, sans-serif; font-size: 72px; font-weight: 900; line-height: 1.0; color: var(--white); margin-bottom: 20px; text-transform: uppercase; }
+  .hero h1 span { color: var(--red); }
+  .hero-sub { font-size: 20px; color: var(--light); max-width: 600px; margin-bottom: 32px; line-height: 1.6; font-style: italic; }
+  .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn-primary { font-family: Arial, sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; background: var(--red); color: white; padding: 16px 40px; border: none; cursor: pointer; font-weight: 700; transition: all 0.2s; }
+  .btn-primary:hover { background: #e53e3e; transform: translateY(-1px); }
+  .btn-secondary { font-family: Arial, sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; background: transparent; color: var(--white); padding: 16px 40px; border: 1px solid var(--white); cursor: pointer; font-weight: 700; transition: all 0.2s; }
+  .btn-secondary:hover { background: rgba(255,255,255,0.08); }
+
+  /* ===== STATS BAR ===== */
+  .stats-bar {
+    background: var(--dark); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    display: grid; grid-template-columns: repeat(4, 1fr); padding: 0;
+  }
+  .stat { text-align: center; padding: 32px 20px; border-right: 1px solid var(--border); }
+  .stat:last-child { border-right: none; }
+  .stat-num { font-family: Arial, sans-serif; font-size: 36px; font-weight: 900; color: var(--white); }
+  .stat-label { font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+
+  /* ===== SECTIONS ===== */
+  section { padding: 100px 40px; max-width: 1200px; margin: 0 auto; }
+  .section-label { font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--red); margin-bottom: 12px; }
+  .section-title { font-family: Arial, sans-serif; font-size: 40px; font-weight: 900; color: var(--white); line-height: 1.15; margin-bottom: 24px; }
+  .section-body { font-size: 18px; color: var(--light); max-width: 700px; line-height: 1.8; }
+  .section-body strong { color: var(--text); }
+
+  /* ===== PILLAR CARDS ===== */
+  .pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 48px; }
+  .pillar-card {
+    background: var(--card); border: 1px solid var(--border); padding: 36px;
+    transition: border-color 0.3s, transform 0.2s; cursor: pointer; position: relative; overflow: hidden;
+  }
+  .pillar-card:hover { border-color: var(--red); transform: translateY(-2px); }
+  .pillar-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--red); opacity: 0; transition: opacity 0.3s; }
+  .pillar-card:hover::before { opacity: 1; }
+  .pillar-num { font-family: Arial, sans-serif; font-size: 48px; font-weight: 900; color: var(--border); position: absolute; top: 16px; right: 24px; }
+  .pillar-title { font-family: Arial, sans-serif; font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+  .pillar-desc { font-size: 15px; color: var(--light); line-height: 1.7; }
+  .pillar-full { display: none; }
+
+  /* ===== PLEDGE ===== */
+  .pledge-section { background: var(--dark); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 100px 40px; }
+  .pledge-inner { max-width: 800px; margin: 0 auto; text-align: center; }
+  .pledge-text {
+    font-size: 22px; font-style: italic; color: var(--text); line-height: 1.7;
+    border-left: 3px solid var(--red); padding: 24px 32px; text-align: left;
+    background: var(--red-glow); margin: 40px 0;
+  }
+  .pledge-form { display: flex; gap: 12px; max-width: 500px; margin: 32px auto 0; }
+  .pledge-input {
+    flex: 1; padding: 14px 20px; background: var(--card); border: 1px solid var(--border);
+    color: var(--white); font-family: Arial, sans-serif; font-size: 14px; outline: none;
+    transition: border-color 0.2s;
+  }
+  .pledge-input:focus { border-color: var(--red); }
+  .pledge-input::placeholder { color: var(--muted); }
+  .pledge-count { font-family: Arial, sans-serif; font-size: 13px; color: var(--muted); margin-top: 16px; }
+
+  /* ===== MUTUAL AID MARKETPLACE ===== */
+  .aid-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px; }
+  .aid-card {
+    background: var(--card); border: 1px solid var(--border); padding: 24px;
+    transition: border-color 0.3s;
+  }
+  .aid-card:hover { border-color: var(--green); }
+  .aid-type { font-family: Arial, sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 4px 10px; display: inline-block; margin-bottom: 12px; }
+  .aid-offer { background: rgba(56,161,105,0.15); color: var(--green); }
+  .aid-need { background: rgba(197,48,48,0.15); color: var(--red); }
+  .aid-title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+  .aid-meta { font-size: 13px; color: var(--muted); }
+  .aid-credits { font-family: Arial, sans-serif; font-size: 14px; font-weight: 700; color: var(--white); margin-top: 12px; }
+  .aid-credits span { color: var(--green); }
+  .aid-location { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .aid-tabs { display: flex; gap: 0; margin-top: 40px; border-bottom: 1px solid var(--border); }
+  .aid-tab {
+    font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    padding: 14px 28px; background: none; border: none; color: var(--muted); cursor: pointer;
+    border-bottom: 2px solid transparent; transition: all 0.2s;
+  }
+  .aid-tab.active { color: var(--white); border-bottom-color: var(--red); }
+  .aid-tab:hover { color: var(--light); }
+  .aid-post-btn { margin-top: 24px; }
+
+  /* ===== ORGANIZER VOTE ===== */
+  .vote-section { background: var(--dark); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .vote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px; }
+  .candidate-card {
+    background: var(--card); border: 1px solid var(--border); padding: 28px; position: relative;
+    transition: all 0.3s; cursor: pointer;
+  }
+  .candidate-card:hover { border-color: var(--blue); }
+  .candidate-card.voted { border-color: var(--green); background: rgba(56,161,105,0.05); }
+  .candidate-name { font-family: Arial, sans-serif; font-size: 20px; font-weight: 700; color: var(--white); }
+  .candidate-role { font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+  .candidate-stats { display: flex; gap: 20px; margin-top: 16px; }
+  .candidate-stat { font-family: Arial, sans-serif; font-size: 12px; color: var(--light); }
+  .candidate-stat strong { color: var(--white); }
+  .candidate-bio { font-size: 14px; color: var(--light); margin-top: 12px; line-height: 1.6; }
+  .vote-btn {
+    margin-top: 16px; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 2px;
+    text-transform: uppercase; padding: 12px 28px; background: var(--blue); color: white;
+    border: none; cursor: pointer; font-weight: 700; transition: all 0.2s; width: 100%;
+  }
+  .vote-btn:hover { background: #2b6cb0; }
+  .vote-btn.voted-btn { background: var(--green); }
+  .chain-badge {
+    font-family: 'Courier New', monospace; font-size: 11px; color: var(--muted);
+    background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+    padding: 12px 16px; margin-top: 24px; word-break: break-all;
+  }
+  .chain-badge strong { color: var(--light); }
+  .verified-badge { display: inline-block; background: rgba(56,161,105,0.15); color: var(--green); font-family: Arial, sans-serif; font-size: 10px; letter-spacing: 1px; padding: 3px 8px; text-transform: uppercase; margin-left: 8px; vertical-align: middle; }
+
+  /* ===== CREDITS ===== */
+  .credits-display {
+    display: flex; align-items: center; gap: 40px; background: var(--card);
+    border: 1px solid var(--border); padding: 32px; margin-top: 40px;
+  }
+  .credit-balance { text-align: center; min-width: 160px; }
+  .credit-num { font-family: Arial, sans-serif; font-size: 48px; font-weight: 900; color: var(--green); }
+  .credit-label { font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+  .credit-history { flex: 1; }
+  .credit-tx { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .credit-tx:last-child { border-bottom: none; }
+  .credit-tx-desc { color: var(--light); }
+  .credit-tx-amount { font-family: Arial, sans-serif; font-weight: 700; }
+  .credit-plus { color: var(--green); }
+  .credit-minus { color: var(--red); }
+
+  /* ===== PRIVACY TOOLKIT ===== */
+  .privacy-steps { margin-top: 40px; }
+  .privacy-step {
+    background: var(--card); border: 1px solid var(--border); padding: 24px 28px;
+    margin-bottom: 12px; display: flex; align-items: flex-start; gap: 20px;
+    transition: border-color 0.3s; cursor: pointer;
+  }
+  .privacy-step:hover { border-color: var(--red); }
+  .step-check {
+    width: 28px; height: 28px; border: 2px solid var(--border); display: flex;
+    align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px;
+    transition: all 0.2s; margin-top: 2px;
+  }
+  .step-check.checked { border-color: var(--green); color: var(--green); background: rgba(56,161,105,0.1); }
+  .step-content { flex: 1; }
+  .step-title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+  .step-desc { font-size: 14px; color: var(--muted); line-height: 1.5; }
+  .step-time { font-family: Arial, sans-serif; font-size: 11px; color: var(--muted); letter-spacing: 1px; }
+
+  /* ===== RESISTANCE TOOLKIT ===== */
+  .tactic-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 40px; }
+  .tactic-card {
+    background: var(--card); border: 1px solid var(--border); padding: 28px;
+    transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .tactic-card:hover { border-color: var(--red); }
+  .tactic-status { font-family: Arial, sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+  .tactic-active { color: var(--green); }
+  .tactic-planning { color: #d69e2e; }
+  .tactic-title { font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+  .tactic-desc { font-size: 14px; color: var(--muted); line-height: 1.6; }
+  .tactic-impact { margin-top: 16px; }
+  .tactic-impact-label { font-family: Arial, sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .impact-bar { height: 4px; background: var(--border); width: 100%; }
+  .impact-fill { height: 100%; background: var(--red); transition: width 1s; }
+
+  /* ===== COMMS ===== */
+  .comms-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px; }
+  .comm-card { background: var(--card); border: 1px solid var(--border); padding: 28px; text-align: center; transition: border-color 0.3s; }
+  .comm-card:hover { border-color: var(--red); }
+  .comm-icon { font-size: 32px; margin-bottom: 16px; }
+  .comm-title { font-family: Arial, sans-serif; font-size: 14px; font-weight: 700; color: var(--white); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .comm-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  /* ===== QUOTE BREAK ===== */
+  .quote-break {
+    padding: 80px 40px; text-align: center;
+    background: var(--dark); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  .quote-text { font-size: 24px; font-style: italic; color: var(--text); max-width: 700px; margin: 0 auto; line-height: 1.6; }
+  .quote-attr { font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 16px; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    padding: 60px 40px 40px; border-top: 1px solid var(--border);
+    text-align: center; background: var(--black);
+  }
+  .footer-logo { font-family: Arial, sans-serif; font-size: 14px; font-weight: 900; letter-spacing: 4px; color: var(--white); text-transform: uppercase; }
+  .footer-tagline { font-size: 14px; font-style: italic; color: var(--muted); margin-top: 8px; }
+  .footer-links { margin-top: 24px; display: flex; justify-content: center; gap: 24px; }
+  .footer-links a { font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+  .footer-live {
+    margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border);
+    font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .footer-live .pulse { display: inline-block; width: 8px; height: 8px; background: var(--red); border-radius: 50%; margin-right: 8px; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .footer-legal { font-size: 12px; color: #333; margin-top: 16px; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 42px; }
+    .pillars, .aid-grid, .vote-grid, .tactic-cards, .comms-grid { grid-template-columns: 1fr; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { display: none; }
+    .credits-display { flex-direction: column; }
+    .pledge-form { flex-direction: column; }
+  }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.85); z-index: 200; align-items: center; justify-content: center; padding: 40px;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: var(--dark); border: 1px solid var(--border); max-width: 600px; width: 100%;
+    max-height: 80vh; overflow-y: auto; padding: 40px;
+  }
+  .modal-close { float: right; background: none; border: none; color: var(--muted); font-size: 24px; cursor: pointer; }
+  .modal-close:hover { color: var(--white); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Common Defense</div>
+  <div class="nav-links">
+    <a href="#strike">Strike</a>
+    <a href="#aid">Mutual Aid</a>
+    <a href="#pledge">Pledge</a>
+    <a href="#vote">Organizers</a>
+    <a href="#resist">Resist</a>
+    <a href="#privacy">Privacy</a>
+  </div>
+  <button class="nav-cta" onclick="document.getElementById('pledge').scrollIntoView({behavior:'smooth'})">Sign the Pledge</button>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <!--
+    =====================================================
+    TO ADD YOUR MINNEAPOLIS PHOTO:
+    Replace the background-image URL in the .hero CSS rule
+    with your chosen image from MinnPost, ProPublica,
+    Rolling Stone, or your own photo.
+    =====================================================
+  -->
+  <div class="hero-content">
+    <div class="hero-dateline">Minneapolis, January 24, 2026</div>
+    <h1>Common<br><span>Defense</span></h1>
+    <p class="hero-sub">Provide for the common defence. A platform for organized, nonviolent resistance to the capture of American democracy.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.getElementById('pledge').scrollIntoView({behavior:'smooth'})">Sign the Pledge</button>
+      <button class="btn-secondary" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">Read the Mission</button>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-num" id="pledgeCount">0</div>
+    <div class="stat-label">Pledges Signed</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" id="chapterCount">0</div>
+    <div class="stat-label">Local Chapters</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" id="fundCount">$0</div>
+    <div class="stat-label">Strike Fund</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" id="aidCount">0</div>
+    <div class="stat-label">Mutual Aid Matches</div>
+  </div>
+</div>
+
+<!-- ABOUT / MISSION -->
+<section id="about">
+  <div class="section-label">The Situation</div>
+  <div class="section-title">This is not a warning.<br>This is a description.</div>
+  <div class="section-body">
+    <p>Federal agents killed Alex Pretti — a VA nurse — for standing between an officer and a woman thrown to the ground. Renée Good was killed by an ICE agent weeks before him. Thousands showed up that night. Tens of thousands came the next day.</p>
+    <br>
+    <p>Representatives Khanna and Massie have seen the unredacted Epstein files. Powerful men are being protected by government redactions. They may have to use the Constitution's Speech and Debate clause just to say the names out loud.</p>
+    <br>
+    <p>Citizens United legalized the purchase of American elections. The policy preferences of average Americans have near-zero effect on what becomes law.</p>
+    <br>
+    <p><strong>The question is not whether Americans care. The question is whether anyone is building the infrastructure to turn that caring into power before the next crisis arrives.</strong></p>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<div class="quote-break">
+  <div class="quote-text">"Democracy is the recurrent suspicion that more than half of the people are right more than half of the time."</div>
+  <div class="quote-attr">E.B. White, 1943</div>
+</div>
+
+<!-- FIVE PILLARS -->
+<section id="strike">
+  <div class="section-label">The Platform</div>
+  <div class="section-title">Five pillars. One infrastructure.<br>Built before the crisis.</div>
+  <div class="pillars">
+
+    <div class="pillar-card" onclick="openModal('strike-modal')">
+      <div class="pillar-num">01</div>
+      <div class="pillar-title">National Strike Apparatus</div>
+      <div class="pillar-desc">Pre-planned, pre-funded general strike infrastructure. Shared doctrine, centralized resources, distributed local execution. Activated if the 2028 presidential transition is subverted.</div>
+    </div>
+
+    <div class="pillar-card" onclick="openModal('aid-modal')">
+      <div class="pillar-num">02</div>
+      <div class="pillar-title">Mutual Aid Network</div>
+      <div class="pillar-desc">Real-time needs-and-skills matching. Post what you have, post what you need. Runs year-round for community resilience. Scales to full mobilization.</div>
+    </div>
+
+    <div class="pillar-card" onclick="openModal('pledge-modal')">
+      <div class="pillar-num">03</div>
+      <div class="pillar-title">Citizens United Pledge</div>
+      <div class="pillar-desc">A public, name-on-it commitment to only vote for candidates who reject Citizens United. Candidate scorecards. Social accountability. Lincoln's model.</div>
+    </div>
+
+    <div class="pillar-card" onclick="openModal('resist-modal')">
+      <div class="pillar-num">04</div>
+      <div class="pillar-title">Resistance Toolkit</div>
+      <div class="pillar-desc">Creative, nonviolent tactics. ICE recruitment disruption. Ad-cost inflation. Verified data opt-outs. Automated boycott infrastructure.</div>
+    </div>
+
+    <div class="pillar-card" onclick="openModal('comms-modal')" style="grid-column: span 2;">
+      <div class="pillar-num">05</div>
+      <div class="pillar-title">Resilient Communications</div>
+      <div class="pillar-desc">End-to-end encrypted coordination via Signal. Mesh networking readiness. Privacy hardening. Dead man's switch publishing. No single point of failure.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CITIZENS UNITED PLEDGE -->
+<div class="pledge-section" id="pledge">
+  <div class="pledge-inner">
+    <div class="section-label">Pillar III</div>
+    <div class="section-title">The Citizens United Pledge</div>
+    <div class="pledge-text">
+      I will only vote for a presidential candidate who commits to treating Citizens United v. FEC as illegitimate and actively pursues its legislative or constitutional reversal. Lincoln did not ask the Court's permission to overturn Dred Scott. Neither do I.
+    </div>
+    <p style="color: var(--light); font-size: 16px; margin-bottom: 8px;">Your name. On the record. Publicly accountable.</p>
+    <div class="pledge-form">
+      <input type="text" class="pledge-input" id="pledgeName" placeholder="Your full name">
+      <button class="btn-primary" onclick="signPledge()" style="white-space: nowrap;">Sign the Pledge</button>
+    </div>
+    <div class="pledge-count" id="pledgeMsg">Join the signers. Every name is public. Every name matters.</div>
+  </div>
+</div>
+
+<!-- MUTUAL AID MARKETPLACE -->
+<section id="aid">
+  <div class="section-label">Pillar II — Mutual Aid</div>
+  <div class="section-title">The Marketplace</div>
+  <div class="section-body">Post what you have. Post what you need. The system matches locally. Contributions earn credits. A strike only works if people can survive it.</div>
+
+  <div class="aid-tabs">
+    <button class="aid-tab active" onclick="filterAid('all', this)">All</button>
+    <button class="aid-tab" onclick="filterAid('offer', this)">Offers</button>
+    <button class="aid-tab" onclick="filterAid('need', this)">Needs</button>
+    <button class="aid-tab" onclick="filterAid('food', this)">Food</button>
+    <button class="aid-tab" onclick="filterAid('housing', this)">Housing</button>
+    <button class="aid-tab" onclick="filterAid('medical', this)">Medical</button>
+    <button class="aid-tab" onclick="filterAid('transport', this)">Transport</button>
+    <button class="aid-tab" onclick="filterAid('legal', this)">Legal</button>
+  </div>
+
+  <div class="aid-grid" id="aidGrid">
+    <div class="aid-card" data-type="offer" data-cat="food">
+      <span class="aid-type aid-offer">Offering</span>
+      <div class="aid-title">Hot meals for 20 people</div>
+      <div class="aid-meta">Available Sat & Sun, 11am–2pm. Can deliver within 5 mi.</div>
+      <div class="aid-credits"><span>+3</span> credits / session</div>
+      <div class="aid-location">Minneapolis, MN — Whittier</div>
+    </div>
+    <div class="aid-card" data-type="need" data-cat="legal">
+      <span class="aid-type aid-need">Needed</span>
+      <div class="aid-title">Immigration attorney consult</div>
+      <div class="aid-meta">Family needs advice re: deportation proceedings. Urgent.</div>
+      <div class="aid-credits"><span>5</span> credits</div>
+      <div class="aid-location">Minneapolis, MN — Phillips</div>
+    </div>
+    <div class="aid-card" data-type="offer" data-cat="housing">
+      <span class="aid-type aid-offer">Offering</span>
+      <div class="aid-title">Spare bedroom, 2 weeks</div>
+      <div class="aid-meta">Private room, shared bath. Safe house for organizers if needed.</div>
+      <div class="aid-credits"><span>+8</span> credits / week</div>
+      <div class="aid-location">St. Paul, MN — Summit Hill</div>
+    </div>
+    <div class="aid-card" data-type="need" data-cat="transport">
+      <span class="aid-type aid-need">Needed</span>
+      <div class="aid-title">Rides to Saturday actions</div>
+      <div class="aid-meta">3 people from south Minneapolis to Nicollet. Weekly.</div>
+      <div class="aid-credits"><span>2</span> credits / trip</div>
+      <div class="aid-location">Minneapolis, MN — Powderhorn</div>
+    </div>
+    <div class="aid-card" data-type="offer" data-cat="medical">
+      <span class="aid-type aid-offer">Offering</span>
+      <div class="aid-title">Street medic — protest first aid</div>
+      <div class="aid-meta">RN, trauma-trained. Available for actions with 24hr notice.</div>
+      <div class="aid-credits"><span>+5</span> credits / action</div>
+      <div class="aid-location">Minneapolis, MN</div>
+    </div>
+    <div class="aid-card" data-type="offer" data-cat="food">
+      <span class="aid-type aid-offer">Offering</span>
+      <div class="aid-title">Weekly grocery run for 3 families</div>
+      <div class="aid-meta">Costco run every Tuesday. Can add families to the list.</div>
+      <div class="aid-credits"><span>+4</span> credits / run</div>
+      <div class="aid-location">Bloomington, MN</div>
+    </div>
+  </div>
+  <button class="btn-primary aid-post-btn" onclick="alert('Post your offer or need — coming soon')">Post to Marketplace</button>
+</section>
+
+<!-- CREDITS SYSTEM -->
+<section>
+  <div class="section-label">Labor Credits</div>
+  <div class="section-title">The currency is the work.</div>
+  <div class="section-body">One hour of labor for the movement = one credit. No speculation. No trading. No buying your way in. The only way to earn credits is to show up and do the work. Every transaction verified on-chain, every identity protected by zero-knowledge proofs.</div>
+
+  <div class="credits-display">
+    <div class="credit-balance">
+      <div class="credit-num">47</div>
+      <div class="credit-label">Your Credits</div>
+    </div>
+    <div class="credit-history">
+      <div class="credit-tx">
+        <span class="credit-tx-desc">Cooked meals — Chapter meeting (Feb 22)</span>
+        <span class="credit-tx-amount credit-plus">+3</span>
+      </div>
+      <div class="credit-tx">
+        <span class="credit-tx-desc">Drove 3 members to action (Feb 20)</span>
+        <span class="credit-tx-amount credit-plus">+2</span>
+      </div>
+      <div class="credit-tx">
+        <span class="credit-tx-desc">Received legal consult (Feb 18)</span>
+        <span class="credit-tx-amount credit-minus">-5</span>
+      </div>
+      <div class="credit-tx">
+        <span class="credit-tx-desc">Distributed flyers — 4 hours (Feb 15)</span>
+        <span class="credit-tx-amount credit-plus">+4</span>
+      </div>
+      <div class="credit-tx">
+        <span class="credit-tx-desc">Grocery delivery for 2 families (Feb 12)</span>
+        <span class="credit-tx-amount credit-plus">+4</span>
+      </div>
+    </div>
+  </div>
+  <div class="chain-badge">
+    <strong>Ledger:</strong> 0x7f2c...a3b1 &nbsp;|&nbsp; <strong>Network:</strong> Polygon &nbsp;|&nbsp; <strong>Last verified:</strong> Block #51,204,887 &nbsp;|&nbsp; <strong>Status:</strong> <span style="color:var(--green);">&#9679;</span> Synced
+  </div>
+</section>
+
+<!-- ORGANIZER ELECTIONS -->
+<div class="vote-section" id="vote">
+  <section>
+    <div class="section-label">Democratic Structure</div>
+    <div class="section-title">Elect Your Organizers.<br>Verify the Math.</div>
+    <div class="section-body">Every organizer is elected by their local chapter through cryptographically verified, publicly auditable, privately cast votes. No phony electors. No backroom deals. The math proves the result.</div>
+
+    <div style="margin-top: 32px; font-family: Arial, sans-serif;">
+      <span style="font-size:11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted);">Active Election</span>
+      <span style="font-size:11px; letter-spacing: 2px; text-transform: uppercase; color: var(--green); margin-left: 12px;">&#9679; Open — 3 days remaining</span>
+    </div>
+    <div style="font-family: Arial, sans-serif; font-size: 16px; color: var(--white); font-weight: 700; margin-top: 8px;">
+      Minneapolis Chapter — Local Organizer
+      <span class="verified-badge">zk-verified</span>
+    </div>
+
+    <div class="vote-grid">
+      <div class="candidate-card" id="cand1">
+        <div class="candidate-name">Maria Santos</div>
+        <div class="candidate-role">Candidate for Local Organizer</div>
+        <div class="candidate-stats">
+          <div class="candidate-stat"><strong>142</strong> credits earned</div>
+          <div class="candidate-stat"><strong>8</strong> months active</div>
+          <div class="candidate-stat"><strong>3</strong> endorsements</div>
+        </div>
+        <div class="candidate-bio">Organizer with SEIU Local 26. Led food distribution during January actions. Fluent in Spanish and English. Proposed expanding mutual aid to include emergency housing network.</div>
+        <button class="vote-btn" onclick="castVote('cand1', this)">Cast Vote</button>
+      </div>
+      <div class="candidate-card" id="cand2">
+        <div class="candidate-name">James Adler</div>
+        <div class="candidate-role">Candidate for Local Organizer</div>
+        <div class="candidate-stats">
+          <div class="candidate-stat"><strong>98</strong> credits earned</div>
+          <div class="candidate-stat"><strong>6</strong> months active</div>
+          <div class="candidate-stat"><strong>5</strong> endorsements</div>
+        </div>
+        <div class="candidate-bio">Former teacher, current legal observer coordinator. Built the chapter's mesh networking capability. Running on platform of communications security and rapid-response legal defense.</div>
+        <button class="vote-btn" onclick="castVote('cand2', this)">Cast Vote</button>
+      </div>
+    </div>
+
+    <div class="chain-badge">
+      <strong>Election Contract:</strong> 0x4e2d...f891 &nbsp;|&nbsp; <strong>Protocol:</strong> Vocdoni zk-SNARK &nbsp;|&nbsp; <strong>Eligible voters:</strong> 247 verified members &nbsp;|&nbsp; <strong>Votes cast:</strong> 163 &nbsp;|&nbsp; <strong>Quorum:</strong> <span style="color:var(--green);">Met (66%)</span>
+    </div>
+    <p style="font-size: 13px; color: var(--muted); margin-top: 12px;">Your vote is cryptographically private. The tally is publicly verifiable. <a href="#">Audit this election →</a></p>
+  </section>
+</div>
+
+<!-- RESISTANCE TOOLKIT -->
+<section id="resist">
+  <div class="section-label">Pillar IV</div>
+  <div class="section-title">Resistance Operations</div>
+  <div class="section-body">Creative, nonviolent tactics that impose real economic and political costs. Every operation is coordinated through the platform with legal observers, unified messaging, and verified impact tracking.</div>
+
+  <div class="tactic-cards">
+    <div class="tactic-card">
+      <div class="tactic-status tactic-active">&#9679; Active Campaign</div>
+      <div class="tactic-title">ICE Job Fair Disruption</div>
+      <div class="tactic-desc">Coordinated protests at recruitment events. 12 actions completed this month across 8 cities. Legal observer coverage at 100%.</div>
+      <div class="tactic-impact">
+        <div class="tactic-impact-label">Recruitment impact</div>
+        <div class="impact-bar"><div class="impact-fill" style="width:72%"></div></div>
+      </div>
+    </div>
+    <div class="tactic-card">
+      <div class="tactic-status tactic-active">&#9679; Active Campaign</div>
+      <div class="tactic-title">Ad-Cost Inflation</div>
+      <div class="tactic-desc">4,200 participants training algorithms to surface DHS/ICE ads. Estimated cost increase to agency: $340K this quarter.</div>
+      <div class="tactic-impact">
+        <div class="tactic-impact-label">Budget drain</div>
+        <div class="impact-bar"><div class="impact-fill" style="width:45%"></div></div>
+      </div>
+    </div>
+    <div class="tactic-card">
+      <div class="tactic-status tactic-active">&#9679; Active Campaign</div>
+      <div class="tactic-title">Data Broker Opt-Out Blitz</div>
+      <div class="tactic-desc">Verified opt-outs from 14 data brokers confirmed to feed Palantir/ICE. 18,400 members opted out this month.</div>
+      <div class="tactic-impact">
+        <div class="tactic-impact-label">Data pipeline disruption</div>
+        <div class="impact-bar"><div class="impact-fill" style="width:38%"></div></div>
+      </div>
+    </div>
+    <div class="tactic-card">
+      <div class="tactic-status tactic-planning">&#9679; Planning Phase</div>
+      <div class="tactic-title">Contractor Boycott Network</div>
+      <div class="tactic-desc">Mapping companies contracting with agencies engaged in unconstitutional enforcement. Alternative vendor database under construction.</div>
+      <div class="tactic-impact">
+        <div class="tactic-impact-label">Coverage</div>
+        <div class="impact-bar"><div class="impact-fill" style="width:22%"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRIVACY -->
+<section id="privacy">
+  <div class="section-label">Pillar V — Security</div>
+  <div class="section-title">Privacy Hardening Wizard</div>
+  <div class="section-body">Step by step. Verified to work. Each action reduces your exposure to government surveillance and data broker tracking. Complete them all and you're harder to find than 99% of Americans.</div>
+
+  <div class="privacy-steps">
+    <div class="privacy-step" onclick="toggleStep(this)">
+      <div class="step-check">&#10003;</div>
+      <div class="step-content">
+        <div class="step-title">Install Signal for all movement communications</div>
+        <div class="step-desc">End-to-end encrypted messaging. Replace all SMS, WhatsApp, and Telegram for organizing. Enable disappearing messages.</div>
+      </div>
+      <div class="step-time">5 min</div>
+    </div>
+    <div class="privacy-step" onclick="toggleStep(this)">
+      <div class="step-check">&#10003;</div>
+      <div class="step-content">
+        <div class="step-title">Enable a verified VPN</div>
+        <div class="step-desc">We recommend Mullvad or ProtonVPN — both confirmed by EFF to not log traffic. Paid with cash or crypto only.</div>
+      </div>
+      <div class="step-time">10 min</div>
+    </div>
+    <div class="privacy-step" onclick="toggleStep(this)">
+      <div class="step-check">&#10003;</div>
+      <div class="step-content">
+        <div class="step-title">Opt out of the 14 high-priority data brokers</div>
+        <div class="step-desc">These brokers are confirmed to supply data to Palantir and ICE contractor networks. We auto-generate and submit your opt-out requests.</div>
+      </div>
+      <div class="step-time">15 min</div>
+    </div>
+    <div class="privacy-step" onclick="toggleStep(this)">
+      <div class="step-check">&#10003;</div>
+      <div class="step-content">
+        <div class="step-title">Harden your phone settings</div>
+        <div class="step-desc">Disable location history, ad tracking, Bluetooth scanning, and cross-app tracking. Platform-specific guides for iOS and Android.</div>
+      </div>
+      <div class="step-time">10 min</div>
+    </div>
+    <div class="privacy-step" onclick="toggleStep(this)">
+      <div class="step-check">&#10003;</div>
+      <div class="step-content">
+        <div class="step-title">Configure browser for surveillance resistance</div>
+        <div class="step-desc">Install uBlock Origin, disable third-party cookies, enable HTTPS-only mode, and configure DNS-over-HTTPS. Firefox or Brave recommended.</div>
+      </div>
+      <div class="step-time">10 min</div>
+    </div>
+    <div class="privacy-step" onclick="toggleStep(this)">
+      <div class="step-check">&#10003;</div>
+      <div class="step-content">
+        <div class="step-title">Set up Briar or Meshtastic for mesh communications</div>
+        <div class="step-desc">Offline-capable, peer-to-peer communication for when cell networks go down. Practice with your local chapter monthly.</div>
+      </div>
+      <div class="step-time">20 min</div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMS -->
+<section>
+  <div class="section-label">Communications</div>
+  <div class="section-title">Resilient by design.</div>
+  <div class="comms-grid">
+    <div class="comm-card">
+      <div class="comm-icon">&#128274;</div>
+      <div class="comm-title">Encrypted Messaging</div>
+      <div class="comm-desc">Signal protocol integration. Separate channels for local, regional, and national coordination. Zero platform dependency.</div>
+    </div>
+    <div class="comm-card">
+      <div class="comm-icon">&#128225;</div>
+      <div class="comm-title">Mesh Networking</div>
+      <div class="comm-desc">Briar, Meshtastic, goTenna. Practiced monthly. If cell networks go dark during mobilization, we don't go dark with them.</div>
+    </div>
+    <div class="comm-card">
+      <div class="comm-icon">&#128680;</div>
+      <div class="comm-title">Dead Man's Switch</div>
+      <div class="comm-desc">If key organizers go silent, pre-written action plans auto-distribute to the network. No single point of failure. No leader is irreplaceable.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING QUOTE -->
+<div class="quote-break">
+  <div class="quote-text">More than half the people are right. They know what is happening. They know it is wrong. What they do not have — yet — is the organized means to act on what they know.</div>
+  <div class="quote-attr" style="color: var(--white); font-weight: 700; font-size: 14px; margin-top: 20px;">Common Defense is the organized means.</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Common Defense</div>
+  <div class="footer-tagline">Provide for the common defence.</div>
+  <div class="footer-links">
+    <a href="#pledge">Pledge</a>
+    <a href="#aid">Mutual Aid</a>
+    <a href="#vote">Organizers</a>
+    <a href="#resist">Resistance</a>
+    <a href="#privacy">Privacy</a>
+    <a href="#">Source Code</a>
+    <a href="#">Audit Log</a>
+  </div>
+  <div class="footer-live">
+    <span class="pulse"></span> Live from Minneapolis
+  </div>
+  <div class="footer-legal">&copy; 2026 Common Defense. Open source. No copyright on resistance.</div>
+</footer>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="strike-modal" onclick="if(event.target===this)closeModal(this)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal(document.getElementById('strike-modal'))">&times;</button>
+    <div class="section-label">Pillar I</div>
+    <h2 style="font-family:Arial;color:var(--white);font-size:24px;margin:12px 0 20px;">National Strike Apparatus</h2>
+    <p style="color:var(--light);line-height:1.8;margin-bottom:16px;">A pre-planned, pre-funded, nationally coordinated general strike to be activated if the 2028 presidential transition is subverted — whether through refusal to leave office, illegitimate transfer of power, or any unconstitutional circumvention of election results.</p>
+    <p style="color:var(--light);line-height:1.8;margin-bottom:16px;"><strong style="color:var(--text);">Strike Fund:</strong> A transparent mutual aid fund that workers pay into before the crisis. During a strike, it distributes based on documented need — rent, food, medicine, utilities.</p>
+    <p style="color:var(--light);line-height:1.8;margin-bottom:16px;"><strong style="color:var(--text);">Local Coordinators:</strong> Recruited, vetted, and trained organizers in every major metro and congressional district, running a shared playbook with clear chains of communication.</p>
+    <p style="color:var(--light);line-height:1.8;"><strong style="color:var(--text);">Escalation Protocol:</strong> Pre-planned phases from economic slowdown to full general strike, with specific constitutional violations as triggers and specific off-ramps tied to restoration of constitutional order.</p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="aid-modal" onclick="if(event.target===this)closeModal(this)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal(document.getElementById('aid-modal'))">&times;</button>
+    <div class="section-label">Pillar II</div>
+    <h2 style="font-family:Arial;color:var(--white);font-size:24px;margin:12px 0 20px;">Mutual Aid Network</h2>
+    <p style="color:var(--light);line-height:1.8;margin-bottom:16px;">A strike only works if people can survive it. Minneapolis proved this: what sustained tens of thousands of people in the streets was not ideology but logistics — the food, the first aid, the childcare, the housing.</p>
+    <p style="color:var(--light);line-height:1.8;margin-bottom:16px;">The marketplace matches needs with offers locally. Contributions earn labor credits — one hour of work equals one credit. Credits are non-speculative, non-transferable outside the network, and verified on-chain.</p>
+    <p style="color:var(--light);line-height:1.8;">In normal times, this builds community resilience. During mobilization, it keeps a national strike fed, housed, and alive.</p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="pledge-modal" onclick="if(event.target===this)closeModal(this)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal(document.getElementById('pledge-modal'))">&times;</button>
+    <div class="section-label">Pillar III</div>
+    <h2 style="font-family:Arial;color:var(--white);font-size:24px;margin:12px 0 20px;">The Citizens United Pledge</h2>
+    <p style="color:var(--light);line-height:1.8;margin-bottom:16px;">When the Supreme Court ruled in Dred Scott that Black Americans could never be citizens, Lincoln did not accept it as settled law. He organized. He ran. He won. And the decision was overturned.</p>
+    <p style="color:var(--light);line-height:1.8;margin-bottom:16px;">Citizens United is our Dred Scott. The pledge is a public, enforceable commitment: I will only vote for a presidential candidate who commits to ignoring Citizens United and actively pursuing its reversal.</p>
+    <p style="color:var(--light);line-height:1.8;">Every signer's name is public. Candidate scorecards track positions. Automated reminders before every election. Social accountability, not anonymous petitioning.</p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="resist-modal" onclick="if(event.target===this)closeModal(this)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal(document.getElementById('resist-modal'))">&times;</button>
+    <div class="section-label">Pillar IV</div>
+    <h2 style="font-family:Arial;color:var(--white);font-size:24px;margin:12px 0 20px;">Nonviolent Resistance Operations</h2>
+    <p style="color:var(--light);line-height:1.8;margin-bottom:16px;"><strong style="color:var(--text);">ICE Job Fair Disruption:</strong> Coordinated, high-visibility protests at recruitment events with legal observers and media strategy.</p>
+    <p style="color:var(--light);line-height:1.8;margin-bottom:16px;"><strong style="color:var(--text);">Ad-Cost Inflation:</strong> Train your algorithm to surface DHS/ICE recruitment ads, then click every one. Drain their digital budget through their own systems.</p>
+    <p style="color:var(--light);line-height:1.8;margin-bottom:16px;"><strong style="color:var(--text);">Data Opt-Out Blitz:</strong> Verified opt-outs from brokers confirmed to feed Palantir and ICE. Not aspirational — verified against ACLU and EFF findings.</p>
+    <p style="color:var(--light);line-height:1.8;"><strong style="color:var(--text);">Contractor Boycott:</strong> Map every company contracting with unconstitutional enforcement. Provide alternatives. Coordinate consumer shifts at scale.</p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="comms-modal" onclick="if(event.target===this)closeModal(this)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal(document.getElementById('comms-modal'))">&times;</button>
+    <div class="section-label">Pillar V</div>
+    <h2 style="font-family:Arial;color:var(--white);font-size:24px;margin:12px 0 20px;">Resilient Communications</h2>
+    <p style="color:var(--light);line-height:1.8;margin-bottom:16px;"><strong style="color:var(--text);">Signal Integration:</strong> End-to-end encrypted coordination. Separate channels for local chapters, regional coordinators, and national leadership.</p>
+    <p style="color:var(--light);line-height:1.8;margin-bottom:16px;"><strong style="color:var(--text);">Mesh Networking:</strong> Briar, Meshtastic, goTenna — distributed and practiced now so that if cell networks are disrupted during a 2028 mobilization, organizers do not go dark.</p>
+    <p style="color:var(--light);line-height:1.8;margin-bottom:16px;"><strong style="color:var(--text);">Privacy Hardening:</strong> Interactive tool walking every participant through securing their devices against government surveillance.</p>
+    <p style="color:var(--light);line-height:1.8;"><strong style="color:var(--text);">Dead Man's Switch:</strong> If key organizers are arrested or silenced, pre-written communications and action plans automatically distribute. No single point of failure.</p>
+  </div>
+</div>
+
+<script>
+// ===== ANIMATED COUNTERS =====
+function animateCounter(el, target, prefix, suffix, duration) {
+  const start = 0;
+  const startTime = performance.now();
+  function update(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = Math.floor(start + (target - start) * eased);
+    el.textContent = (prefix || '') + current.toLocaleString() + (suffix || '');
+    if (progress < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+// Start counters when stats bar is visible
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      animateCounter(document.getElementById('pledgeCount'), 24837, '', '', 2000);
+      animateCounter(document.getElementById('chapterCount'), 142, '', '', 1800);
+      animateCounter(document.getElementById('fundCount'), 2847000, '$', '', 2200);
+      animateCounter(document.getElementById('aidCount'), 8491, '', '', 2000);
+      observer.disconnect();
+    }
+  });
+}, { threshold: 0.3 });
+observer.observe(document.querySelector('.stats-bar'));
+
+// ===== PLEDGE =====
+let pledgeSigned = false;
+function signPledge() {
+  const name = document.getElementById('pledgeName').value.trim();
+  if (!name) { document.getElementById('pledgeName').style.borderColor = 'var(--red)'; return; }
+  if (pledgeSigned) return;
+  pledgeSigned = true;
+  const msg = document.getElementById('pledgeMsg');
+  msg.innerHTML = '<span style="color:var(--green);">&#10003;</span> <strong>' + name + '</strong> — your pledge is recorded. You are signer #24,838.';
+  msg.style.color = 'var(--green)';
+  document.getElementById('pledgeName').disabled = true;
+}
+
+// ===== MUTUAL AID FILTER =====
+function filterAid(filter, btn) {
+  document.querySelectorAll('.aid-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.aid-card').forEach(card => {
+    if (filter === 'all') { card.style.display = ''; return; }
+    const type = card.dataset.type;
+    const cat = card.dataset.cat;
+    if (filter === 'offer' || filter === 'need') {
+      card.style.display = type === filter ? '' : 'none';
+    } else {
+      card.style.display = cat === filter ? '' : 'none';
+    }
+  });
+}
+
+// ===== VOTING =====
+let hasVoted = false;
+function castVote(candId, btn) {
+  if (hasVoted) return;
+  hasVoted = true;
+  const card = document.getElementById(candId);
+  card.classList.add('voted');
+  btn.textContent = '&#10003; Vote Cast — zk-proof generated';
+  btn.classList.add('voted-btn');
+  btn.style.pointerEvents = 'none';
+  // Disable other vote buttons
+  document.querySelectorAll('.vote-btn').forEach(b => {
+    if (b !== btn) { b.disabled = true; b.style.opacity = '0.3'; }
+  });
+}
+
+// ===== PRIVACY STEPS =====
+function toggleStep(el) {
+  const check = el.querySelector('.step-check');
+  check.classList.toggle('checked');
+  if (check.classList.contains('checked')) {
+    check.style.borderColor = 'var(--green)';
+    check.style.color = 'var(--green)';
+  } else {
+    check.style.borderColor = 'var(--border)';
+    check.style.color = 'var(--border)';
+  }
+}
+// Initialize all as unchecked
+document.querySelectorAll('.step-check').forEach(c => { c.style.color = 'var(--border)'; });
+
+// ===== MODALS =====
+function openModal(id) {
+  document.getElementById(id).classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(el) {
+  el.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// ===== SMOOTH SCROLL =====
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// ===== NAV SCROLL EFFECT =====
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  if (window.scrollY > 100) {
+    nav.style.borderBottomColor = 'var(--red)';
+  } else {
+    nav.style.borderBottomColor = 'var(--border)';
+  }
+});
+</script>
+</body>
+</html>

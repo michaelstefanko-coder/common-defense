@@ -1,0 +1,124 @@
+{
+  "listings": [
+    {
+      "id": "aid-001",
+      "type": "offer",
+      "category": "Food",
+      "title": "Hot meals for 20 people",
+      "description": "Available Sat & Sun, 11am-2pm. Can deliver within 5 mi.",
+      "offeredBy": "Riverside Community Garden",
+      "location": "Minneapolis, MN — Whittier",
+      "credits": 3
+    },
+    {
+      "id": "aid-002",
+      "type": "need",
+      "category": "Legal",
+      "title": "Immigration attorney consult",
+      "description": "Family needs advice re: deportation proceedings. Urgent.",
+      "neededBy": "Immigration Family Support Collective",
+      "location": "Minneapolis, MN — Phillips",
+      "credits": 5
+    },
+    {
+      "id": "aid-003",
+      "type": "offer",
+      "category": "Housing",
+      "title": "Spare bedroom, 2 weeks",
+      "description": "Private room, shared bath. Safe house for organizers if needed.",
+      "offeredBy": "Safe Haven Coalition",
+      "location": "St. Paul, MN — Summit Hill",
+      "credits": 8
+    },
+    {
+      "id": "aid-004",
+      "type": "need",
+      "category": "Transport",
+      "title": "Rides to Saturday actions",
+      "description": "3 people from south Minneapolis to Nicollet. Weekly.",
+      "neededBy": "Family Advocacy Group",
+      "location": "Minneapolis, MN — Powderhorn",
+      "credits": 2
+    },
+    {
+      "id": "aid-005",
+      "type": "offer",
+      "category": "Medical",
+      "title": "Street medic — protest first aid",
+      "description": "RN, trauma-trained. Available for actions with 24hr notice.",
+      "offeredBy": "People's Health Clinic",
+      "location": "Minneapolis, MN",
+      "credits": 5
+    },
+    {
+      "id": "aid-006",
+      "type": "offer",
+      "category": "Food",
+      "title": "Weekly grocery run for 3 families",
+      "description": "Costco run every Tuesday. Can add families to the list.",
+      "offeredBy": "North Minneapolis Food Co-op",
+      "location": "Bloomington, MN",
+      "credits": 4
+    },
+    {
+      "id": "aid-007",
+      "type": "offer",
+      "category": "Legal",
+      "title": "Free immigration legal advice",
+      "description": "Consultations on asylum, DACA, deportation defense. Volunteer lawyers.",
+      "offeredBy": "Immigration Justice Project",
+      "location": "Minneapolis, MN",
+      "credits": 6
+    },
+    {
+      "id": "aid-008",
+      "type": "need",
+      "category": "Housing",
+      "title": "Safe housing for immigrant family",
+      "description": "Family of 4 seeking emergency housing. One-month minimum.",
+      "neededBy": "Immigration Family Support Collective",
+      "location": "Minneapolis, MN",
+      "credits": 10
+    },
+    {
+      "id": "aid-009",
+      "type": "offer",
+      "category": "Medical",
+      "title": "Mental health support group",
+      "description": "Weekly meetings for trauma, grief, PTSD from migration/detention.",
+      "offeredBy": "Healing Justice Collective",
+      "location": "Minneapolis, MN 55407",
+      "credits": 3
+    },
+    {
+      "id": "aid-010",
+      "type": "need",
+      "category": "Food",
+      "title": "Halal groceries for 5 families",
+      "description": "Halal-certified groceries needed weekly for Muslim community members.",
+      "neededBy": "Muslim Community Service",
+      "location": "Minneapolis, MN 55405",
+      "credits": 4
+    },
+    {
+      "id": "aid-011",
+      "type": "offer",
+      "category": "Transport",
+      "title": "Van available for community transport",
+      "description": "12-passenger van, weekends. Fuel costs covered by collective.",
+      "offeredBy": "Community Wheels Collective",
+      "location": "Minneapolis, MN",
+      "credits": 6
+    },
+    {
+      "id": "aid-012",
+      "type": "need",
+      "category": "Legal",
+      "title": "Legal defense fund for activists",
+      "description": "Donations needed for bail, attorney fees for arrested organizers.",
+      "neededBy": "Legal Defense Fund",
+      "location": "Minneapolis, MN",
+      "credits": 0
+    }
+  ]
+}

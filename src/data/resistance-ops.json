@@ -1,0 +1,154 @@
+{
+  "campaigns": [
+    {
+      "id": "op-001",
+      "name": "ICE Job Fair Disruption",
+      "status": "ACTIVE",
+      "participants": 834,
+      "impact": 68,
+      "description": "Coordinated disruption of CBP/ICE recruitment events. 12 actions completed this month across 8 cities. Legal observer coverage at 100%.",
+      "tactics": ["protest", "outreach", "direct-action"],
+      "nextEvent": "Austin TX, Feb 2026"
+    },
+    {
+      "id": "op-002",
+      "name": "Ad-Cost Inflation",
+      "status": "ACTIVE",
+      "participants": 2103,
+      "impact": 81,
+      "description": "4,200 participants training algorithms to surface DHS/ICE ads. Estimated cost increase to agency: $340K this quarter.",
+      "tactics": ["digital", "coordination"],
+      "nextEvent": "Daily, rolling basis"
+    },
+    {
+      "id": "op-003",
+      "name": "Data Broker Opt-Out Blitz",
+      "status": "ACTIVE",
+      "participants": 567,
+      "impact": 54,
+      "description": "Verified opt-outs from 14 data brokers confirmed to feed Palantir/ICE. 18,400 members opted out this month.",
+      "tactics": ["data-defense", "privacy"],
+      "nextEvent": "Anytime, self-paced"
+    },
+    {
+      "id": "op-004",
+      "name": "Contractor Boycott Network",
+      "status": "ACTIVE",
+      "participants": 421,
+      "impact": 42,
+      "description": "Mapping companies contracting with agencies engaged in unconstitutional enforcement. Alternative vendor database under construction.",
+      "tactics": ["boycott", "direct-action", "shareholder"],
+      "nextEvent": "Monthly coordination calls"
+    },
+    {
+      "id": "op-005",
+      "name": "AWS / Whole Foods Boycott",
+      "status": "PLANNING",
+      "participants": 312,
+      "impact": 38,
+      "description": "AWS powers ICE. Pressure Amazon to drop DHS contracts. Phase 1 awareness campaign launching Feb 15.",
+      "tactics": ["boycott", "consumer-pressure", "shareholder"],
+      "nextEvent": "Feb 15, 2026 launch"
+    },
+    {
+      "id": "op-006",
+      "name": "Eyes on ICE / ICE Watch",
+      "status": "ACTIVE",
+      "participants": 1893,
+      "impact": 76,
+      "description": "Early warning network. Trained observers monitor ICE activity in neighborhoods. 46 deportations prevented, 200+ residents sheltered.",
+      "tactics": ["observation", "rapid-response", "community"],
+      "nextEvent": "24/7 coverage"
+    },
+    {
+      "id": "op-007",
+      "name": "Social Strikes",
+      "status": "PLANNING",
+      "participants": 189,
+      "impact": 22,
+      "description": "Coordinated withdrawal of cooperation. Mass disruption of government operations through non-violent non-cooperation. May Day target.",
+      "tactics": ["strike", "non-cooperation", "labor"],
+      "nextEvent": "May Day Action, May 1, 2026"
+    },
+    {
+      "id": "op-008",
+      "name": "ICE-Free Zone Campaigns",
+      "status": "ACTIVE",
+      "participants": 445,
+      "impact": 51,
+      "description": "Support municipal ordinances banning city property use for immigration enforcement. Minneapolis ordinance passed Jan 24.",
+      "tactics": ["municipal", "legal", "organizing"],
+      "nextEvent": "Chicago campaign, Feb 2026"
+    },
+    {
+      "id": "op-009",
+      "name": "Rapid Response Networks",
+      "status": "ACTIVE",
+      "participants": 987,
+      "impact": 64,
+      "description": "WhatsApp/Signal early warning when ICE spotted. 94 community evacuations completed, zero arrests during evacuations.",
+      "tactics": ["rapid-response", "community", "coordination"],
+      "nextEvent": "24/7 readiness"
+    },
+    {
+      "id": "op-010",
+      "name": "Bank Divestment Campaign",
+      "status": "PLANNING",
+      "participants": 248,
+      "impact": 18,
+      "description": "Mass account closures from banks financing ICE contractors and detention operators. Modeled on 2011 Bank Transfer Day (650K+ accounts moved).",
+      "tactics": ["economic", "divestment", "consumer-pressure"],
+      "nextEvent": "Move-Your-Money Day, Mar 2026"
+    },
+    {
+      "id": "op-011",
+      "name": "FOIA Storm",
+      "status": "ACTIVE",
+      "participants": 734,
+      "impact": 47,
+      "description": "Mass-coordinated FOIA requests targeting ICE operations, surveillance contracts, and enforcement actions. Platform auto-generates specific requests.",
+      "tactics": ["legal", "transparency", "digital"],
+      "nextEvent": "Rolling submissions"
+    },
+    {
+      "id": "op-012",
+      "name": "Sanctuary Campaigns",
+      "status": "ACTIVE",
+      "participants": 356,
+      "impact": 39,
+      "description": "Formal sanctuary policies at courthouses, hospitals, schools, and churches. Prohibiting ICE enforcement in critical community spaces.",
+      "tactics": ["institutional", "legal", "organizing"],
+      "nextEvent": "Hospital sanctuary push, Feb 2026"
+    },
+    {
+      "id": "op-013",
+      "name": "Know Your Rights Saturation",
+      "status": "ACTIVE",
+      "participants": 612,
+      "impact": 58,
+      "description": "Blanket saturation of target neighborhoods with multilingual know-your-rights materials. Door-to-door canvassing, QR codes, wallet cards in 10+ languages.",
+      "tactics": ["education", "outreach", "community"],
+      "nextEvent": "Ongoing distribution"
+    },
+    {
+      "id": "op-014",
+      "name": "Constitutional Literacy Campaign",
+      "status": "PLANNING",
+      "participants": 203,
+      "impact": 15,
+      "description": "Progressive constitutional education connecting founding documents to real-time violations. Weekly knowledge drops, interactive quizzes, expert interviews.",
+      "tactics": ["education", "awareness"],
+      "nextEvent": "Module launch, Mar 2026"
+    },
+    {
+      "id": "op-015",
+      "name": "Election Observer Training",
+      "status": "PLANNING",
+      "participants": 178,
+      "impact": 12,
+      "description": "Training thousands of nonpartisan election observers for 2026 and 2028. Poll observation, vote count monitoring, certification process documentation.",
+      "tactics": ["election-integrity", "training", "observation"],
+      "nextEvent": "Training launch, Apr 2026"
+    }
+  ]
+}

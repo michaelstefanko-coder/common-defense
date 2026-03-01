@@ -1,101 +1,124 @@
-import Image from "next/image";
+import Hero from "@/components/Hero";
+import StatsBar from "@/components/StatsBar";
+import SectionHeader from "@/components/SectionHeader";
+import QuoteBreak from "@/components/QuoteBreak";
+import PillarCards from "@/components/PillarCard";
+import PledgeForm from "@/components/PledgeForm";
+import AidMarketplace from "@/components/AidMarketplace";
+import CreditsDashboard from "@/components/CreditsDashboard";
+import OrganizerElection from "@/components/OrganizerElection";
+import ResistanceToolkit from "@/components/ResistanceOpCard";
+import PrivacyWizard from "@/components/PrivacyWizard";
+import CommsGrid from "@/components/CommsCard";
+import Link from "next/link";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <>
+      <Hero />
+      <StatsBar />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* THE SITUATION */}
+      <section className="py-[100px] px-10 max-w-[1200px] mx-auto" id="about">
+        <SectionHeader
+          label="The Situation"
+          title="This is not a warning.<br/>This is a description."
+        />
+        <div className="text-[18px] text-light max-w-[700px] leading-[1.8] space-y-6 mt-6">
+          <p>
+            In January 2026, a Customs and Border Protection officer in Minneapolis shot and killed <Link href="/ice-operations" className="text-red hover:underline">Alex Pretti</Link>, a VA nurse, for standing between the officer and a woman who had been thrown to the ground. Weeks earlier, <Link href="/ice-operations" className="text-red hover:underline">Renée Good</Link> was killed by an ICE agent in the same city. Thousands gathered for vigils the same night. Tens of thousands came the next day.
+          </p>
+          <p>
+            Representatives Ro Khanna and Thomas Massie — a Democrat and a Republican — announced that after reviewing unredacted Epstein files, they had identified at least six powerful men being actively protected by government redactions. The Department of Justice is defying its own transparency statute to keep these names hidden. Khanna and Massie may have to read the names on the House floor under the Constitution&apos;s Speech and Debate clause — the only place in America where telling the truth about the powerful is legally protected.
+          </p>
+          <p>
+            The Supreme Court&apos;s 2010 decision in <Link href="/citizens-united" className="text-red hover:underline">Citizens United v. FEC</Link> legalized the unlimited purchase of American elections by corporations and the ultra-wealthy. In the sixteen years since, the cost of federal elections has more than tripled. The policy preferences of average Americans have a near-zero statistical effect on what becomes law. The policy preferences of economic elites and organized interest groups are the near-perfect predictors.
+          </p>
+          <p>
+            Acting ICE Director Todd Lyons has outlined plans for an <Link href="/ice-operations" className="text-red hover:underline">80,000-bed warehouse detention network</Link> — &ldquo;like Amazon Prime, but with human beings.&rdquo; A $38 billion budget. The conversion of warehouses into mega detention centers in Stafford VA, Hutchins TX, and Hammond IN.
+          </p>
+          <p>
+            <strong className="text-text">
+              Federal agents are killing civilians in American cities. The government is shielding the powerful from accountability. The Court has sold the political system to the highest bidder. And in 2028, we face the real possibility that a presidential transition will be subverted. These are not warnings about what could happen. These are descriptions of what has already happened and what is already underway.
+            </strong>
+          </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+      </section>
+
+      <QuoteBreak
+        quote="Democracy is the recurrent suspicion that more than half of the people are right more than half of the time."
+        attribution="E.B. White, 1943"
+      />
+
+      {/* WHAT LINCOLN UNDERSTOOD */}
+      <section className="py-[100px] px-10 max-w-[1200px] mx-auto">
+        <SectionHeader
+          label="The Precedent"
+          title="What Lincoln Understood"
+        />
+        <div className="text-[18px] text-light max-w-[700px] leading-[1.8] space-y-6 mt-6">
+          <p>
+            When the Supreme Court ruled in <em>Dred Scott v. Sandford</em> that Black Americans could never be citizens and that Congress had no power to restrict slavery in the territories, the political establishment accepted it as settled. Abraham Lincoln did not.
+          </p>
+          <p>
+            Lincoln argued that while the specific parties to the case were bound by the ruling, the Court&apos;s broader political rule was not binding on the American people. He held that a democratic people had the right — and the obligation — to challenge and overturn a corrupt judicial decision through political action. He refused to treat the Court&apos;s word as final. He organized. He ran. He won. And the decision was overturned.
+          </p>
+          <p>
+            <strong className="text-text">
+              Citizens United is our generation&apos;s Dred Scott. It is the ruling that formalized the sale of democratic governance to private wealth. And like Dred Scott, it will not be overturned by waiting. It will be overturned by a people who refuse to accept it.
+            </strong>
+          </p>
+        </div>
+      </section>
+
+      {/* WHY NOW */}
+      <div className="bg-dark border-t border-b border-border">
+        <section className="py-[100px] px-10 max-w-[1200px] mx-auto">
+          <SectionHeader
+            label="Urgency"
+            title="Why Now"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          <div className="text-[18px] text-light max-w-[700px] leading-[1.8] space-y-6 mt-6">
+            <p>
+              Every successful resistance movement in history built its infrastructure <strong className="text-text">before</strong> the crisis, not during it. The Montgomery Bus Boycott worked because the Women&apos;s Political Council had spent years building the carpool network before Rosa Parks sat down. Solidarity in Poland worked because the underground printing presses and communication networks were already in place when martial law was declared. The Danish rescue of Jews in 1943 worked because the social networks for hiding people already existed.
+            </p>
+            <p>
+              The movements that failed — that turned into chaos, that were crushed, that burned bright and disappeared — were the ones that tried to build the plane while flying it.
+            </p>
+            <p>
+              <strong className="text-text">
+                We have less than two years before the 2028 presidential election. If the transfer of power is subverted, the window for building organized resistance will have closed. The strike fund must already exist. The local coordinators must already be trained. The mutual aid network must already be running. The mesh communications must already be practiced. The pledges must already be signed.
+              </strong>
+            </p>
+            <p>
+              The time to build this was ten years ago. The next best time is right now.
+            </p>
+          </div>
+        </section>
+      </div>
+
+      {/* FIVE PILLARS */}
+      <section className="py-[100px] px-10 max-w-[1200px] mx-auto" id="strike">
+        <SectionHeader
+          label="The Platform"
+          title="Five pillars. One infrastructure.<br/>Built before the crisis."
+        />
+        <PillarCards />
+      </section>
+
+      <PledgeForm />
+      <AidMarketplace />
+      <CreditsDashboard />
+      <OrganizerElection />
+      <ResistanceToolkit />
+      <PrivacyWizard />
+      <CommsGrid />
+
+      <QuoteBreak
+        quote="More than half the people are right. They know what is happening. They know it is wrong. What they do not have — yet — is the organized means to act on what they know."
+        attribution="Common Defense is the organized means."
+        boldAttribution
+      />
+    </>
   );
 }

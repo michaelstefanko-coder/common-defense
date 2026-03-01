@@ -1,0 +1,90 @@
+{
+  "outsideSpending": [
+    {"year": "2000", "spending": 52, "label": "$52M", "era": "pre"},
+    {"year": "2002", "spending": 16, "label": "$16M", "era": "pre"},
+    {"year": "2004", "spending": 143, "label": "$143M", "era": "pre"},
+    {"year": "2006", "spending": 68, "label": "$68M", "era": "pre"},
+    {"year": "2008", "spending": 338, "label": "$338M", "era": "pre"},
+    {"year": "2010", "spending": 309, "label": "$309M", "era": "post"},
+    {"year": "2012", "spending": 1300, "label": "$1.3B", "era": "post"},
+    {"year": "2014", "spending": 560, "label": "$560M", "era": "post"},
+    {"year": "2016", "spending": 1400, "label": "$1.4B", "era": "post"},
+    {"year": "2018", "spending": 980, "label": "$980M", "era": "post"},
+    {"year": "2020", "spending": 3300, "label": "$3.3B", "era": "post"},
+    {"year": "2022", "spending": 2000, "label": "$2.0B", "era": "post"},
+    {"year": "2024", "spending": 4500, "label": "$4.5B", "era": "post"},
+    {"year": "2026", "spending": 2900, "label": "$2.9B", "era": "projected", "note": "Projected midterm (midterms avg ~64% of prior presidential)"},
+    {"year": "2028", "spending": 6500, "label": "$6.5B", "era": "projected", "note": "Projected presidential (20% CAGR from 2024)"},
+    {"year": "2030", "spending": 4200, "label": "$4.2B", "era": "projected", "note": "Projected midterm"}
+  ],
+  "superPacSpending": [
+    {"year": "2010", "spending": 63, "label": "$63M", "era": "post"},
+    {"year": "2012", "spending": 623, "label": "$623M", "era": "post"},
+    {"year": "2014", "spending": 339, "label": "$339M", "era": "post"},
+    {"year": "2016", "spending": 1100, "label": "$1.1B", "era": "post"},
+    {"year": "2018", "spending": 820, "label": "$820M", "era": "post"},
+    {"year": "2020", "spending": 2100, "label": "$2.1B", "era": "post"},
+    {"year": "2022", "spending": 1200, "label": "$1.2B", "era": "post"},
+    {"year": "2024", "spending": 4100, "label": "$4.1B", "era": "post"},
+    {"year": "2026", "spending": 2600, "label": "$2.6B", "era": "projected", "note": "Projected midterm"},
+    {"year": "2028", "spending": 6400, "label": "$6.4B", "era": "projected", "note": "Projected presidential"},
+    {"year": "2030", "spending": 3800, "label": "$3.8B", "era": "projected", "note": "Projected midterm"}
+  ],
+  "darkMoney": [
+    {"year": "2004", "spending": 6, "label": "$6M", "era": "pre"},
+    {"year": "2006", "spending": 11, "label": "$11M", "era": "pre"},
+    {"year": "2008", "spending": 102, "label": "$102M", "era": "pre"},
+    {"year": "2010", "spending": 139, "label": "$139M", "era": "post"},
+    {"year": "2012", "spending": 313, "label": "$313M", "era": "post"},
+    {"year": "2014", "spending": 174, "label": "$174M", "era": "post"},
+    {"year": "2016", "spending": 181, "label": "$181M", "era": "post"},
+    {"year": "2018", "spending": 153, "label": "$153M", "era": "post"},
+    {"year": "2020", "spending": 660, "label": "$660M", "era": "post"},
+    {"year": "2022", "spending": 617, "label": "$617M", "era": "post"},
+    {"year": "2024", "spending": 1000, "label": "$1.0B", "era": "post"},
+    {"year": "2026", "spending": 750, "label": "$750M", "era": "projected", "note": "Projected midterm"},
+    {"year": "2028", "spending": 1520, "label": "$1.5B", "era": "projected", "note": "Projected presidential"},
+    {"year": "2030", "spending": 1100, "label": "$1.1B", "era": "projected", "note": "Projected midterm"}
+  ],
+  "keyStats": [
+    {"label": "20 years before CU", "value": "$750M", "sub": "total outside spending", "color": "#6ba3d6"},
+    {"label": "15 years after CU", "value": "$9B+", "sub": "total outside spending", "color": "#e8585b"},
+    {"label": "CAGR since 2010", "value": "~21%", "sub": "compound annual growth rate"},
+    {"label": "2024 Super PAC", "value": "$4.1B", "sub": "single-cycle record"},
+    {"label": "Projected 2028", "value": "$6.5B", "sub": "at current growth rate", "color": "#a78bfa"},
+    {"label": "Projected 2030", "value": "$4.2B", "sub": "midterm at current rate", "color": "#a78bfa"}
+  ],
+  "methodology": {
+    "title": "Projection Methodology",
+    "lines": [
+      "Outside spending CAGR (2010-2024): ~21% per year",
+      "Super PAC CAGR (2010-2024): ~35% per year (using conservative 25% for projections)",
+      "Dark money CAGR (2010-2024): ~15% per year",
+      "Presidential cycles adjusted higher; midterms adjusted to ~64% of prior presidential cycle",
+      "These are trend extrapolations, not forecasts — actual spending depends on political context, regulation, and donor behavior"
+    ]
+  },
+  "sources": [
+    "OpenSecrets — \"Total Outside Spending by Election Cycle\" & \"By the Numbers: 15 Years of Citizens United\" (Jan 2025)",
+    "OpenSecrets — \"Dark money groups have poured billions into federal elections since Citizens United\" (Jan 2023)",
+    "OpenSecrets — \"More Money, Less Transparency: A Decade Under Citizens United\" (Jan 2020)",
+    "Roosevelt Institute — \"15 Years After Citizens United: Big Money's Grip on Our Democracy\" (Jan 2025)",
+    "Brennan Center for Justice — \"Citizens United, Explained\"",
+    "Free Speech For People — \"SpeechNow v. FEC: The Case that Created Super PACs\"",
+    "Congressional Research Service — \"PACs and Super PACs in Federal Election Campaigns: Legal Framework\""
+  ],
+  "chartConfig": {
+    "colors": {
+      "pre": "#6ba3d6",
+      "post": "#e8585b",
+      "projected": "#a78bfa",
+      "referenceLineCU": "#f0c040",
+      "referenceLineProjection": "#a78bfa"
+    },
+    "tabs": [
+      {"id": "outside", "label": "Total Outside Spending"},
+      {"id": "superpac", "label": "Super PAC Spending"},
+      {"id": "dark", "label": "Dark Money"}
+    ]
+  }
+}
