@@ -29,6 +29,15 @@ export default function Footer() {
         <Link href="/ice-operations" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
           ICE Operations
         </Link>
+        <Link href="/know-your-rights" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
+          Know Your Rights
+        </Link>
+        <Link href="/#foia" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
+          FOIA Tool
+        </Link>
+        <Link href="/#optout" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
+          Data Opt-Out
+        </Link>
       </div>
 
       <div className="mt-10 pt-6 border-t border-border font-heading text-[12px] tracking-[3px] uppercase text-muted">

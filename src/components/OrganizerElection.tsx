@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { useToast } from "./Toast";
 
 interface Candidate {
   id: string;
@@ -31,11 +33,17 @@ const candidates: Candidate[] = [
 ];
 
 export default function OrganizerElection() {
-  const [votedFor, setVotedFor] = useState<string | null>(null);
+  const [votedFor, setVotedFor] = useLocalStorage<string | null>("cd-vote", null);
+  const [mounted, setMounted] = useState(false);
+  const toast = useToast();
+
+  useEffect(() => setMounted(true), []);
 
   const castVote = (candidateId: string) => {
     if (votedFor) return;
     setVotedFor(candidateId);
+    const candidate = candidates.find((c) => c.id === candidateId);
+    toast.addToast(`Vote cast for ${candidate?.name}. zk-proof generated.`, "success");
   };
 
   return (
@@ -63,48 +71,53 @@ export default function OrganizerElection() {
         </div>
 
         <div className="grid grid-cols-2 max-md:grid-cols-1 gap-10 mt-10">
-          {candidates.map((cand) => (
-            <div
-              key={cand.id}
-              className={`bg-card border p-7 relative transition-all ${
-                votedFor === cand.id
-                  ? "border-green bg-green/5"
-                  : votedFor
-                  ? "border-border opacity-60"
-                  : "border-border hover:border-blue cursor-pointer"
-              }`}
-            >
-              <div className="font-heading text-[20px] font-bold text-white">{cand.name}</div>
-              <div className="font-heading text-[11px] tracking-[2px] uppercase text-muted mt-0.5">
-                Candidate for Local Organizer
-              </div>
-              <div className="flex gap-5 mt-4">
-                <div className="font-heading text-[12px] text-light">
-                  <strong className="text-white">{cand.credits}</strong> credits earned
-                </div>
-                <div className="font-heading text-[12px] text-light">
-                  <strong className="text-white">{cand.months}</strong> months active
-                </div>
-                <div className="font-heading text-[12px] text-light">
-                  <strong className="text-white">{cand.endorsements}</strong> endorsements
-                </div>
-              </div>
-              <div className="text-[14px] text-light mt-3 leading-relaxed">{cand.bio}</div>
-              <button
-                onClick={() => castVote(cand.id)}
-                disabled={!!votedFor}
-                className={`mt-4 font-heading text-[12px] tracking-[2px] uppercase py-3 px-7 border-none cursor-pointer font-bold transition-all w-full ${
-                  votedFor === cand.id
-                    ? "bg-green text-white"
-                    : votedFor
-                    ? "bg-blue/30 text-white/30 cursor-not-allowed"
-                    : "bg-blue text-white hover:bg-blue/80"
+          {candidates.map((cand) => {
+            const isVoted = mounted && votedFor === cand.id;
+            const hasVoted = mounted && !!votedFor;
+
+            return (
+              <div
+                key={cand.id}
+                className={`bg-card border p-7 relative transition-all ${
+                  isVoted
+                    ? "border-green bg-green/5"
+                    : hasVoted
+                    ? "border-border opacity-60"
+                    : "border-border hover:border-blue cursor-pointer"
                 }`}
               >
-                {votedFor === cand.id ? "✓ Vote Cast — zk-proof generated" : "Cast Vote"}
-              </button>
-            </div>
-          ))}
+                <div className="font-heading text-[20px] font-bold text-white">{cand.name}</div>
+                <div className="font-heading text-[11px] tracking-[2px] uppercase text-muted mt-0.5">
+                  Candidate for Local Organizer
+                </div>
+                <div className="flex gap-5 mt-4">
+                  <div className="font-heading text-[12px] text-light">
+                    <strong className="text-white">{cand.credits}</strong> credits earned
+                  </div>
+                  <div className="font-heading text-[12px] text-light">
+                    <strong className="text-white">{cand.months}</strong> months active
+                  </div>
+                  <div className="font-heading text-[12px] text-light">
+                    <strong className="text-white">{cand.endorsements}</strong> endorsements
+                  </div>
+                </div>
+                <div className="text-[14px] text-light mt-3 leading-relaxed">{cand.bio}</div>
+                <button
+                  onClick={() => castVote(cand.id)}
+                  disabled={hasVoted}
+                  className={`mt-4 font-heading text-[12px] tracking-[2px] uppercase py-3 px-7 border-none cursor-pointer font-bold transition-all w-full ${
+                    isVoted
+                      ? "bg-green text-white"
+                      : hasVoted
+                      ? "bg-blue/30 text-white/30 cursor-not-allowed"
+                      : "bg-blue text-white hover:bg-blue/80"
+                  }`}
+                >
+                  {isVoted ? "\u2713 Vote Cast — zk-proof generated" : "Cast Vote"}
+                </button>
+              </div>
+            );
+          })}
         </div>
 
         <div
@@ -114,7 +127,7 @@ export default function OrganizerElection() {
           <strong className="text-light">Election Contract:</strong> 0x4e2d...f891 &nbsp;|&nbsp;{" "}
           <strong className="text-light">Protocol:</strong> Vocdoni zk-SNARK &nbsp;|&nbsp;{" "}
           <strong className="text-light">Eligible voters:</strong> 247 verified members &nbsp;|&nbsp;{" "}
-          <strong className="text-light">Votes cast:</strong> 163 &nbsp;|&nbsp;{" "}
+          <strong className="text-light">Votes cast:</strong> {mounted && votedFor ? "164" : "163"} &nbsp;|&nbsp;{" "}
           <strong className="text-light">Quorum:</strong>{" "}
           <span className="text-green">Met (66%)</span>
         </div>

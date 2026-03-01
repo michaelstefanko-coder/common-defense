@@ -1,12 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { useToast } from "./Toast";
 
 export default function PledgeForm() {
   const [name, setName] = useState("");
-  const [signed, setSigned] = useState(false);
-  const [signerName, setSignerName] = useState("");
+  const [pledgeData, setPledgeData] = useLocalStorage<{ signed: boolean; name: string } | null>("cd-pledge", null);
   const [error, setError] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const toast = useToast();
+
+  useEffect(() => setMounted(true), []);
+
+  const signed = pledgeData?.signed ?? false;
+  const signerName = pledgeData?.name ?? "";
 
   const signPledge = () => {
     if (!name.trim() || name.trim().length < 3) {
@@ -14,9 +22,9 @@ export default function PledgeForm() {
       return;
     }
     setError(false);
-    setSignerName(name.trim());
-    setSigned(true);
+    setPledgeData({ signed: true, name: name.trim() });
     setName("");
+    toast.addToast(`Pledge signed. Welcome to the movement, ${name.trim()}.`, "success");
   };
 
   return (
@@ -62,8 +70,8 @@ export default function PledgeForm() {
           </button>
         </div>
 
-        <div className={`font-heading text-[13px] mt-4 ${signed ? "text-green" : "text-muted"}`}>
-          {signed ? (
+        <div className={`font-heading text-[13px] mt-4 ${mounted && signed ? "text-green" : "text-muted"}`}>
+          {mounted && signed ? (
             <>
               <span>&#10003;</span> <strong>{signerName}</strong> — your pledge is recorded. You are signer #24,838.
             </>
