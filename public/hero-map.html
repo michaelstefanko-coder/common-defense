@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#050709;overflow:hidden}
+#map{width:100%;height:100vh;background:#050709}
+@keyframes pulse-ring{0%{opacity:.6;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(2.8)}}
+.sr-wrap{position:relative;width:36px;height:36px}
+.sr-dot{width:7px;height:7px;border-radius:50%;background:#ef4444;box-shadow:0 0 12px rgba(239,68,68,.7);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2}
+.sr-ring{width:28px;height:28px;border-radius:50%;border:2px solid #ef4444;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0;animation:pulse-ring 2s ease-out infinite}
+.sr-ring2{animation-delay:1s}
+.leaflet-control-zoom,.leaflet-control-attribution{display:none!important}
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+var D={};
+D.sea=[
+{n:"Port of Houston",la:29.61,lo:-95.02},{n:"Port of South Louisiana",la:30.19,lo:-90.62},
+{n:"Port of Corpus Christi",la:27.80,lo:-97.40},{n:"Port of Vancouver",la:49.28,lo:-123.12},
+{n:"Port of Beaumont",la:30.08,lo:-94.12},{n:"Port of NY/NJ",la:40.68,lo:-74.15},
+{n:"Port of Long Beach",la:33.74,lo:-118.19},{n:"Port of Los Angeles",la:33.74,lo:-118.27},
+{n:"Port of Baton Rouge",la:30.45,lo:-91.19},{n:"Port of Baltimore",la:39.28,lo:-76.59},
+{n:"Port of Savannah",la:32.09,lo:-81.10},{n:"Port of Norfolk",la:36.90,lo:-76.35},
+{n:"Port of Charleston",la:32.79,lo:-79.93},{n:"Port of Seattle/Tacoma",la:47.56,lo:-122.30},
+{n:"Port of Oakland",la:37.80,lo:-122.28},{n:"Port of Prince Rupert",la:54.32,lo:-130.32},
+{n:"Port of Montreal",la:45.42,lo:-73.54},{n:"Port of Manzanillo",la:19.04,lo:-104.32}
+];
+D.rail=[
+{n:"Chicago Metro",la:41.88,lo:-87.74},{n:"BNSF Hobart/Commerce",la:34.01,lo:-118.19},
+{n:"NS Atlanta Austell",la:33.78,lo:-84.60},{n:"BNSF Alliance",la:32.85,lo:-97.25},
+{n:"Bailey Yard",la:41.15,lo:-100.83},{n:"CN Vancouver Yard",la:49.25,lo:-123.07},
+{n:"CPKC Toronto Agincourt",la:43.83,lo:-79.02},{n:"Ferromex Monterrey",la:25.69,lo:-100.32},
+{n:"Ferrovalle Mexico City",la:19.43,lo:-99.13}
+];
+D.oil=[
+{n:"Motiva Port Arthur",la:29.86,lo:-93.97},{n:"ExxonMobil Beaumont",la:30.07,lo:-94.07},
+{n:"Marathon Garyville",la:30.06,lo:-90.60},{n:"Marathon Galveston Bay",la:29.40,lo:-94.93},
+{n:"ExxonMobil Baytown",la:29.74,lo:-95.01},{n:"Sabine Pass LNG",la:29.74,lo:-93.88},
+{n:"Nederland Terminal",la:29.98,lo:-93.99}
+];
+D.border=[
+{n:"Laredo/Nuevo Laredo",la:27.53,lo:-99.51},{n:"El Paso/Ciudad Juárez",la:31.76,lo:-106.49},
+{n:"Otay Mesa/Tijuana",la:32.51,lo:-116.97},{n:"Nogales/Nogales",la:31.34,lo:-110.99}
+];
+D.choke=[
+{n:"Panama Canal",la:9.08,lo:-79.68},{n:"Strait of Juan de Fuca",la:48.31,lo:-124.04}
+];
+
+var map=L.map('map',{
+  center:[34,-96],zoom:4,
+  zoomControl:false,attributionControl:false,
+  dragging:false,scrollWheelZoom:false,doubleClickZoom:false,
+  touchZoom:false,boxZoom:false,keyboard:false
+});
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',{maxZoom:19}).addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png',{maxZoom:19,opacity:0.25}).addTo(map);
+
+var all=[];
+['sea','rail','oil','border','choke'].forEach(function(k){
+  D[k].forEach(function(f){all.push(f)});
+});
+all.forEach(function(f){
+  L.marker([f.la,f.lo],{icon:L.divIcon({
+    className:'',iconSize:[36,36],iconAnchor:[18,18],
+    html:'<div class="sr-wrap"><div class="sr-dot"></div><div class="sr-ring"></div><div class="sr-ring sr-ring2"></div></div>'
+  }),interactive:false}).addTo(map);
+});
+
+var zones=[
+  [[29.61,-95.02],[30.08,-94.12],[29.86,-93.97],[30.07,-94.07],[29.74,-95.01]],
+  [[33.74,-118.19],[33.74,-118.27],[34.01,-118.19]],
+  [[40.68,-74.15],[39.28,-76.59],[36.90,-76.35],[32.09,-81.10]],
+  [[49.28,-123.12],[54.32,-130.32]],
+  [[27.53,-99.51],[31.76,-106.49],[32.51,-116.97],[31.34,-110.99]]
+];
+zones.forEach(function(z){
+  L.polyline(z,{color:'#ef4444',weight:1.5,opacity:0.15,dashArray:'8,6',interactive:false}).addTo(map);
+});
+</script>
+</body>
+</html>
