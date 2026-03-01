@@ -1,4 +1,5 @@
 import Hero from "@/components/Hero";
+import NewsTicker from "@/components/NewsTicker";
 import StatsBar from "@/components/StatsBar";
 import SectionHeader from "@/components/SectionHeader";
 import QuoteBreak from "@/components/QuoteBreak";
@@ -26,6 +27,7 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <NewsTicker />
       <StatsBar />
 
       {/* THE SITUATION */}

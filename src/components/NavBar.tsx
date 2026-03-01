@@ -36,22 +36,22 @@ export default function NavBar() {
       <nav
         className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-10 max-md:px-5 h-[60px]"
         style={{
-          background: "rgba(0,0,0,0.95)",
-          backdropFilter: "blur(12px)",
-          borderBottom: `1px solid ${scrolled ? "#cc0000" : "#1a1a1a"}`,
+          background: "rgba(0,0,0,0.97)",
+          backdropFilter: "blur(8px)",
+          borderBottom: `2px solid ${scrolled ? "#cc0000" : "#1a1a1a"}`,
         }}
       >
-        <Link href="/" className="font-heading font-black text-[16px] tracking-[3px] text-white uppercase no-underline hover:no-underline glitch-text">
+        <Link href="/" className="glitch-text font-heading font-black text-[16px] tracking-[4px] text-white uppercase no-underline hover:no-underline">
           Common Defense
         </Link>
 
-        <div className="hidden md:flex gap-7">
+        <div className="hidden md:flex gap-6">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`nav-link-dystopian font-heading text-[12px] tracking-[2px] uppercase no-underline hover:no-underline ${
-                link.highlight ? "text-red font-bold hover:!text-red-light" : "text-muted hover:!text-white"
+              className={`nav-link-dystopian font-mono text-[10px] tracking-[2px] uppercase no-underline hover:no-underline ${
+                link.highlight ? "text-red font-bold" : "text-muted"
               }`}
             >
               {link.label}
@@ -62,7 +62,7 @@ export default function NavBar() {
         <div className="flex items-center gap-3">
           <button
             onClick={goToPledge}
-            className="btn-dystopian font-heading text-[12px] tracking-[2px] uppercase bg-red text-white px-6 py-2.5 border-none cursor-pointer font-bold max-md:hidden"
+            className="glitch-hover font-stencil text-[11px] tracking-[2px] uppercase bg-red text-white px-5 py-2 border-2 border-red font-black max-md:hidden"
             style={{ borderRadius: 0 }}
           >
             Sign the Pledge
@@ -70,7 +70,7 @@ export default function NavBar() {
 
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden bg-transparent border-none cursor-pointer p-2 flex flex-col gap-[5px]"
+            className="md:hidden bg-transparent border-none p-2 flex flex-col gap-[5px]"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
           >
@@ -92,9 +92,10 @@ export default function NavBar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className={`nav-link-dystopian font-heading text-[16px] tracking-[3px] uppercase no-underline hover:no-underline py-4 border-b border-border ${
+                className={`nav-link-dystopian font-mono text-[14px] tracking-[3px] uppercase no-underline hover:no-underline py-4 ${
                   link.highlight ? "text-red font-bold" : "text-muted"
                 }`}
+                style={{ borderBottom: "1px solid #1a1a1a" }}
               >
                 {link.label}
               </Link>
@@ -103,7 +104,7 @@ export default function NavBar() {
           <div className="p-6 mt-auto">
             <button
               onClick={goToPledge}
-              className="btn-dystopian font-heading text-[13px] tracking-[2px] uppercase bg-red text-white px-10 py-4 border-none cursor-pointer font-bold w-full"
+              className="glitch-hover font-stencil text-[13px] tracking-[2px] uppercase bg-red text-white px-10 py-4 border-2 border-red font-black w-full"
               style={{ borderRadius: 0 }}
             >
               Sign the Pledge

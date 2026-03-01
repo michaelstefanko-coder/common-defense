@@ -28,56 +28,67 @@ export default function PledgeForm() {
   };
 
   return (
-    <div className="bg-black py-[100px] px-10" id="pledge" style={{ borderTop: "1px solid #1a1a1a", borderBottom: "1px solid #1a1a1a" }}>
-      <div className="max-w-[800px] mx-auto text-center">
-        <div className="font-heading text-[11px] tracking-[3px] uppercase text-red mb-3">
-          Pillar III
+    <div
+      className="bg-black py-[100px] px-10 relative"
+      id="pledge"
+      style={{ borderTop: "2px solid #1a1a1a", borderBottom: "2px solid #1a1a1a" }}
+    >
+      {/* Left red bar */}
+      <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-red" />
+
+      <div className="max-w-[800px] mx-auto">
+        <div className="font-mono text-[10px] tracking-[4px] uppercase text-red mb-4">
+          {"// PILLAR III — THE PLEDGE"}
         </div>
-        <div className="font-heading text-[40px] max-md:text-[28px] font-black text-white leading-[1.15] mb-6">
+        <div className="font-heading text-[44px] max-md:text-[28px] font-black text-white leading-[1.05] mb-6 uppercase">
           The Citizens United Pledge
         </div>
 
         <div
-          className="text-[22px] max-md:text-[18px] italic text-text leading-[1.7] border-l-[3px] border-red py-6 px-8 text-left my-10"
-          style={{ background: "rgba(204,0,0,0.08)" }}
+          className="font-heading text-[20px] max-md:text-[16px] italic text-white leading-[1.7] py-8 px-8 text-left my-10"
+          style={{
+            borderLeft: "3px solid #cc0000",
+            background: "rgba(204,0,0,0.05)",
+          }}
         >
           I will only vote for a presidential candidate who commits to treating Citizens United v. FEC as illegitimate and actively pursues its legislative or constitutional reversal. Lincoln did not ask the Court&apos;s permission to overturn Dred Scott. Neither do I.
         </div>
 
-        <p className="text-light text-[16px] mb-2">
+        <p className="font-mono text-[13px] text-muted mb-2 tracking-[1px] uppercase">
           Your name. On the record. Publicly accountable.
         </p>
 
-        <div className="flex gap-3 max-w-[500px] mx-auto mt-8 max-md:flex-col">
+        <div className="flex gap-3 max-w-[600px] mt-8 max-md:flex-col">
           <input
             type="text"
             value={name}
             onChange={(e) => { setName(e.target.value); setError(false); }}
-            placeholder="Your full name"
+            placeholder="ENTER YOUR FULL NAME"
             disabled={signed}
-            className={`flex-1 py-3.5 px-5 bg-card border text-white font-heading text-[14px] outline-none transition-colors placeholder:text-muted ${
-              error ? "border-red" : "border-border focus:border-red"
+            className={`flex-1 py-3.5 px-5 bg-black text-white font-mono text-[13px] tracking-[1px] outline-none placeholder:text-muted ${
+              error ? "border-2 border-red" : "border-2 border-border focus:border-red"
             }`}
+            style={{ borderRadius: 0 }}
             onKeyDown={(e) => { if (e.key === "Enter") signPledge(); }}
             aria-label="Your full name"
           />
           <button
             onClick={signPledge}
             disabled={signed}
-            className="btn-dystopian font-heading text-[13px] tracking-[2px] uppercase bg-red text-white px-10 py-4 border-none cursor-pointer font-bold whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+            className="glitch-hover font-stencil text-[13px] tracking-[2px] uppercase bg-red text-white px-10 py-4 border-2 border-red font-black whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
             style={{ borderRadius: 0 }}
           >
             Sign the Pledge
           </button>
         </div>
 
-        <div className={`font-heading text-[13px] mt-4 ${mounted && signed ? "text-green" : "text-muted"}`}>
+        <div className={`font-mono text-[11px] tracking-[1px] mt-4 ${mounted && signed ? "text-green" : "text-muted"}`}>
           {mounted && signed ? (
             <>
-              <span>&#10003;</span> <strong>{signerName}</strong> — your pledge is recorded. You are signer #24,838.
+              [CONFIRMED] <strong>{signerName}</strong> — PLEDGE RECORDED. SIGNER #24,838.
             </>
           ) : (
-            "Join the signers. Every name is public. Every name matters."
+            "// JOIN THE SIGNERS. EVERY NAME IS PUBLIC. EVERY NAME MATTERS."
           )}
         </div>
       </div>

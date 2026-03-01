@@ -6,6 +6,11 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  cursor: crosshair;
+}
+
+input, textarea, select, button, a {
+  cursor: crosshair;
 }
 
 html {
@@ -13,7 +18,7 @@ html {
 }
 
 body {
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: 'Courier New', 'Courier', monospace;
   background: #000000;
   color: #e0e0e0;
   line-height: 1.7;
@@ -29,10 +34,17 @@ a:hover {
 }
 
 /* ============================================
-   DYSTOPIAN OVERLAY: CRT film grain
+   CRT BOOT FLASH — plays once on page load
    ============================================ */
+@keyframes crt-boot {
+  0% { opacity: 1; background: #ffffff; }
+  5% { opacity: 1; background: #ffffff; }
+  8% { opacity: 0; background: transparent; }
+  12% { opacity: 0.6; background: #ffffff; }
+  15% { opacity: 0; background: transparent; }
+  100% { opacity: 0; pointer-events: none; }
+}
 
-/* Fixed full-viewport grain texture */
 body::after {
   content: '';
   position: fixed;
@@ -40,16 +52,41 @@ body::after {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 9998;
+  z-index: 99999;
   pointer-events: none;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  background-size: 128px 128px;
+  background: #ffffff;
+  animation: crt-boot 0.6s ease-out forwards;
 }
 
-/* Faint scanlines */
-body::before {
-  content: '';
+/* ============================================
+   FILM GRAIN — heavy, degraded signal
+   ============================================ */
+.grain-overlay {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  animation: grain-drift 0.5s steps(4) infinite;
+}
+
+@keyframes grain-drift {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-2%, -1%); }
+  50% { transform: translate(1%, 2%); }
+  75% { transform: translate(-1%, -2%); }
+  100% { transform: translate(2%, 1%); }
+}
+
+/* ============================================
+   SCANLINES — CRT monitor degradation
+   ============================================ */
+.scanlines {
   position: fixed;
   top: 0;
   left: 0;
@@ -61,88 +98,108 @@ body::before {
     to bottom,
     transparent,
     transparent 2px,
-    rgba(0, 0, 0, 0.08) 2px,
-    rgba(0, 0, 0, 0.08) 4px
+    rgba(0, 0, 0, 0.12) 2px,
+    rgba(0, 0, 0, 0.12) 4px
   );
 }
 
 /* ============================================
-   GLITCH HOVER: chromatic aberration
+   TRACKING DISTORTION — VHS tape wobble
    ============================================ */
-@keyframes glitch-jitter {
-  0%, 100% { transform: translate(0, 0); }
-  20% { transform: translate(-2px, 0); }
-  40% { transform: translate(2px, 0); }
-  60% { transform: translate(-1px, 1px); }
-  80% { transform: translate(1px, -1px); }
-}
-
-@keyframes glitch-chromatic {
-  0%, 100% {
-    text-shadow: none;
-  }
-  25% {
-    text-shadow: -2px 0 #cc0000, 2px 0 #00ccff;
-  }
-  50% {
-    text-shadow: 2px 0 #cc0000, -2px 0 #00ccff;
-  }
-  75% {
-    text-shadow: -1px 1px #cc0000, 1px -1px #00ccff;
-  }
-}
-
-@keyframes glitch-box {
-  0%, 100% {
-    box-shadow: none;
-  }
-  25% {
-    box-shadow: -2px 0 0 #cc0000, 2px 0 0 #00ccff;
-  }
-  50% {
-    box-shadow: 2px 0 0 #cc0000, -2px 0 0 #00ccff;
-  }
-  75% {
-    box-shadow: -1px 0 0 #cc0000, 1px 0 0 #00ccff;
-  }
-}
-
-/* Glitch class for buttons */
-.glitch-hover:hover {
-  animation: glitch-jitter 0.15s steps(2) 1;
-  box-shadow: -2px 0 0 #cc0000, 2px 0 0 #00ccff;
-}
-
-.glitch-hover:active {
-  background: #000000 !important;
-  color: #cc0000 !important;
-  border: 1px solid #cc0000 !important;
-}
-
-/* Glitch for text links */
-.glitch-text:hover {
-  animation: glitch-chromatic 0.2s steps(3) 1;
+@keyframes vhs-track {
+  0%, 95%, 100% { clip-path: none; transform: none; }
+  96% { clip-path: inset(40% 0 30% 0); transform: translateX(-4px); }
+  97% { clip-path: inset(20% 0 50% 0); transform: translateX(6px); }
+  98% { clip-path: inset(60% 0 10% 0); transform: translateX(-3px); }
+  99% { clip-path: none; transform: translateX(2px); }
 }
 
 /* ============================================
-   BUTTON ACTIVE STATES: violent inversion
+   GLITCH EFFECTS — chromatic aberration
+   ============================================ */
+@keyframes glitch-jitter {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-3px, 0); }
+  20% { transform: translate(3px, 1px); }
+  30% { transform: translate(-2px, -1px); }
+  40% { transform: translate(4px, 0); }
+  50% { transform: translate(-1px, 2px); }
+  60% { transform: translate(2px, -1px); }
+  70% { transform: translate(-3px, 0); }
+  80% { transform: translate(1px, 1px); }
+  90% { transform: translate(-2px, -2px); }
+}
+
+@keyframes glitch-chromatic {
+  0%, 100% { text-shadow: none; }
+  20% { text-shadow: -3px 0 #cc0000, 3px 0 #0044ff; }
+  40% { text-shadow: 3px 0 #cc0000, -3px 0 #0044ff; }
+  60% { text-shadow: -2px 1px #cc0000, 2px -1px #0044ff; }
+  80% { text-shadow: 2px -2px #cc0000, -2px 2px #0044ff; }
+}
+
+@keyframes glitch-box {
+  0%, 100% { box-shadow: none; }
+  25% { box-shadow: -3px 0 0 #cc0000, 3px 0 0 #0044ff; }
+  50% { box-shadow: 3px 0 0 #cc0000, -3px 0 0 #0044ff; }
+  75% { box-shadow: -2px 0 0 #cc0000, 2px 0 0 #0044ff; }
+}
+
+@keyframes glitch-split {
+  0%, 100% { transform: translateX(0); filter: none; }
+  33% { transform: translateX(-2px); filter: hue-rotate(90deg); }
+  66% { transform: translateX(2px); filter: hue-rotate(-90deg); }
+}
+
+/* Glitch class for buttons */
+.glitch-hover {
+  transition: none !important;
+}
+.glitch-hover:hover {
+  animation: glitch-jitter 0.2s steps(3) 1, glitch-box 0.2s steps(3) 1;
+}
+.glitch-hover:active {
+  background: #000000 !important;
+  color: #cc0000 !important;
+  border: 2px solid #cc0000 !important;
+  box-shadow: inset 0 0 30px rgba(204, 0, 0, 0.2);
+}
+
+/* Glitch for text */
+.glitch-text {
+  transition: none !important;
+}
+.glitch-text:hover {
+  animation: glitch-chromatic 0.25s steps(4) 1;
+}
+
+/* ============================================
+   BUTTON STYLES — brutal, sharp
    ============================================ */
 .btn-dystopian {
   transition: none !important;
+  border-radius: 0 !important;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
-
 .btn-dystopian:hover {
-  animation: glitch-jitter 0.15s steps(2) 1;
+  animation: glitch-jitter 0.15s steps(3) 1, glitch-box 0.15s steps(3) 1;
 }
-
 .btn-dystopian:active {
   background: #000000 !important;
-  color: #cc0000 !important;
-  border: 1px solid #cc0000 !important;
-  box-shadow: inset 0 0 20px rgba(204, 0, 0, 0.15);
+  color: #ff0000 !important;
+  border: 2px solid #ff0000 !important;
 }
 
-/* Ghost button active state */
+.btn-ghost {
+  transition: none !important;
+  border-radius: 0 !important;
+}
+.btn-ghost:hover {
+  animation: glitch-jitter 0.15s steps(3) 1;
+  background: rgba(204,0,0,0.1) !important;
+  border-color: #cc0000 !important;
+}
 .btn-ghost:active {
   background: #cc0000 !important;
   color: #000000 !important;
@@ -150,18 +207,80 @@ body::before {
 }
 
 /* ============================================
-   NAV: instant transitions, no smooth fading
+   NAV LINKS — instant, no fading
    ============================================ */
 .nav-link-dystopian {
   transition: none !important;
 }
-
 .nav-link-dystopian:hover {
   color: #ffffff !important;
+  text-shadow: 0 0 8px rgba(255,255,255,0.3);
 }
 
 /* ============================================
-   EXISTING ANIMATIONS
+   NEWS TICKER — scrolling marquee
+   ============================================ */
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.ticker-track {
+  display: flex;
+  animation: ticker-scroll 60s linear infinite;
+  white-space: nowrap;
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+/* ============================================
+   SECTION BORDERS — harsh classification lines
+   ============================================ */
+.border-harsh {
+  border-color: #1a1a1a;
+}
+
+.border-harsh-red {
+  border-color: rgba(204, 0, 0, 0.3);
+}
+
+/* Classified stamp effect */
+.stamp-classified {
+  position: relative;
+}
+.stamp-classified::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 3px;
+  height: 100%;
+  background: #cc0000;
+}
+
+/* ============================================
+   MONOSPACE DATA DISPLAY
+   ============================================ */
+.mono-data {
+  font-family: 'Courier New', 'Courier', monospace;
+  letter-spacing: 1px;
+}
+
+/* ============================================
+   DECAY ACCENT — sickly highlight
+   ============================================ */
+.text-decay {
+  color: #8b8b00;
+}
+
+.bg-decay {
+  background: rgba(139, 139, 0, 0.08);
+}
+
+/* ============================================
+   EXISTING
    ============================================ */
 @keyframes slideIn {
   from { opacity: 0; transform: translateY(12px); }
@@ -172,6 +291,7 @@ body::before {
   nav, footer, .print\:hidden { display: none !important; }
   body { background: white !important; color: black !important; }
   body::before, body::after { display: none !important; }
+  .grain-overlay, .scanlines { display: none !important; }
   .print\:text-black { color: black !important; }
   .print\:bg-white { background: white !important; }
   .print\:border-black { border-color: black !important; }
@@ -186,5 +306,8 @@ body::before {
   }
   html {
     scroll-behavior: auto;
+  }
+  .ticker-track {
+    animation: none !important;
   }
 }

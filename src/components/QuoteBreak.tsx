@@ -6,16 +6,24 @@ interface QuoteBreakProps {
 
 export default function QuoteBreak({ quote, attribution, boldAttribution }: QuoteBreakProps) {
   return (
-    <div className="py-20 px-10 text-center bg-black" style={{ borderTop: "1px solid #1a1a1a", borderBottom: "1px solid #1a1a1a" }}>
-      <div className="text-[24px] max-md:text-[18px] italic text-text max-w-[700px] mx-auto leading-relaxed">
-        &ldquo;{quote}&rdquo;
-      </div>
-      <div
-        className={`font-heading text-[12px] tracking-[2px] uppercase mt-4 ${
-          boldAttribution ? "text-white font-bold text-[14px] mt-5" : "text-muted"
-        }`}
-      >
-        {attribution}
+    <div
+      className="py-20 px-10 bg-black relative"
+      style={{ borderTop: "2px solid #1a1a1a", borderBottom: "2px solid #1a1a1a" }}
+    >
+      {/* Red left accent bar */}
+      <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-red" />
+
+      <div className="max-w-[800px] mx-auto">
+        <div className="font-heading text-[28px] max-md:text-[20px] italic text-white leading-[1.5] uppercase">
+          &ldquo;{quote}&rdquo;
+        </div>
+        <div
+          className={`font-mono text-[11px] tracking-[3px] uppercase mt-6 ${
+            boldAttribution ? "text-red font-bold" : "text-muted"
+          }`}
+        >
+          — {attribution}
+        </div>
       </div>
     </div>
   );

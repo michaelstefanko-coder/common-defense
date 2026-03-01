@@ -38,38 +38,50 @@ export default function StatsBar() {
     <div
       ref={ref}
       className="bg-black grid grid-cols-4 max-md:grid-cols-2"
-      style={{ borderTop: "1px solid #1a1a1a", borderBottom: "1px solid #1a1a1a" }}
+      style={{ borderTop: "2px solid #1a1a1a", borderBottom: "2px solid #1a1a1a" }}
     >
-      <div className="text-center py-8 px-5" style={{ borderRight: "1px solid #1a1a1a" }}>
-        <div className="font-heading text-[36px] font-black text-white">
+      <div className="py-6 px-6" style={{ borderRight: "1px solid #1a1a1a" }}>
+        <div className="font-mono text-[9px] tracking-[2px] uppercase text-muted mb-2">
+          {"// SIGNATORIES"}
+        </div>
+        <div className="font-mono text-[32px] font-bold text-white leading-none">
           {pledges.toLocaleString()}
         </div>
-        <div className="font-heading text-[11px] tracking-[2px] uppercase text-muted mt-1">
-          Pledges Signed
+        <div className="font-mono text-[10px] text-muted mt-1 tracking-[1px]">
+          PLEDGES SIGNED
         </div>
       </div>
-      <div className="text-center py-8 px-5 max-md:!border-r-0" style={{ borderRight: "1px solid #1a1a1a" }}>
-        <div className="font-heading text-[36px] font-black text-white">
+      <div className="py-6 px-6 max-md:!border-r-0" style={{ borderRight: "1px solid #1a1a1a" }}>
+        <div className="font-mono text-[9px] tracking-[2px] uppercase text-muted mb-2">
+          {"// CELLS ACTIVE"}
+        </div>
+        <div className="font-mono text-[32px] font-bold text-white leading-none">
           {chapters.toLocaleString()}
         </div>
-        <div className="font-heading text-[11px] tracking-[2px] uppercase text-muted mt-1">
-          Local Chapters
+        <div className="font-mono text-[10px] text-muted mt-1 tracking-[1px]">
+          LOCAL CHAPTERS
         </div>
       </div>
-      <div className="text-center py-8 px-5" style={{ borderRight: "1px solid #1a1a1a" }}>
-        <div className="font-heading text-[36px] font-black text-red">
+      <div className="py-6 px-6" style={{ borderRight: "1px solid #1a1a1a" }}>
+        <div className="font-mono text-[9px] tracking-[2px] uppercase text-red mb-2">
+          {"// FUND STATUS"}
+        </div>
+        <div className="font-mono text-[32px] font-bold text-red leading-none">
           ${fund.toLocaleString()}
         </div>
-        <div className="font-heading text-[11px] tracking-[2px] uppercase text-muted mt-1">
-          Strike Fund
+        <div className="font-mono text-[10px] text-muted mt-1 tracking-[1px]">
+          STRIKE FUND
         </div>
       </div>
-      <div className="text-center py-8 px-5">
-        <div className="font-heading text-[36px] font-black text-white">
+      <div className="py-6 px-6">
+        <div className="font-mono text-[9px] tracking-[2px] uppercase text-muted mb-2">
+          {"// MUTUAL AID"}
+        </div>
+        <div className="font-mono text-[32px] font-bold text-white leading-none">
           {aid.toLocaleString()}
         </div>
-        <div className="font-heading text-[11px] tracking-[2px] uppercase text-muted mt-1">
-          Mutual Aid Matches
+        <div className="font-mono text-[10px] text-muted mt-1 tracking-[1px]">
+          AID MATCHES
         </div>
       </div>
     </div>

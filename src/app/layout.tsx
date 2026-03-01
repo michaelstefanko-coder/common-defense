@@ -23,6 +23,10 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased">
         <ClientProviders>
+          {/* CRT grain + scanline overlays */}
+          <div className="grain-overlay" aria-hidden="true" />
+          <div className="scanlines" aria-hidden="true" />
+
           <NavBar />
           <main>{children}</main>
           <Footer />
