@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import resistOps from "@/data/resistance-ops.json";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { useToast } from "@/components/Toast";
 
 const campaignDetails: Record<string, { howItWorks: string; risks: string; howToJoin: string }> = {
   "op-001": {
@@ -82,17 +84,60 @@ const campaignDetails: Record<string, { howItWorks: string; risks: string; howTo
   },
 };
 
+type StatusFilter = "all" | "ACTIVE" | "PLANNING";
+type TacticFilter = string;
+
+const allTactics = Array.from(
+  new Set(resistOps.campaigns.flatMap((op) => op.tactics))
+).sort();
+
 export default function ResistPage() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
-  const [joined, setJoined] = useState<Set<string>>(new Set());
+  const [joined, setJoined] = useLocalStorage<string[]>("cd-joined-campaigns", []);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [tacticFilter, setTacticFilter] = useState<TacticFilter>("all");
+  const [sortBy, setSortBy] = useState<"default" | "participants" | "impact">("default");
+  const [mounted, setMounted] = useState(false);
+  const toast = useToast();
+
+  useEffect(() => setMounted(true), []);
 
   const handleJoin = (id: string) => {
-    setJoined((prev) => {
-      const next = new Set(prev);
-      next.add(id);
-      return next;
-    });
+    if (joined.includes(id)) return;
+    setJoined((prev) => [...prev, id]);
+    const campaign = resistOps.campaigns.find((c) => c.id === id);
+    toast.addToast(`Joined: ${campaign?.name}. Welcome aboard.`, "success");
   };
+
+  const filteredCampaigns = useMemo(() => {
+    let campaigns = [...resistOps.campaigns];
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      campaigns = campaigns.filter(
+        (op) =>
+          op.name.toLowerCase().includes(q) ||
+          op.description.toLowerCase().includes(q)
+      );
+    }
+
+    if (statusFilter !== "all") {
+      campaigns = campaigns.filter((op) => op.status === statusFilter);
+    }
+
+    if (tacticFilter !== "all") {
+      campaigns = campaigns.filter((op) => op.tactics.includes(tacticFilter));
+    }
+
+    if (sortBy === "participants") {
+      campaigns.sort((a, b) => b.participants - a.participants);
+    } else if (sortBy === "impact") {
+      campaigns.sort((a, b) => b.impact - a.impact);
+    }
+
+    return campaigns;
+  }, [searchQuery, statusFilter, tacticFilter, sortBy]);
 
   return (
     <div className="pt-[60px]">
@@ -114,13 +159,72 @@ export default function ResistPage() {
         </p>
       </section>
 
+      {/* SEARCH + FILTERS */}
+      <section className="px-10 max-w-[1200px] mx-auto pb-4">
+        <div className="flex gap-4 flex-wrap items-end">
+          <div className="flex-1 min-w-[250px]">
+            <label className="font-heading text-[10px] tracking-[2px] uppercase text-muted block mb-2">Search</label>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search campaigns..."
+              className="w-full py-3 px-4 bg-card border border-border text-white font-heading text-[14px] outline-none focus:border-red placeholder:text-muted transition-colors"
+            />
+          </div>
+          <div>
+            <label className="font-heading text-[10px] tracking-[2px] uppercase text-muted block mb-2">Status</label>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
+              className="py-3 px-4 bg-card border border-border text-white font-heading text-[13px] outline-none focus:border-red cursor-pointer"
+            >
+              <option value="all">All Status</option>
+              <option value="ACTIVE">Active</option>
+              <option value="PLANNING">Planning</option>
+            </select>
+          </div>
+          <div>
+            <label className="font-heading text-[10px] tracking-[2px] uppercase text-muted block mb-2">Tactic</label>
+            <select
+              value={tacticFilter}
+              onChange={(e) => setTacticFilter(e.target.value)}
+              className="py-3 px-4 bg-card border border-border text-white font-heading text-[13px] outline-none focus:border-red cursor-pointer"
+            >
+              <option value="all">All Tactics</option>
+              {allTactics.map((t) => (
+                <option key={t} value={t}>{t.replace(/-/g, " ")}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="font-heading text-[10px] tracking-[2px] uppercase text-muted block mb-2">Sort</label>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+              className="py-3 px-4 bg-card border border-border text-white font-heading text-[13px] outline-none focus:border-red cursor-pointer"
+            >
+              <option value="default">Default</option>
+              <option value="participants">Most Participants</option>
+              <option value="impact">Highest Impact</option>
+            </select>
+          </div>
+        </div>
+        <div className="font-heading text-[12px] text-muted mt-3">
+          {filteredCampaigns.length} of {resistOps.campaigns.length} campaigns
+          {mounted && joined.length > 0 && (
+            <span className="text-green ml-3">You&apos;ve joined {joined.length}</span>
+          )}
+        </div>
+      </section>
+
       {/* CAMPAIGN GRID */}
       <section className="py-[40px] px-10 max-w-[1200px] mx-auto">
         <div className="grid grid-cols-3 max-md:grid-cols-1 gap-5">
-          {resistOps.campaigns.map((op) => {
+          {filteredCampaigns.map((op) => {
             const details = campaignDetails[op.id];
             const isExpanded = expandedId === op.id;
-            const isJoined = joined.has(op.id);
+            const isJoined = mounted && joined.includes(op.id);
 
             return (
               <div
@@ -139,14 +243,23 @@ export default function ResistPage() {
                   {op.description}
                 </div>
 
-                <div className="font-heading text-[12px] text-light mb-3">
-                  <strong className="text-white">{op.participants.toLocaleString()}</strong> participants
+                <div className="flex gap-4 font-heading text-[12px] text-light mb-3">
+                  <span><strong className="text-white">{op.participants.toLocaleString()}</strong> participants</span>
+                  <span><strong className="text-white">{op.impact}%</strong> impact</span>
+                </div>
+
+                <div className="flex gap-1.5 flex-wrap mb-4">
+                  {op.tactics.map((tactic) => (
+                    <span
+                      key={tactic}
+                      className="font-heading text-[9px] tracking-[1px] uppercase py-1 px-2 bg-border/50 text-muted"
+                    >
+                      {tactic.replace(/-/g, " ")}
+                    </span>
+                  ))}
                 </div>
 
                 <div className="mb-4">
-                  <div className="font-heading text-[10px] tracking-[2px] uppercase text-muted mb-1.5">
-                    Campaign Progress — {op.impact}%
-                  </div>
                   <div className="h-1 bg-border w-full">
                     <div
                       className={`h-full transition-all duration-1000 ${
@@ -171,6 +284,9 @@ export default function ResistPage() {
                       <div className="font-heading text-[10px] tracking-[1px] uppercase text-green mb-1">How to join</div>
                       <p>{details.howToJoin}</p>
                     </div>
+                    <div className="font-heading text-[10px] tracking-[1px] uppercase text-muted mt-2">
+                      Next: {op.nextEvent}
+                    </div>
                   </div>
                 )}
 
@@ -190,13 +306,19 @@ export default function ResistPage() {
                         : "bg-red text-white hover:bg-red-light"
                     }`}
                   >
-                    {isJoined ? "You're In!" : "Join"}
+                    {isJoined ? "\u2713 You're In" : "Join"}
                   </button>
                 </div>
               </div>
             );
           })}
         </div>
+
+        {filteredCampaigns.length === 0 && (
+          <div className="text-center text-muted mt-10 font-heading text-[14px] py-20">
+            No campaigns match your search. Try different filters.
+          </div>
+        )}
       </section>
 
       {/* CAMPAIGN TABLE */}
@@ -212,6 +334,7 @@ export default function ResistPage() {
                 <th className="text-left font-heading text-[11px] tracking-[2px] uppercase text-muted py-3 px-4">Status</th>
                 <th className="text-right font-heading text-[11px] tracking-[2px] uppercase text-muted py-3 px-4">Participants</th>
                 <th className="text-right font-heading text-[11px] tracking-[2px] uppercase text-muted py-3 px-4">Impact</th>
+                <th className="text-center font-heading text-[11px] tracking-[2px] uppercase text-muted py-3 px-4">Joined</th>
               </tr>
             </thead>
             <tbody>
@@ -225,6 +348,9 @@ export default function ResistPage() {
                   </td>
                   <td className="font-heading text-[13px] text-light py-3 px-4 text-right">{op.participants.toLocaleString()}</td>
                   <td className="font-heading text-[13px] text-light py-3 px-4 text-right">{op.impact}%</td>
+                  <td className="text-center py-3 px-4">
+                    {mounted && joined.includes(op.id) && <span className="text-green">&#10003;</span>}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -237,6 +363,9 @@ export default function ResistPage() {
                 </td>
                 <td className="font-heading text-[13px] text-white py-3 px-4 text-right font-bold">
                   {Math.round(resistOps.campaigns.reduce((sum, op) => sum + op.impact, 0) / resistOps.campaigns.length)}% avg
+                </td>
+                <td className="text-center py-3 px-4">
+                  <span className="font-heading text-[11px] text-green">{mounted ? joined.length : 0}</span>
                 </td>
               </tr>
             </tfoot>
@@ -281,23 +410,35 @@ export default function ResistPage() {
           <div className="bg-card border border-border p-6 text-center">
             <div className="font-heading text-[14px] font-bold text-white mb-2">I want to learn more</div>
             <p className="text-[13px] text-muted mb-4">Email signup for campaign newsletter. 1 email per week. No commitment.</p>
-            <button className="font-heading text-[11px] tracking-[1px] uppercase py-2.5 px-5 bg-transparent border border-border text-light cursor-pointer hover:border-red hover:text-white transition-all w-full">
+            <button
+              onClick={() => {
+                const el = document.getElementById("newsletter");
+                if (el) el.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="font-heading text-[11px] tracking-[1px] uppercase py-2.5 px-5 bg-transparent border border-border text-light cursor-pointer hover:border-red hover:text-white transition-all w-full"
+            >
               Subscribe
             </button>
           </div>
           <div className="bg-card border border-red p-6 text-center">
             <div className="font-heading text-[14px] font-bold text-white mb-2">I&apos;m ready to join</div>
             <p className="text-[13px] text-muted mb-4">Campaign selection, onboarding group, assigned to team.</p>
-            <button className="font-heading text-[11px] tracking-[1px] uppercase py-2.5 px-5 bg-red text-white border-none cursor-pointer font-bold hover:bg-red-light transition-all w-full">
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="font-heading text-[11px] tracking-[1px] uppercase py-2.5 px-5 bg-red text-white border-none cursor-pointer font-bold hover:bg-red-light transition-all w-full"
+            >
               I&apos;m In
             </button>
           </div>
           <div className="bg-card border border-border p-6 text-center">
             <div className="font-heading text-[14px] font-bold text-white mb-2">I want to lead</div>
             <p className="text-[13px] text-muted mb-4">Coordinator application, leadership training, launch team in your region.</p>
-            <button className="font-heading text-[11px] tracking-[1px] uppercase py-2.5 px-5 bg-transparent border border-border text-light cursor-pointer hover:border-red hover:text-white transition-all w-full">
+            <Link
+              href="/#pledge"
+              className="font-heading text-[11px] tracking-[1px] uppercase py-2.5 px-5 bg-transparent border border-border text-light cursor-pointer hover:border-red hover:text-white transition-all w-full block no-underline hover:no-underline text-center"
+            >
               Apply
-            </button>
+            </Link>
           </div>
         </div>
       </div>

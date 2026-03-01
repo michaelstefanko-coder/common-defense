@@ -10,6 +10,11 @@ import OrganizerElection from "@/components/OrganizerElection";
 import ResistanceToolkit from "@/components/ResistanceOpCard";
 import PrivacyWizard from "@/components/PrivacyWizard";
 import CommsGrid from "@/components/CommsCard";
+import CountdownTimer from "@/components/CountdownTimer";
+import FoiaGenerator from "@/components/FoiaGenerator";
+import DataBrokerOptOut from "@/components/DataBrokerOptOut";
+import NewsletterSignup from "@/components/NewsletterSignup";
+import ShareButtons from "@/components/ShareButtons";
 import Link from "next/link";
 
 export default function HomePage() {
@@ -97,6 +102,8 @@ export default function HomePage() {
         </section>
       </div>
 
+      <CountdownTimer />
+
       {/* FIVE PILLARS */}
       <section className="py-[100px] px-10 max-w-[1200px] mx-auto" id="strike">
         <SectionHeader
@@ -111,8 +118,21 @@ export default function HomePage() {
       <CreditsDashboard />
       <OrganizerElection />
       <ResistanceToolkit />
+      <FoiaGenerator />
+      <DataBrokerOptOut />
       <PrivacyWizard />
       <CommsGrid />
+      <NewsletterSignup />
+
+      {/* SHARE + FINAL QUOTE */}
+      <section className="py-12 px-10 max-w-[1200px] mx-auto">
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <div className="font-heading text-[11px] tracking-[3px] uppercase text-muted">
+            Share Common Defense
+          </div>
+          <ShareButtons />
+        </div>
+      </section>
 
       <QuoteBreak
         quote="More than half the people are right. They know what is happening. They know it is wrong. What they do not have — yet — is the organized means to act on what they know."
