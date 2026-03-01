@@ -3,6 +3,7 @@ import NewsTicker from "@/components/NewsTicker";
 import StatsBar from "@/components/StatsBar";
 import SectionHeader from "@/components/SectionHeader";
 import QuoteBreak from "@/components/QuoteBreak";
+import DystopianImage from "@/components/DystopianImage";
 import PillarCards from "@/components/PillarCard";
 import PledgeForm from "@/components/PledgeForm";
 import AidMarketplace from "@/components/AidMarketplace";
@@ -63,6 +64,16 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ICE ARREST — child watching from driveway */}
+      <DystopianImage
+        src="/images/ice-arrest-suburb.jpg"
+        alt="ICE agents detaining a man on a suburban driveway while a child watches"
+        caption="Suburban driveway. Backpack on the sidewalk. The child watched the entire thing."
+        classification="DHS FIELD OPS"
+        timestamp="LOCATION REDACTED"
+        overlay="dark"
+      />
+
       <QuoteBreak
         quote="Democracy is the recurrent suspicion that more than half of the people are right more than half of the time."
         attribution="E.B. White, 1943"
@@ -88,6 +99,16 @@ export default function HomePage() {
           </p>
         </div>
       </section>
+
+      {/* EAGLE AT ICE FACILITY — corrupted Americana */}
+      <DystopianImage
+        src="/images/eagle-ice-facility.jpg"
+        alt="Dead bald eagle in the mud outside a DHS-ICE logistics facility"
+        caption="Bald eagle. DHS-ICE Facility 07. Logistics access road. No further details available."
+        classification="EVIDENCE — DO NOT DISTRIBUTE"
+        timestamp="PHOTO ID: REDACTED"
+        overlay="blood"
+      />
 
       {/* WHY NOW */}
       <div className="bg-dark border-t border-b border-border">
@@ -118,6 +139,16 @@ export default function HomePage() {
         </section>
       </div>
 
+      {/* FULFILLMENT CENTER — detention infrastructure */}
+      <DystopianImage
+        src="/images/fulfillment-center.jpg"
+        alt="People being led through razor wire into a DHS Regional Intake Fulfillment Center"
+        caption="DHS Regional Intake — Expansion Preparedness 2028. &quot;Like Amazon Prime, but with human beings.&quot;"
+        classification="INTAKE SURVEILLANCE"
+        timestamp="TUE, NOV 14, 2028 — 15:42"
+        overlay="dark"
+      />
+
       <CountdownTimer />
 
       {/* FIVE PILLARS */}
@@ -128,6 +159,15 @@ export default function HomePage() {
         />
         <PillarCards />
       </section>
+
+      {/* I VOTED GRENADE — corrupted democracy */}
+      <DystopianImage
+        src="/images/i-voted-grenade.jpg"
+        alt="Grenade with I Voted sticker on cracked earth"
+        caption="This is what they made of your vote."
+        classification="EXHIBIT A"
+        overlay="blood"
+      />
 
       <PledgeForm />
       <AidMarketplace />
