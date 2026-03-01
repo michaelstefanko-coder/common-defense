@@ -5,8 +5,7 @@ import Link from "next/link";
 import { useScrollBorder } from "@/hooks/useScrollBorder";
 
 const navLinks = [
-  { href: "/", label: "The Map", highlight: true },
-  { href: "/mission", label: "The Mission" },
+  { href: "/map", label: "The Map", highlight: true },
   { href: "/news", label: "News" },
   { href: "/ice-operations", label: "ICE Exposé" },
   { href: "/citizens-united", label: "Citizens United" },
@@ -29,7 +28,7 @@ export default function NavBar() {
 
   const goToPledge = () => {
     setMobileOpen(false);
-    window.location.href = "/mission#pledge";
+    window.location.href = "/#pledge";
   };
 
   return (

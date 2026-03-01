@@ -14,8 +14,8 @@ export default function Footer() {
         <Link href="/" className="font-heading text-[11px] tracking-[2px] uppercase text-red-light no-underline hover:text-white hover:no-underline font-bold">
           The Map
         </Link>
-        <Link href="/mission" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
-          Mission
+        <Link href="/#about" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
+          The Mission
         </Link>
         <Link href="/news" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
           News
@@ -32,7 +32,7 @@ export default function Footer() {
         <Link href="/know-your-rights" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
           Know Your Rights
         </Link>
-        <Link href="/mission#pledge" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
+        <Link href="/#pledge" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">
           Pledge
         </Link>
         <Link href="/mission#aid" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:text-white hover:no-underline">

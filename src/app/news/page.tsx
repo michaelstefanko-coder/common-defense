@@ -777,7 +777,7 @@ export default function NewsPage() {
         </h2>
         <div className="flex gap-4 justify-center flex-wrap mt-6">
           <Link
-            href="/mission#pledge"
+            href="/#pledge"
             className="font-heading text-[13px] tracking-[2px] uppercase bg-red text-white px-10 py-4 border-none font-bold hover:bg-red-light transition-all no-underline hover:no-underline inline-block"
           >
             Sign the Pledge
