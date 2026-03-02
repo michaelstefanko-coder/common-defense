@@ -7,14 +7,9 @@ import DystopianImage from "@/components/DystopianImage";
 import PillarCards from "@/components/PillarCard";
 import PledgeForm from "@/components/PledgeForm";
 import AidMarketplace from "@/components/AidMarketplace";
-import CreditsDashboard from "@/components/CreditsDashboard";
-import OrganizerElection from "@/components/OrganizerElection";
 import ResistanceToolkit from "@/components/ResistanceOpCard";
-import PrivacyWizard from "@/components/PrivacyWizard";
 import CommsGrid from "@/components/CommsCard";
 import CountdownTimer from "@/components/CountdownTimer";
-import FoiaGenerator from "@/components/FoiaGenerator";
-import DataBrokerOptOut from "@/components/DataBrokerOptOut";
 import NewsletterSignup from "@/components/NewsletterSignup";
 import ShareButtons from "@/components/ShareButtons";
 import Link from "next/link";
@@ -171,12 +166,55 @@ export default function HomePage() {
 
       <PledgeForm />
       <AidMarketplace />
-      <CreditsDashboard />
-      <OrganizerElection />
+
+      {/* ACTION TOOLKIT PREVIEW */}
+      <section className="py-[100px] px-10 max-md:px-5 max-w-[1200px] mx-auto" id="toolkit">
+        <div className="font-mono text-[10px] tracking-[4px] uppercase text-red mb-4">
+          {"// "}Action Infrastructure
+        </div>
+        <div className="font-heading text-[40px] max-md:text-[28px] font-black text-white leading-[1.15] mb-4 uppercase">
+          The Toolkit
+        </div>
+        <div className="text-[17px] text-light max-w-[600px] leading-[1.7] mb-10">
+          Five tools built for direct action. Each one works right now, in your browser, with no sign-up required.
+        </div>
+
+        <div className="grid grid-cols-3 max-md:grid-cols-1 gap-4">
+          <Link href="/toolkit" className="bg-card border border-border p-6 transition-colors hover:border-red no-underline hover:no-underline group">
+            <div className="text-[24px] mb-3">{"\u{1F4C4}"}</div>
+            <div className="font-heading text-[16px] font-bold text-white mb-2 group-hover:text-red transition-colors">FOIA Request Generator</div>
+            <p className="text-[13px] text-muted leading-[1.6]">5 pre-built templates to demand government records. Auto-fills your info. Copy, send, hold them accountable.</p>
+          </Link>
+          <Link href="/toolkit" className="bg-card border border-border p-6 transition-colors hover:border-red no-underline hover:no-underline group">
+            <div className="text-[24px] mb-3">{"\u{1F6E1}\uFE0F"}</div>
+            <div className="font-heading text-[16px] font-bold text-white mb-2 group-hover:text-red transition-colors">Data Broker Opt-Out</div>
+            <p className="text-[13px] text-muted leading-[1.6]">14 brokers tracked. 9 confirmed ICE feeds. Step-by-step removal guides with progress tracking.</p>
+          </Link>
+          <Link href="/toolkit" className="bg-card border border-border p-6 transition-colors hover:border-red no-underline hover:no-underline group">
+            <div className="text-[24px] mb-3">{"\u{1F512}"}</div>
+            <div className="font-heading text-[16px] font-bold text-white mb-2 group-hover:text-red transition-colors">Privacy Hardening</div>
+            <p className="text-[13px] text-muted leading-[1.6]">6-step checklist: Signal, VPN, browser config, phone hardening, mesh comms. ~70 minutes total.</p>
+          </Link>
+          <Link href="/toolkit" className="bg-card border border-border p-6 transition-colors hover:border-red no-underline hover:no-underline group">
+            <div className="text-[24px] mb-3">{"\u{1F4B1}"}</div>
+            <div className="font-heading text-[16px] font-bold text-white mb-2 group-hover:text-red transition-colors">Labor Credits</div>
+            <p className="text-[13px] text-muted leading-[1.6]">Log volunteer work, earn credits, exchange for mutual aid. 12 categories of trackable contributions.</p>
+          </Link>
+          <Link href="/toolkit" className="bg-card border border-border p-6 transition-colors hover:border-red no-underline hover:no-underline group">
+            <div className="text-[24px] mb-3">{"\u{1F5F3}\uFE0F"}</div>
+            <div className="font-heading text-[16px] font-bold text-white mb-2 group-hover:text-red transition-colors">Organizer Election</div>
+            <p className="text-[13px] text-muted leading-[1.6]">Vote for chapter leadership. One vote per person, anonymous ballot, transparent count.</p>
+          </Link>
+          <Link href="/toolkit" className="bg-card border border-red/30 p-6 transition-colors hover:border-red no-underline hover:no-underline flex items-center justify-center">
+            <div className="text-center">
+              <div className="font-heading text-[16px] font-bold text-red mb-1">Open the Toolkit</div>
+              <div className="font-mono text-[11px] text-muted tracking-[1px]">All 5 tools &rarr;</div>
+            </div>
+          </Link>
+        </div>
+      </section>
+
       <ResistanceToolkit />
-      <FoiaGenerator />
-      <DataBrokerOptOut />
-      <PrivacyWizard />
       <CommsGrid />
       <NewsletterSignup />
 

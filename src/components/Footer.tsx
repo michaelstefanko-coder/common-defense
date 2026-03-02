@@ -14,17 +14,17 @@ export default function Footer() {
         <Link href="/mutual-aid" className="nav-link-dystopian font-heading text-[11px] tracking-[2px] uppercase text-red no-underline hover:no-underline font-bold">
           Mutual Aid
         </Link>
+        <Link href="/toolkit" className="font-heading text-[11px] tracking-[2px] uppercase text-red no-underline hover:no-underline font-bold nav-link-dystopian">
+          Toolkit
+        </Link>
         <Link href="/map" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:!text-white hover:no-underline nav-link-dystopian">
           The Map
-        </Link>
-        <Link href="/#about" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:!text-white hover:no-underline nav-link-dystopian">
-          The Mission
         </Link>
         <Link href="/news" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:!text-white hover:no-underline nav-link-dystopian">
           News
         </Link>
         <Link href="/ice-operations" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:!text-white hover:no-underline nav-link-dystopian">
-          ICE Exposé
+          ICE Expos&eacute;
         </Link>
         <Link href="/citizens-united" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:!text-white hover:no-underline nav-link-dystopian">
           Citizens United
@@ -37,15 +37,6 @@ export default function Footer() {
         </Link>
         <Link href="/#pledge" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:!text-white hover:no-underline nav-link-dystopian">
           Pledge
-        </Link>
-        <Link href="/#aid" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:!text-white hover:no-underline nav-link-dystopian">
-          Mutual Aid
-        </Link>
-        <Link href="/#foia" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:!text-white hover:no-underline nav-link-dystopian">
-          FOIA Tool
-        </Link>
-        <Link href="/#optout" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:!text-white hover:no-underline nav-link-dystopian">
-          Data Opt-Out
         </Link>
       </div>
 

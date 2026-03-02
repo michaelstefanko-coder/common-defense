@@ -6,6 +6,7 @@ import { useScrollBorder } from "@/hooks/useScrollBorder";
 
 const navLinks = [
   { href: "/mutual-aid", label: "Mutual Aid", highlight: true },
+  { href: "/toolkit", label: "Toolkit" },
   { href: "/map", label: "The Map" },
   { href: "/news", label: "News" },
   { href: "/ice-operations", label: "ICE Exposé" },
