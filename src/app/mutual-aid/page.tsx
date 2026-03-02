@@ -818,9 +818,12 @@ export default function MutualAidPage() {
           (() => {
             const listing = allListings.find((l) => l.id === contactModal);
             if (!listing) return null;
+            const hasResponded = responded.includes(contactModal);
+            const contactName = listing.offeredBy || listing.neededBy || "Unknown";
+
             return (
               <div className="space-y-4">
-                <div className="bg-card border border-border p-4">
+                <div className="bg-card border border-border p-5">
                   <div className="flex items-center gap-2 mb-2">
                     <span
                       className={`font-mono text-[10px] tracking-[2px] uppercase font-bold ${
@@ -842,31 +845,74 @@ export default function MutualAidPage() {
                   <div className="text-[13px] text-light mt-2 leading-[1.6]">
                     {listing.description}
                   </div>
-                  <div className="text-[12px] text-muted mt-2 font-mono">
-                    {listing.location}
+                  <div className="flex items-center justify-between mt-3 text-[12px] text-muted font-mono">
+                    <span>{listing.location}</span>
+                    {listing.credits > 0 && (
+                      <span className={listing.type === "offer" ? "text-green" : "text-red"}>
+                        {listing.type === "offer" ? `+${listing.credits}` : listing.credits} credits
+                      </span>
+                    )}
                   </div>
                 </div>
-                <p className="text-[14px] text-light leading-[1.7]">
-                  {listing.type === "offer"
-                    ? "By accepting this offer, you agree to the mutual aid exchange. The contributor will earn the listed credits upon verified completion."
-                    : "By responding to this need, you commit to providing the requested assistance. You will earn the listed credits upon verified completion."}
-                </p>
-                <div className="flex gap-3">
+
+                {/* Contact info */}
+                <div className="bg-card border border-green/20 p-4">
+                  <div className="font-mono text-[10px] tracking-[2px] uppercase text-green mb-2">
+                    Contact
+                  </div>
+                  <div className="font-heading text-[15px] text-white font-bold">
+                    {contactName}
+                  </div>
+                  <p className="text-[12px] text-muted mt-1 leading-[1.5]">
+                    Reach out to this {listing.type === "offer" ? "provider" : "requester"} through your local chapter coordinator or at your next community meeting.
+                  </p>
+                </div>
+
+                {/* Pre-filled message to copy */}
+                <div>
+                  <div className="font-mono text-[10px] tracking-[2px] uppercase text-muted mb-2">
+                    Draft message (copy and send)
+                  </div>
+                  <div className="bg-black border border-border p-4 text-[13px] text-light leading-[1.6] font-mono">
+                    Hi {contactName}, I saw your listing &ldquo;{listing.title}&rdquo; on Common Defense. {listing.type === "offer" ? "I\u2019d like to accept this offer." : "I can help with this."} I&apos;m in the {listing.location} area. When can we connect?
+                  </div>
                   <button
-                    onClick={() => handleRespond(contactModal)}
-                    className="flex-1 font-mono text-[12px] tracking-[2px] uppercase bg-green text-white py-3 border-none font-bold hover:bg-green/80 transition-colors"
-                    style={{ borderRadius: 0 }}
+                    onClick={() => {
+                      const msg = `Hi ${contactName}, I saw your listing "${listing.title}" on Common Defense. ${listing.type === "offer" ? "I'd like to accept this offer." : "I can help with this."} I'm in the ${listing.location} area. When can we connect?`;
+                      navigator.clipboard.writeText(msg).then(() => {
+                        toast.addToast("Message copied to clipboard.", "info");
+                      });
+                    }}
+                    className="font-mono text-[11px] tracking-[1px] uppercase text-blue hover:text-white bg-transparent border-none mt-2"
                   >
-                    {listing.type === "offer" ? "Accept Offer" : "I Can Help"}
-                  </button>
-                  <button
-                    onClick={() => setContactModal(null)}
-                    className="flex-1 font-mono text-[12px] tracking-[2px] uppercase bg-transparent text-muted py-3 border border-border hover:text-white hover:border-red transition-colors"
-                    style={{ borderRadius: 0 }}
-                  >
-                    Cancel
+                    Copy message to clipboard
                   </button>
                 </div>
+
+                {!hasResponded ? (
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => handleRespond(contactModal)}
+                      className="flex-1 font-mono text-[12px] tracking-[2px] uppercase bg-green text-white py-3 border-none font-bold hover:bg-green/80 transition-colors"
+                      style={{ borderRadius: 0 }}
+                    >
+                      {listing.type === "offer" ? "Mark as Accepted" : "Mark as Helping"}
+                    </button>
+                    <button
+                      onClick={() => setContactModal(null)}
+                      className="flex-1 font-mono text-[12px] tracking-[2px] uppercase bg-transparent text-muted py-3 border border-border hover:text-white hover:border-red transition-colors"
+                      style={{ borderRadius: 0 }}
+                    >
+                      Close
+                    </button>
+                  </div>
+                ) : (
+                  <div className="bg-green/10 border border-green/30 p-4 text-center">
+                    <div className="font-mono text-[12px] text-green font-bold">
+                      &#10003; You&apos;ve responded to this listing
+                    </div>
+                  </div>
+                )}
               </div>
             );
           })()}

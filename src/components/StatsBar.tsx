@@ -29,10 +29,10 @@ function useAnimatedCounter(target: number, isVisible: boolean, duration = 2000)
 export default function StatsBar() {
   const { ref, isVisible } = useIntersectionObserver(0.3);
 
-  const pledges = useAnimatedCounter(24837, isVisible, 2000);
-  const chapters = useAnimatedCounter(142, isVisible, 1800);
-  const fund = useAnimatedCounter(2847000, isVisible, 2200);
-  const aid = useAnimatedCounter(8491, isVisible, 2000);
+  const pledges = useAnimatedCounter(25000, isVisible, 2000);
+  const chapters = useAnimatedCounter(150, isVisible, 1800);
+  const fund = useAnimatedCounter(3000000, isVisible, 2200);
+  const aid = useAnimatedCounter(10000, isVisible, 2000);
 
   return (
     <div
@@ -42,46 +42,46 @@ export default function StatsBar() {
     >
       <div className="py-6 px-6" style={{ borderRight: "1px solid #1a1a1a" }}>
         <div className="font-mono text-[9px] tracking-[2px] uppercase text-muted mb-2">
-          {"// SIGNATORIES"}
+          {"// TARGET"}
         </div>
         <div className="font-mono text-[32px] font-bold text-white leading-none">
           {pledges.toLocaleString()}
         </div>
         <div className="font-mono text-[10px] text-muted mt-1 tracking-[1px]">
-          PLEDGES SIGNED
+          PLEDGE GOAL
         </div>
       </div>
       <div className="py-6 px-6 max-md:!border-r-0" style={{ borderRight: "1px solid #1a1a1a" }}>
         <div className="font-mono text-[9px] tracking-[2px] uppercase text-muted mb-2">
-          {"// CELLS ACTIVE"}
+          {"// TARGET"}
         </div>
         <div className="font-mono text-[32px] font-bold text-white leading-none">
           {chapters.toLocaleString()}
         </div>
         <div className="font-mono text-[10px] text-muted mt-1 tracking-[1px]">
-          LOCAL CHAPTERS
+          CHAPTER GOAL
         </div>
       </div>
       <div className="py-6 px-6" style={{ borderRight: "1px solid #1a1a1a" }}>
         <div className="font-mono text-[9px] tracking-[2px] uppercase text-red mb-2">
-          {"// FUND STATUS"}
+          {"// TARGET"}
         </div>
         <div className="font-mono text-[32px] font-bold text-red leading-none">
           ${fund.toLocaleString()}
         </div>
         <div className="font-mono text-[10px] text-muted mt-1 tracking-[1px]">
-          STRIKE FUND
+          STRIKE FUND GOAL
         </div>
       </div>
       <div className="py-6 px-6">
         <div className="font-mono text-[9px] tracking-[2px] uppercase text-muted mb-2">
-          {"// MUTUAL AID"}
+          {"// TARGET"}
         </div>
         <div className="font-mono text-[32px] font-bold text-white leading-none">
           {aid.toLocaleString()}
         </div>
         <div className="font-mono text-[10px] text-muted mt-1 tracking-[1px]">
-          AID MATCHES
+          AID MATCH GOAL
         </div>
       </div>
     </div>

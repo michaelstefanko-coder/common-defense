@@ -30,12 +30,12 @@ export default function NewsTicker() {
         style={{ background: "#cc0000" }}
       >
         <span className="font-stencil text-[10px] tracking-[2px] text-white font-black uppercase whitespace-nowrap">
-          LIVE
+          BULLETIN
         </span>
       </div>
 
       {/* Scrolling track */}
-      <div className="pl-[70px] py-2 overflow-hidden">
+      <div className="pl-[90px] py-2 overflow-hidden">
         <div className="ticker-track">
           {doubled.map((item, i) => (
             <span key={i} className="inline-flex items-center">

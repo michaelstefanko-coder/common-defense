@@ -70,25 +70,26 @@ export default function CreditsDashboard() {
   };
 
   return (
-    <section className="py-[100px] px-10 max-w-[1200px] mx-auto">
-      <div className="font-heading text-[11px] tracking-[3px] uppercase text-red mb-3">
-        Labor Credits
+    <section className="py-[100px] px-10 max-w-[1200px] mx-auto" id="credits">
+      <div className="font-mono text-[10px] tracking-[4px] uppercase text-red mb-4">
+        {"// "}Labor Credits
       </div>
-      <div className="font-heading text-[40px] max-md:text-[28px] font-black text-white leading-[1.15] mb-6">
+      <div className="font-heading text-[40px] max-md:text-[28px] font-black text-white leading-[1.15] mb-6 uppercase">
         The currency is the work.
       </div>
-      <div className="text-[18px] text-light max-w-[700px] leading-[1.8]">
-        One hour of labor for the movement = one credit. No speculation. No trading. No buying your way in. The only way to earn credits is to show up and do the work. Every transaction verified on-chain, every identity protected by zero-knowledge proofs.
+      <div className="text-[17px] text-light max-w-[700px] leading-[1.7]">
+        One hour of labor for the movement = one credit. No speculation. No buying your way in.
+        Log your volunteer work, earn credits, and exchange them for mutual aid.
       </div>
 
       <div className="flex items-center gap-10 bg-card border border-border p-8 mt-10 max-md:flex-col">
         <div className="text-center min-w-[160px]">
           <div className="font-heading text-[48px] font-black text-green">{totalCredits}</div>
-          <div className="font-heading text-[11px] tracking-[2px] uppercase text-muted">
+          <div className="font-mono text-[10px] tracking-[2px] uppercase text-muted">
             Your Credits
           </div>
           {mounted && userCredits > 0 && (
-            <div className="font-heading text-[10px] text-green mt-1">
+            <div className="font-mono text-[10px] text-green mt-1">
               +{userCredits} earned this session
             </div>
           )}
@@ -116,17 +117,18 @@ export default function CreditsDashboard() {
           <div className="font-heading text-[14px] text-white font-bold">Log Your Work</div>
 
           <div>
-            <label className="font-heading text-[10px] tracking-[2px] uppercase text-muted block mb-2">Type of Work</label>
+            <label className="font-mono text-[10px] tracking-[2px] uppercase text-muted block mb-2">Type of Work</label>
             <div className="grid grid-cols-3 max-md:grid-cols-1 gap-2">
               {workCategories.map((cat, i) => (
                 <button
                   key={i}
                   onClick={() => setSelectedWork(i)}
-                  className={`text-left py-3 px-4 border cursor-pointer transition-all font-heading text-[12px] ${
+                  className={`text-left py-3 px-4 border transition-colors font-mono text-[12px] ${
                     selectedWork === i
                       ? "bg-red/10 border-red text-white"
                       : "bg-transparent border-border text-muted hover:border-light"
                   }`}
+                  style={{ borderRadius: 0 }}
                 >
                   <div>{cat.label}</div>
                   <div className="text-green text-[11px] mt-1">+{cat.credits} credits</div>
@@ -136,26 +138,29 @@ export default function CreditsDashboard() {
           </div>
 
           <div>
-            <label className="font-heading text-[10px] tracking-[2px] uppercase text-muted block mb-2">Custom Description (optional)</label>
+            <label className="font-mono text-[10px] tracking-[2px] uppercase text-muted block mb-2">Custom Description (optional)</label>
             <input
               type="text"
               value={customDesc}
               onChange={(e) => setCustomDesc(e.target.value)}
               placeholder="e.g., Cooked for 30 people at Nicollet action"
-              className="w-full py-3 px-4 bg-black border border-border text-white font-heading text-[14px] outline-none focus:border-red placeholder:text-muted"
+              className="w-full py-3 px-4 bg-black border border-border text-white font-mono text-[13px] outline-none focus:border-red placeholder:text-muted"
+              style={{ borderRadius: 0 }}
             />
           </div>
 
           <div className="flex gap-3">
             <button
               onClick={logWork}
-              className="font-heading text-[13px] tracking-[2px] uppercase bg-green text-white px-10 py-3 border-none cursor-pointer font-bold hover:bg-green/80 transition-all"
+              className="font-heading text-[13px] tracking-[2px] uppercase bg-green text-white px-10 py-3 border-none font-bold hover:bg-green/80 transition-colors"
+              style={{ borderRadius: 0 }}
             >
               Log +{workCategories[selectedWork].credits} Credits
             </button>
             <button
               onClick={() => setShowLogForm(false)}
-              className="font-heading text-[13px] tracking-[2px] uppercase bg-transparent text-muted px-10 py-3 border border-border cursor-pointer hover:text-white hover:border-red transition-all"
+              className="font-heading text-[13px] tracking-[2px] uppercase bg-transparent text-muted px-10 py-3 border border-border hover:text-white hover:border-red transition-colors"
+              style={{ borderRadius: 0 }}
             >
               Cancel
             </button>
@@ -164,22 +169,16 @@ export default function CreditsDashboard() {
       ) : (
         <button
           onClick={() => setShowLogForm(true)}
-          className="font-heading text-[13px] tracking-[2px] uppercase bg-red text-white px-10 py-4 border-none cursor-pointer font-bold hover:bg-red-light transition-all mt-4"
+          className="font-heading text-[13px] tracking-[2px] uppercase bg-red text-white px-10 py-4 border-none font-bold hover:bg-red-light transition-colors mt-4"
+          style={{ borderRadius: 0 }}
         >
           Log Work
         </button>
       )}
 
-      <div
-        className="font-mono text-[11px] text-muted border border-border p-3 px-4 mt-4 break-all"
-        style={{ background: "rgba(255,255,255,0.03)" }}
-      >
-        <strong className="text-light">Ledger:</strong> 0x7f2c...a3b1 &nbsp;|&nbsp;{" "}
-        <strong className="text-light">Network:</strong> Polygon &nbsp;|&nbsp;{" "}
-        <strong className="text-light">Last verified:</strong> Block #51,204,887 &nbsp;|&nbsp;{" "}
-        <strong className="text-light">Status:</strong>{" "}
-        <span className="text-green">&#9679;</span> Synced
-      </div>
+      <p className="font-mono text-[11px] text-muted mt-4 leading-[1.6]">
+        Credits are saved in your browser. They persist between sessions on this device.
+      </p>
     </section>
   );
 }

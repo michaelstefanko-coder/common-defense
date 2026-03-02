@@ -107,7 +107,7 @@ export default function ResistPage() {
     if (joined.includes(id)) return;
     setJoined((prev) => [...prev, id]);
     const campaign = resistOps.campaigns.find((c) => c.id === id);
-    toast.addToast(`Joined: ${campaign?.name}. Welcome aboard.`, "success");
+    toast.addToast(`Joined: ${campaign?.name}. Expand the card for next steps.`, "success");
   };
 
   const filteredCampaigns = useMemo(() => {

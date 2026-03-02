@@ -55,7 +55,7 @@ export default function PledgeForm() {
         </div>
 
         <p className="font-mono text-[13px] text-muted mb-2 tracking-[1px] uppercase">
-          Your name. On the record. Publicly accountable.
+          Add your name to the pledge.
         </p>
 
         <div className="flex gap-3 max-w-[600px] mt-8 max-md:flex-col">
@@ -85,10 +85,10 @@ export default function PledgeForm() {
         <div className={`font-mono text-[11px] tracking-[1px] mt-4 ${mounted && signed ? "text-green" : "text-muted"}`}>
           {mounted && signed ? (
             <>
-              [CONFIRMED] <strong>{signerName}</strong> — PLEDGE RECORDED. SIGNER #24,838.
+              [CONFIRMED] <strong>{signerName}</strong> — PLEDGE SIGNED. Saved to your device.
             </>
           ) : (
-            "// JOIN THE SIGNERS. EVERY NAME IS PUBLIC. EVERY NAME MATTERS."
+            "// SIGN THE PLEDGE. STAND WITH THE MOVEMENT."
           )}
         </div>
       </div>

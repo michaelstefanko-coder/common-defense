@@ -24,29 +24,29 @@ export default function NewsletterSignup() {
     setError(false);
     setSubscribed({ email: email.trim() });
     setEmail("");
-    toast.addToast("Subscribed. Weekly intelligence brief incoming.", "success");
+    toast.addToast("Email saved. You're on the list.", "success");
   };
 
   return (
     <section className="py-[80px] px-10 bg-dark border-t border-b border-border" id="newsletter">
       <div className="max-w-[600px] mx-auto text-center">
-        <div className="font-heading text-[11px] tracking-[3px] uppercase text-red mb-3">
-          Stay Informed
+        <div className="font-mono text-[10px] tracking-[4px] uppercase text-red mb-4">
+          {"// "}Stay Informed
         </div>
-        <div className="font-heading text-[32px] max-md:text-[24px] font-black text-white leading-[1.15] mb-4">
-          Weekly Intelligence Brief
+        <div className="font-heading text-[32px] max-md:text-[24px] font-black text-white leading-[1.15] mb-4 uppercase">
+          Get Updates
         </div>
-        <p className="text-[16px] text-light mb-8">
-          One email per week. Campaign updates, new operations, movement intelligence. No spam. Unsubscribe anytime.
+        <p className="text-[16px] text-light mb-8 leading-[1.7]">
+          Leave your email to be notified when the newsletter launches. Campaign updates, new operations, movement intelligence.
         </p>
 
         {isSubscribed ? (
           <div className="bg-green/10 border border-green/30 p-6">
             <div className="font-heading text-[14px] text-green font-bold">
-              &#10003; Subscribed as {subscribed?.email}
+              &#10003; Registered as {subscribed?.email}
             </div>
             <p className="text-[13px] text-light mt-2">
-              You&apos;ll receive the weekly intelligence brief every Monday at 06:00 ET.
+              We&apos;ll notify you when the newsletter goes live.
             </p>
           </div>
         ) : (
@@ -56,23 +56,25 @@ export default function NewsletterSignup() {
               value={email}
               onChange={(e) => { setEmail(e.target.value); setError(false); }}
               placeholder="your@email.com"
-              className={`flex-1 py-3.5 px-5 bg-card border text-white font-heading text-[14px] outline-none transition-colors placeholder:text-muted ${
+              className={`flex-1 py-3.5 px-5 bg-card border text-white font-mono text-[13px] outline-none transition-colors placeholder:text-muted ${
                 error ? "border-red" : "border-border focus:border-red"
               }`}
+              style={{ borderRadius: 0 }}
               onKeyDown={(e) => { if (e.key === "Enter") handleSubscribe(); }}
               aria-label="Email address"
             />
             <button
               onClick={handleSubscribe}
-              className="font-heading text-[13px] tracking-[2px] uppercase bg-red text-white px-10 py-4 border-none cursor-pointer font-bold hover:bg-red-light transition-all whitespace-nowrap"
+              className="font-heading text-[13px] tracking-[2px] uppercase bg-red text-white px-10 py-4 border-none font-bold hover:bg-red-light transition-colors whitespace-nowrap"
+              style={{ borderRadius: 0 }}
             >
-              Subscribe
+              Notify Me
             </button>
           </div>
         )}
 
         <p className="text-[12px] text-muted mt-4">
-          Encrypted with PGP. Your email is never shared or sold.
+          Your email is saved locally on your device. No data is sent to any server.
         </p>
       </div>
     </section>
