@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useScrollBorder } from "@/hooks/useScrollBorder";
 
 const navLinks = [
-  { href: "/map", label: "The Map", highlight: true },
+  { href: "/mutual-aid", label: "Mutual Aid", highlight: true },
+  { href: "/map", label: "The Map" },
   { href: "/news", label: "News" },
   { href: "/ice-operations", label: "ICE Exposé" },
   { href: "/citizens-united", label: "Citizens United" },

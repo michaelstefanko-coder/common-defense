@@ -11,7 +11,10 @@ export default function Footer() {
       </div>
 
       <div className="mt-6 flex justify-center gap-6 flex-wrap">
-        <Link href="/" className="nav-link-dystopian font-heading text-[11px] tracking-[2px] uppercase text-red no-underline hover:no-underline font-bold">
+        <Link href="/mutual-aid" className="nav-link-dystopian font-heading text-[11px] tracking-[2px] uppercase text-red no-underline hover:no-underline font-bold">
+          Mutual Aid
+        </Link>
+        <Link href="/map" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:!text-white hover:no-underline nav-link-dystopian">
           The Map
         </Link>
         <Link href="/#about" className="font-heading text-[11px] tracking-[2px] uppercase text-muted no-underline hover:!text-white hover:no-underline nav-link-dystopian">
